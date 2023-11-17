@@ -42,4 +42,7 @@
     <None Include="TestDokumente\input1.miec" />
     <None Include=".gitignore" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="README.txt" />
+  </ItemGroup>
 </Project>

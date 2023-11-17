@@ -7,42 +7,53 @@ COMPILER MIEC
 
   
 CHARACTERS
-    letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".
-    digit = "0123456789".
-
-
-
+    LETTER = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".
+    DIGIT = "0123456789".
+    CR = "\n".
+    LF = "\r".
+    TAB = "\t".
      
 TOKENS
-    cr = "\n".
-    lf = "\r".
-    tab = "\t".
-    PRINT = "print".
     LPAREN = "(".
     RPAREN = ")".
+    SEMICOLON = ";".
+    COLON = ":".
     EQUALS = ":=".
     PLUS = "+".
-    MINUS = '-'.
-    TIMES = '*'.
-    DIVIDE = '/'.
-    ident = letter {letter | digit | '_'}.
-    number = digit {digit}.
-    relOp = "=" | "<" | ">" | "<=" | ">=" | "!=".
+    MINUS = "-".
+    TIMES = "*".
+    DIVIDE = "/".
+    RELOP = "=" | "<" | ">" | "<=" | ">=" | "!=".
+    IDENT = LETTER {LETTER | DIGIT | "_"}.
+    PRINT = "print".
+    IF_STMNT = "IF".
+    THEN = "THEN".
+    ELSE = "ELSE".
+    WHILE = "WHILE".
+    DO = "DO".
+    BEGIN = "BEGIN".
+    END_STMNT = "END".
+    BEGIN_VAR = "BEGIN_VAR".
+    END_VAR = "END_VAR".
+    NUMBER = DIGIT {DIGIT}.
+    TYPES = "Integer".
+    PROGRAM = "PROGRAM".
     
 COMMENTS
   FROM "(*" TO "*)" NESTED
 
-IGNORE cr + lf + tab
+IGNORE CR + LF + TAB
    
 PRODUCTIONS
-    
     EXPR = TERM {(PLUS | MINUS) TERM}.
     TERM = FACT {(TIMES | DIVIDE) FACT}.
+    CONDITION = EXPR RELOP EXPR.
     FACT = IDENT | NUMBER | LPAREN EXPR RPAREN.
-    STMNT = IDENT EQUAL EXPR | PRINT LPAREN EXPR RPAREN.
-
-    VarDecl = BEGIN_VAR {ident COLON Integer SEMICOLON} END_VAR.
-
-    MIEC = "PROGRAM" ident [VarDecl] "BEGIN" Statements "END".
+    STMNT = (IDENT EQUALS EXPR | PRINT_STMNT) SEMICOLON
+    | WHILE CONDITION DO STMNT END_STMNT
+    | IF_STMNT CONDITION THEN [STMNT ELSE] STMNT END_STMNT.
+    PRINT_STMNT = PRINT LPAREN EXPR RPAREN.
+    VARDECL = BEGIN_VAR {IDENT COLON TYPES SEMICOLON} END_VAR.
+    MIEC = PROGRAM IDENT [VARDECL] BEGIN {STMNT} END_STMNT.
 
 END MIEC .

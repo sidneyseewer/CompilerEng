@@ -1,0 +1,48 @@
+
+COMPILER MIEC
+
+	void Err(wchar_t* msg) {
+		errors->Error(la->line, la->col, msg);
+	}
+
+  
+CHARACTERS
+    letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".
+    digit = "0123456789".
+
+
+
+     
+TOKENS
+    cr = "\n".
+    lf = "\r".
+    tab = "\t".
+    PRINT = "print".
+    LPAREN = "(".
+    RPAREN = ")".
+    EQUALS = ":=".
+    PLUS = "+".
+    MINUS = '-'.
+    TIMES = '*'.
+    DIVIDE = '/'.
+    ident = letter {letter | digit | '_'}.
+    number = digit {digit}.
+    relOp = "=" | "<" | ">" | "<=" | ">=" | "!=".
+    
+COMMENTS
+  FROM "(*" TO "*)" NESTED
+
+IGNORE cr + lf + tab
+   
+PRODUCTIONS
+    
+    EXPR = TERM {(PLUS | MINUS) TERM}.
+    TERM = FACT {(TIMES | DIVIDE) FACT}.
+    FACT = IDENT | NUMBER | LPAREN EXPR RPAREN.
+    STMNT = IDENT EQUAL EXPR | PRINT LPAREN EXPR RPAREN.
+
+    VarDecl = BEGIN_VAR {ident COLON Integer SEMICOLON} END_VAR.
+
+    MIEC = "PROGRAM" ident [VarDecl] "BEGIN" Statements "END".
+
+END MIEC .

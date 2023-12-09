@@ -9,9 +9,11 @@
 class ConstSymbol: public Symbol
 {
     Type::ptr mType;
+    int mValue;
     public:
-    ConstSymbol(Type::ptr t,std::string name):mType(t),Symbol(name){}
+    ConstSymbol(std::string name,Type::ptr t):mType(t),Symbol(name){}
     virtual Type::ptr getType(){return mType;};
+    int getValue();
 };
 
 #endif //!__CONST_SYMBOL_H_

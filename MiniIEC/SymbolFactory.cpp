@@ -8,5 +8,11 @@
 
 using namespace std;
 Symbol::ptr SymbolFactory::CreateConst(string name){
-    return std::make_shared<ConstSymbol>(std::make_shared<BaseType>(TypeKind::DOUBLE),name);
+    return std::make_shared<ConstSymbol>(name,std::make_shared<BaseType>(TypeKind::DOUBLE,12));
+}
+Symbol::ptr SymbolFactory::CreateType(string name){
+    return std::make_shared<TypeSymbol>(name);
+}
+Symbol::ptr SymbolFactory::CreateVar(string name){
+    return std::make_shared<VarSymbol>(name);
 }

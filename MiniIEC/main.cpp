@@ -1,4 +1,4 @@
-#include "Stdio.h"
+#include "stdio.h"
 
 //#include "SymbolTable.h"
 
@@ -10,7 +10,7 @@
 #include "Scanner.h"
 #include <sys/timeb.h>
 #include <wchar.h>
-
+#include "Symbols/Symbol.h"
 int main(int argc, char* argv[])
 {
 	if (argc >= 5) {

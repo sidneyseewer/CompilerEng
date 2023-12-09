@@ -3,7 +3,7 @@
 
 #include "Symbols/Symbol.h"
 class TypeSymbol : public Symbol {
-  Type mNameSymbol;
+  Type::ptr mNameSymbol;
 };
 
 #endif //!__TYPE_SYMBOL_H_

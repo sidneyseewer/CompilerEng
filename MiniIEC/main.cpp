@@ -2,17 +2,15 @@
 
 //#include "SymbolTable.h"
 
-/*
-* Int size 4 Bytes
-*/
-
 #include "Parser.h"
 #include "Scanner.h"
 #include <sys/timeb.h>
 #include <wchar.h>
-#include "Symbols/Symbol.h"
+#include "SymbolFactory.h"
 int main(int argc, char* argv[])
 {
+	SymbolFactory s{};
+	s.CreateConst("name");
 	if (argc >= 5) {
 		wchar_t* inputFile = coco_string_create(argv[2]);
 		wchar_t* outputFile = coco_string_create(argv[4]);

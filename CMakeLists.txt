@@ -3,7 +3,7 @@ SET(Name "MIECCompiler")
  
 SET(srcDir MiniIEC)
 SET(Languagefile ${srcDir}/MIEC.atg) 
-SET( Sources ${Sources} ${srcDir}/main.cpp)
+SET( Sources ${Sources} ${srcDir}/main.cpp ${srcDir}/SymbolFactory.cpp)
 SET( cocoNamespace MIEC)
 
 ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${srcDir}/Parser.h ${CMAKE_CURRENT_SOURCE_DIR}/${srcDir}/Parser.cpp ${CMAKE_CURRENT_SOURCE_DIR}/${srcDir}/Scanner.h ${CMAKE_CURRENT_SOURCE_DIR}/${srcDir}/Scanner.cpp

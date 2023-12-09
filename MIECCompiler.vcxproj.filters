@@ -24,12 +24,18 @@
     <ClCompile Include="MiniIEC\Scanner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SymbolTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MiniIEC\Parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MiniIEC\Scanner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -39,8 +45,10 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include="TestDokumente\input1.miec" />
+    <None Include="TestInput\input1.miec" />
     <None Include=".gitignore" />
+    <None Include="TestInput\fail_unkownItem.miec" />
+    <None Include="runTestfiles.bat" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="README.txt" />

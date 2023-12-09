@@ -2,6 +2,10 @@
 
 //#include "SymbolTable.h"
 
+/*
+* Int size 4 Bytes
+*/
+
 #include "Parser.h"
 #include "Scanner.h"
 #include <sys/timeb.h>

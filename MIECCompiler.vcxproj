@@ -80,6 +80,7 @@
     <ClCompile Include="MiniIEC\main.cpp" />
     <ClCompile Include="MiniIEC\Parser.cpp" />
     <ClCompile Include="MiniIEC\Scanner.cpp" />
+    <ClCompile Include="SymbolTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MiniIEC\MIEC.atg">
@@ -91,10 +92,13 @@
   <ItemGroup>
     <ClInclude Include="MiniIEC\Parser.h" />
     <ClInclude Include="MiniIEC\Scanner.h" />
+    <ClInclude Include="SymbolTable.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
-    <None Include="TestDokumente\input1.miec" />
+    <None Include="TestInput\fail_unkownItem.miec" />
+    <None Include="TestInput\input1.miec" />
+    <None Include="runTestfiles.bat" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="README.txt" />

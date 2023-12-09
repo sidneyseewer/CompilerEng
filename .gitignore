@@ -2,3 +2,4 @@
 /MiniIEC/Parser*
 /MiniIEC/Scanner*
 .cache/
+*.old

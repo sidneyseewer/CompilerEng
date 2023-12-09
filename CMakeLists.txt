@@ -19,6 +19,6 @@ MESSAGE( ${CMAKE_CURRENT_SOURCE_DIR})
 project(${Name})
 
 set( Sources ${Sources} ${srcDir}/Parser.cpp ${srcDir}/Scanner.cpp)
-
+include_directories( ${srcDir})
 add_executable(${Name} ${Sources})
 #add_dependencies(${Name} RunGenerator)

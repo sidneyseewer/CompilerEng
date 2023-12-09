@@ -3,4 +3,4 @@
 
 enum TypeKind { INT, FLOAT, DOUBLE };
 
-#endif //!__TYPE_KINF_H__
+#endif //!__TYPE_KIND_H__

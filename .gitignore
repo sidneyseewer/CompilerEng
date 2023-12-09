@@ -2,4 +2,7 @@
 /MiniIEC/Parser*
 /MiniIEC/Scanner*
 .cache/
+.vs/
+Debug/
 *.old
+MIECCompiler/MIECCompiler/

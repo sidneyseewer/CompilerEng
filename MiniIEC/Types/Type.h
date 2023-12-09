@@ -2,9 +2,11 @@
 #define __TYPE_H__
 
 #include <cstddef>
-class Type{
-    public:
-    virtual std::size_t getSize()=0;
+class Symbol;
+class Type {
+public:
+  virtual std::size_t getSize() = 0;
+  virtual Symbol getName() = 0;
 };
 
 #endif

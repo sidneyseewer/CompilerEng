@@ -8,28 +8,26 @@
 
 enum class DataType {
     INT,
-    FLOAT,
-    CHAR,
-    // Add more data types as needed
 };
 
 struct SymbolEntry {
     DataType dataType;
-    int offset; // Example: offset within the memory
-    // Add more information as needed
-
-//    SymbolEntry(DataType type, int off) : dataType(type), offset(off) {}
 };
 
 class SymbolTable {
 public:
-    SymbolTable();
+    static SymbolTable& getInstance();
 
-    void insert(const std::string& identifier, DataType dataType, int offset);
+    void insert(const std::string& identifier, DataType dataType);
     bool lookup(const std::string& identifier, SymbolEntry& entry) const;
 
 private:
+    SymbolTable(); // Private constructor for Singleton
+
     std::unordered_map<std::string, SymbolEntry> symbolMap;
+    int currentOffset; // Member to track current offset
+
+    static SymbolTable instance; // Static instance for Singleton
 };
 
 #endif // SYMBOLTABLE_H

@@ -1,12 +1,18 @@
 // symboltable.cpp
 #include "symboltable.h"
 
-SymbolTable::SymbolTable() {}
+SymbolTable SymbolTable::instance; // Initializing static instance
 
-void SymbolTable::insert(const std::string& identifier, DataType dataType, int offset) {
+SymbolTable::SymbolTable() : currentOffset(0) {}
+
+SymbolTable& SymbolTable::getInstance() {
+    return instance;
+}
+
+void SymbolTable::insert(const std::string& identifier, DataType dataType) {
     SymbolEntry entry;
     entry.dataType = dataType;
-    entry.offset = offset;
+    currentOffset += 4; // Increment offset for the next entry
     symbolMap[identifier] = entry;
 }
 

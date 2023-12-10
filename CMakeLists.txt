@@ -3,7 +3,10 @@ SET(Name "MIECCompiler")
  
 SET(srcDir MiniIEC)
 SET(Languagefile ${srcDir}/MIEC.atg) 
-SET( Sources ${Sources} ${srcDir}/main.cpp ${srcDir}/SymbolFactory.cpp)
+file(GLOB SOURCES CONFIGURE_DEPENDS "MiniIEC/*.cpp")
+file(GLOB SOURCES2 CONFIGURE_DEPENDS "MiniIEC/*/*.cpp")
+SET(SOURCES ${SOURCES} ${SOURCES})
+message(STATUS,${SOURCES2})
 SET( cocoNamespace MIEC)
 
 ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${srcDir}/Parser.h ${CMAKE_CURRENT_SOURCE_DIR}/${srcDir}/Parser.cpp ${CMAKE_CURRENT_SOURCE_DIR}/${srcDir}/Scanner.h ${CMAKE_CURRENT_SOURCE_DIR}/${srcDir}/Scanner.cpp
@@ -18,7 +21,7 @@ MESSAGE( ${CMAKE_CURRENT_SOURCE_DIR})
 
 project(${Name})
 
-set( Sources ${Sources} ${srcDir}/Parser.cpp ${srcDir}/Scanner.cpp)
+# set( Sources ${Sources} ${srcDir}/Parser.cpp ${srcDir}/Scanner.cpp)
 include_directories( ${srcDir})
-add_executable(${Name} ${Sources})
+add_executable(${Name} ${SOURCES})
 #add_dependencies(${Name} RunGenerator)

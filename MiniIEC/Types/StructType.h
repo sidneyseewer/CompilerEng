@@ -6,6 +6,9 @@
 #include <vector>
 class StructType : public Type {
   std::vector<VarSymbol> mEbus;
+  public:
+
+    static StructType::ptr create(){return std::make_shared<StructType>();}
 };
 
 #endif //!__STRUCT_TYPE_H__

@@ -3,10 +3,11 @@
 
 #include "Types/Type.h"
 class ArrayType : public Type {
-  Type mElementType;
+  Type::ptr mElementType;
 
 public:
-  ArrayType(Type t) : mElementType(t) {}
+    static ArrayType::ptr create(Type::ptr type){return std::make_shared<ArrayType>(type);}
+  ArrayType(Type::ptr t) : mElementType(t) {}
 };
 
 #endif //!__ARRAY_TYPE_H__

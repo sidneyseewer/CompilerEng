@@ -80,7 +80,8 @@
     <ClCompile Include="MiniIEC\main.cpp" />
     <ClCompile Include="MiniIEC\Parser.cpp" />
     <ClCompile Include="MiniIEC\Scanner.cpp" />
-    <ClCompile Include="SymbolTable.cpp" />
+    <ClCompile Include="MiniIEC\SymbolTable.cpp" />
+    <ClCompile Include="MiniIEC\TestSymbolTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MiniIEC\MIEC.atg">
@@ -92,7 +93,17 @@
   <ItemGroup>
     <ClInclude Include="MiniIEC\Parser.h" />
     <ClInclude Include="MiniIEC\Scanner.h" />
-    <ClInclude Include="SymbolTable.h" />
+    <ClInclude Include="MiniIEC\Symbols\ConstSymbol.h" />
+    <ClInclude Include="MiniIEC\Symbols\Symbol.h" />
+    <ClInclude Include="MiniIEC\Symbols\TypeSymbol.h" />
+    <ClInclude Include="MiniIEC\Symbols\VarSymbol.h" />
+    <ClInclude Include="MiniIEC\Types\ArrayType.h" />
+    <ClInclude Include="MiniIEC\Types\BaseType.h" />
+    <ClInclude Include="MiniIEC\Types\StringType.h" />
+    <ClInclude Include="MiniIEC\Types\StructType.h" />
+    <ClInclude Include="MiniIEC\Types\Type.h" />
+    <ClInclude Include="MiniIEC\Types\TypeKind.h" />
+    <ClInclude Include="MiniIEC\SymbolTable.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

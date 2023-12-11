@@ -1,4 +1,7 @@
-#pragma once
+
+#ifndef SYMBOLTABLE_H
+#define SYMBOLTABLE_H
+
 #include "Symbols/Symbol.h"
 #include "lib/Singelton.h"
 #include <string>
@@ -21,5 +24,9 @@ public:
 private:
     friend class Singelton<SymbolTable>;
     // Private constructor to enforce singleton pattern
+    int currentOffset; // Member to track current offset
+
     std::unordered_map<std::string, Symbol::ptr> symbols{{"integer",nullptr}};
 };
+
+#endif //!SYMBOLTABLE_H

@@ -13,6 +13,7 @@
 #include "SymbolFactory.h"
 #include <limits>
 #include <memory>
+#include <ostream>
 #include <string>
 #include <sys/timeb.h>
 #include <utility>
@@ -89,19 +90,19 @@ for(auto itr=input.cbegin();itr!=input.cend();itr++)
 	auto name=itr->first;
 	switch (itr->second) {
 	case Type:
-	if(st.Find(name)!=nullptr)
+	if(st.Find(name)==nullptr)
 	{
 		st.Add(sf.CreateType(name));
 	}
 	break;
 	case Var:
-	if(st.Find(name)!=nullptr)
+	if(st.Find(name)==nullptr)
 	{
 		st.Add(sf.CreateVar(name,FLOAT));
 	}
 	break;
 	case Const:
-	if(st.Find(name)!=nullptr)
+	if(st.Find(name)==nullptr)
 	{
 		st.Add(sf.CreateConst(name));
 	}
@@ -110,6 +111,10 @@ for(auto itr=input.cbegin();itr!=input.cend();itr++)
 }
 std::string s=std::format("{}",std::numeric_limits<float>::max()+2);
 
+for(auto itr=input.cbegin();itr!=input.cend();itr++)
+{
+  std::cout<<st.Find(itr->first)<<std::endl;
+}
 	
   return 0;
 }

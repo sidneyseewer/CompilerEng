@@ -27,7 +27,7 @@ private:
     // Private constructor to enforce singleton pattern
     int currentOffset; // Member to track current offset
 
-    std::unordered_map<std::string, Symbol::ptr> symbols{{"integer",nullptr}};
+    std::unordered_map<std::string, Symbol::ptr> symbols;
 };
 
 #endif //!SYMBOLTABLE_H

@@ -7,10 +7,11 @@
 #include <memory>
 class BaseType : public Type {
     TypeKind mKind;
+    size_t msize;
     public:
     static BaseType::ptr create(TypeKind kind,size_t size){return std::make_shared<BaseType>(kind,size);}
-    BaseType(TypeKind kind,size_t size):mKind(kind){}
-    std::size_t getSize(){return 5;};
+    BaseType(TypeKind kind,size_t size):mKind(kind),msize(size){}
+    size_t getSize()const{return msize;}
 };
 
 #endif //!__BASE_TYPE_H__

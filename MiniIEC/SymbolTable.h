@@ -12,27 +12,14 @@ class Errors;
 class SymbolTable:public Singelton<SymbolTable> {
 public:
     // Method to add a symbol to the table
-    void Add(Symbol* symbol);
+    void Add(Symbol::ptr symbol);
 
     // Method to find a symbol in the table
-    Symbol* Find(const std::string& name);
+    Symbol::ptr Find(const std::string& name);
 
-    // Method to get the singleton instance of SymbolTable
-    static SymbolTable& GetInstance();
-
-    // Method to delete the singleton instance of SymbolTable
-    static void DeleteInstance();
 
 private:
+    friend class Singelton<SymbolTable>;
     // Private constructor to enforce singleton pattern
-    SymbolTable() {}
-
-    // Destructor to clean up resources
-    ~SymbolTable();
-
-    // Private copy constructor and assignment operator to prevent copying
-    SymbolTable(const SymbolTable&) = delete;
-    SymbolTable& operator=(const SymbolTable&) = delete;
-
-    std::unordered_map<std::string, Symbol*> symbols;
+    std::unordered_map<std::string, Symbol::ptr> symbols{{"integer",nullptr}};
 };

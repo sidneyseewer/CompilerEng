@@ -4,6 +4,7 @@
 #include "Symbols/Symbol.h"
 #include "Symbols/TypeSymbol.h"
 #include "Types/BaseType.h"
+#include "Types/Type.h"
 #include "Types/TypeKind.h"
 #include <cstddef>
 #include <memory>
@@ -12,10 +13,9 @@ class VarSymbol: public Symbol
 {
     size_t mOffset;
     public:
-    static VarSymbol::ptr create(std::string name){return std::make_shared<TypeSymbol>(name);}
-    VarSymbol(std::string name):Symbol(name){}
+    static VarSymbol::ptr create(std::string name,Type::ptr type){return std::make_shared<TypeSymbol>(name,type);}
+    VarSymbol(std::string name,Type::ptr t):Symbol(name,t){}
     size_t getOffset(){return mOffset;};
-    Type::ptr getType(){return std::make_shared<BaseType>(TypeKind::DOUBLE,12);};
 };
 
 #endif //!__VAR_SYMBOL_H_

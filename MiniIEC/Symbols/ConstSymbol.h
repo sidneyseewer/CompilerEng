@@ -12,7 +12,7 @@ class ConstSymbol: public Symbol
     int mValue;
     public:
     static ConstSymbol::ptr create(std::string name,Type::ptr type){return std::make_shared<ConstSymbol>(name,type);}
-    ConstSymbol(std::string name,Type::ptr t):mType(t),Symbol(name){}
+    ConstSymbol(std::string name,Type::ptr t):mType(t),Symbol(name,t){}
     virtual Type::ptr getType(){return mType;};
     int getValue();
 };

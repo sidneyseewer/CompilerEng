@@ -1,10 +1,12 @@
 
 SET(Name "MIECCompiler")
- 
+
+set(CMAKE_CXX_STANDARD 20)
 SET(srcDir MiniIEC)
 SET(Languagefile ${srcDir}/MIEC.atg) 
 file(GLOB SOURCES CONFIGURE_DEPENDS "MiniIEC/*.cpp")
 file(GLOB SOURCES2 CONFIGURE_DEPENDS "MiniIEC/*/*.cpp")
+# file(GLOB SOURCES2 CONFIGURE_DEPENDS "MiniIEC/*/*.h")
 SET(SOURCES ${SOURCES} ${SOURCES})
 message(STATUS,${SOURCES2})
 SET( cocoNamespace MIEC)

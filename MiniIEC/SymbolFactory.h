@@ -5,17 +5,18 @@
 #include "Types/BaseType.h"
 #include "Types/TypeKind.h"
 #include "lib/Singelton.h"
+#include <cstddef>
+#include <map>
 #include <string>
 #include <vector>
 
 class SymbolFactory:public Singelton<SymbolFactory>{
-    std::vector<BaseType::ptr> types{
-        BaseType::create(INT, 4),
-        BaseType::create(FLOAT, 4),
-        BaseType::create(DOUBLE, 8)
-        };
+    using container=std::map<TypeKind,BaseType::ptr>;
+    static container types;
+        static container::value_type create(TypeKind bt,size_t len){return {bt,BaseType::create(bt, len)};}
+    friend class Singelton<SymbolFactory>;
     public:
-    Symbol::ptr CreateVar(std::string name);
+    Symbol::ptr CreateVar(std::string name,TypeKind type);
     Symbol::ptr CreateConst(std::string name);
     Symbol::ptr CreateType(std::string name);
 };

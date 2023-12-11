@@ -13,6 +13,7 @@ template<typename ...Args> static T& GetInstance(Args... args){
     }
     return *mInstance;
 }
+static void Delete(){mInstance.reset();}
 protected:
 Singelton()=default;
 private:
@@ -20,4 +21,5 @@ private:
     Singelton& operator=(Singelton const&s)=delete;
     static std::unique_ptr<T> mInstance;
 };
+template <typename T> std::unique_ptr<T> Singelton<T>::mInstance{ nullptr };
 #endif //!__SINGELTON_H__

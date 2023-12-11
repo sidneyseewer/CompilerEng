@@ -1,6 +1,7 @@
 #include "SymbolTable.h"
+#include "Symbols/TypeSymbol.h"
+#include "Symbols/VarSymbol.h"
 #include "Types/BaseType.h"
-#include "Types/StringType.h"
 #include "Types/Type.h"
 #include "Types/TypeKind.h"
 #include "lib/Singelton.h"
@@ -84,7 +85,10 @@ symbols["as"];
 
   SymbolFactory &sf = SymbolFactory::GetInstance();
   SymbolTable &st = SymbolTable::GetInstance();
-
+  auto y=BaseType::create(INT, 4);
+  auto z{y};
+  TypeSymbol x{"name",z};
+  TypeSymbol::ptr xx=std::make_shared<TypeSymbol>("name",z);
 for(auto itr=input.cbegin();itr!=input.cend();itr++)
 {
 	auto name=itr->first;
@@ -98,7 +102,7 @@ for(auto itr=input.cbegin();itr!=input.cend();itr++)
 	case Var:
 	if(st.Find(name)==nullptr)
 	{
-		st.Add(sf.CreateVar(name,FLOAT));
+		st.Add(sf.CreateVar(name));
 	}
 	break;
 	case Const:
@@ -113,9 +117,14 @@ std::string s=std::format("{}",std::numeric_limits<float>::max()+2);
 
 for(auto itr=input.cbegin();itr!=input.cend();itr++)
 {
-  std::cout<<st.Find(itr->first)<<std::endl;
+  auto x=st.Find(itr->first).get();
+  VarSymbol* y=dynamic_cast<VarSymbol*>(x);
+  if(y!=nullptr)
+  {
+    std::cout<<y->getOffset()<<" ";
+  }
+  std::cout<<y<<std::endl;
 }
-	
   return 0;
 }
 

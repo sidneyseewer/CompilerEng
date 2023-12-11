@@ -13,8 +13,9 @@ class VarSymbol: public Symbol
 {
     size_t mOffset;
     public:
-    static VarSymbol::ptr create(std::string name,Type::ptr type){return std::make_shared<TypeSymbol>(name,type);}
-    VarSymbol(std::string name,Type::ptr t):Symbol(name,t){}
+  using ptr = std::shared_ptr<VarSymbol>;
+    static VarSymbol::ptr create(std::string name,Type::ptr type,size_t offset){return std::make_shared<VarSymbol>(name,type,offset);}
+    VarSymbol(std::string name,Type::ptr t,size_t offset):Symbol(name,t),mOffset(offset){}
     size_t getOffset(){return mOffset;};
 };
 

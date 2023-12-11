@@ -13,7 +13,7 @@ protected:
 
 public:
   using ptr = std::shared_ptr<Symbol>;
-  std::string GetName() const { return mNmae; };
-  Type::ptr getType() const { return mType; };
+  virtual std::string GetName() const { return mNmae; };
+  virtual Type::ptr getType() const { return mType; };
 };
 #endif

@@ -9,7 +9,7 @@ public:
 template<typename ...Args> static T& GetInstance(Args... args){
     if(mInstance==nullptr)
     {
-        mInstance=std::unique_ptr<T>{std::forward<args>(args)...};
+        mInstance=std::unique_ptr<T>{ new T(std::forward<Args>(args)...)};
     }
     return *mInstance;
 }

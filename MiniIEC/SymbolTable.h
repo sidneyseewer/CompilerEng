@@ -19,7 +19,8 @@ public:
 
     // Method to find a symbol in the table
     Symbol::ptr Find(const std::string& name);
-
+void insert(const std::string& identifier, Symbol::ptr dataType);
+bool lookup(const std::string& identifier, Symbol::ptr entry) const;
 
 private:
     friend class Singelton<SymbolTable>;

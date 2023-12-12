@@ -18,8 +18,11 @@ Symbol::ptr SymbolFactory::CreateConst(string name){
     return ConstSymbol::create(name, mTypeSymbol->getType());
 }
 Symbol::ptr SymbolFactory::CreateType(string name){
-    auto type=INT;
-    return TypeSymbol::create(name,mTypeSymbol->getType());
+    if(name!="integer")
+    {
+        throw "unknown type";
+    }
+    return mTypeSymbol;
 }
 Symbol::ptr SymbolFactory::CreateVar(string name){
     std::size_t offset=mOffset;

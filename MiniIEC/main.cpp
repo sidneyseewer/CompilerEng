@@ -1,4 +1,5 @@
 #include "SymbolTable.h"
+#include "Symbols/ConstSymbol.h"
 #include "Symbols/TypeSymbol.h"
 #include "Symbols/VarSymbol.h"
 #include "Types/BaseType.h"
@@ -24,14 +25,6 @@
 
 #include <format>
 
-class ParamFactory : public Singelton<ParamFactory> {
-public:
-void PrintThis() { std::cout << "this:" << this << std::endl; }
-private:
-friend class Singelton<ParamFactory> ; //necessary for SingletonBase to construct a ParamF
-ParamFactory(int const x) { std::cout << this << std::endl << x << std::endl; };
-ParamFactory(int const x, int const y) { std::cout << this << std::endl << x << "," << y << std::endl; };
-};
 
 int main(int argc, char *argv[]) {
   if (argc >= 5) {
@@ -59,71 +52,18 @@ int main(int argc, char *argv[]) {
   } else {
     printf("File could not be read \n");
   }
-  enum Ts{Type,Var,Const};
-  std::vector<std::pair<std::string,Ts >> input{
-    {"integer",Type},
-    {"x",Var},
-    {"y",Var},
-    {"z",Var},
-    {"4711",Const},
-    {"11.0",Const}
-  };
-// 	auto s1=sf.CreateType("integer");
-// 	auto s2=sf.CreateVar("x", TypeKind::INT);
-// 	auto s3=sf.CreateVar("y", TypeKind::INT);
-// 	auto s4=sf.CreateVar("z", TypeKind::INT);
-// 	auto s5=sf.CreateConst("4711");
-// 	auto s6=sf.CreateConst("11.0");
-
-
-std::unordered_map<std::string, int> symbols;
-
-symbols.contains("as");
-symbols["as"]=12;
-symbols.contains("as");
-symbols["as"];
-
-  SymbolFactory &sf = SymbolFactory::GetInstance();
-  SymbolTable &st = SymbolTable::GetInstance();
-  auto y=BaseType::create(INT, 4);
-  auto z{y};
-  TypeSymbol x{"name",z};
-  TypeSymbol::ptr xx=std::make_shared<TypeSymbol>("name",z);
-for(auto itr=input.cbegin();itr!=input.cend();itr++)
+  SymbolTable& st=SymbolTable::GetInstance();
+for(auto itr=st.cbegin();itr!=st.cend();itr++)
 {
-	auto name=itr->first;
-	switch (itr->second) {
-	case Type:
-	if(st.Find(name)==nullptr)
-	{
-		st.Add(sf.CreateType(name));
-	}
-	break;
-	case Var:
-	if(st.Find(name)==nullptr)
-	{
-		st.Add(sf.CreateVar(name));
-	}
-	break;
-	case Const:
-	if(st.Find(name)==nullptr)
-	{
-		st.Add(sf.CreateConst(name));
-	}
-	break;
-	}
-}
-std::string s=std::format("{}",std::numeric_limits<float>::max()+2);
-
-for(auto itr=input.cbegin();itr!=input.cend();itr++)
-{
-  auto x=st.Find(itr->first).get();
-  VarSymbol* y=dynamic_cast<VarSymbol*>(x);
-  if(y!=nullptr)
+  auto x=itr->second.get();
+  VarSymbol* v=dynamic_cast<VarSymbol*>(x);
+  TypeSymbol* t=dynamic_cast<TypeSymbol*>(x);
+  ConstSymbol* c=dynamic_cast<ConstSymbol*>(x);
+  if(v!=nullptr)
   {
-    std::cout<<y->getOffset()<<" ";
+    std::cout<<v->getOffset()<<" ";
   }
-  std::cout<<y<<std::endl;
+  std::cout<<x->GetName()<<std::endl;
 }
   return 0;
 }

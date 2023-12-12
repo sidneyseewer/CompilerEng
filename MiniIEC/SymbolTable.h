@@ -21,13 +21,15 @@ public:
     Symbol::ptr Find(const std::string& name);
 void insert(const std::string& identifier, Symbol::ptr dataType);
 bool lookup(const std::string& identifier, Symbol::ptr entry) const;
-
+    using container=std::unordered_map<std::string, Symbol::ptr>;
+    container::const_iterator cbegin()const{return symbols.cbegin();}
+    container::const_iterator cend()const{return symbols.cend();}
 private:
     friend class Singelton<SymbolTable>;
     // Private constructor to enforce singleton pattern
     int currentOffset; // Member to track current offset
 
-    std::unordered_map<std::string, Symbol::ptr> symbols;
+    container symbols;
 };
 
 #endif //!SYMBOLTABLE_H

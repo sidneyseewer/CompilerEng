@@ -18,7 +18,7 @@ Symbol::ptr SymbolFactory::CreateConst(string name){
     return ConstSymbol::create(name, mTypeSymbol->getType());
 }
 Symbol::ptr SymbolFactory::CreateType(string name){
-    if(name!="integer")
+    if(name!="Integer")
     {
         throw "unknown type";
     }

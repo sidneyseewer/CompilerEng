@@ -57,7 +57,7 @@ PRODUCTIONS
     | PRINT_STMNT
     | WHILE_STMNT
     | IF_WORD CONDITION THEN_WORD STMNT [ELSE_WORD STMNT] END_WORD.
-    VARDECL = BEGIN_VAR {IDENT (. SH::addVarSymbol(coco_string_create_char(t->val)); .) COLON TYPES SEMICOLON} END_VAR.
+    VARDECL = BEGIN_VAR {IDENT (. SH::addVarSymbol(coco_string_create_char(t->val)); std::wcout<<la->val;.) COLON TYPES (. SH::addTypeSymbol(coco_string_create_char(t->val)); .) SEMICOLON} END_VAR.
     MIEC = PROGRAM IDENT [VARDECL] BEGIN_WORD {STMNT} END_WORD.
 
 END MIEC .

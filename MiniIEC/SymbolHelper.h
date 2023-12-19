@@ -23,6 +23,14 @@ class SH {
     }
     return x;
   }
+  static Symbol::ptr addTypeSymbol(std::string name) {
+    auto x = SymbolTable::GetInstance().Find(name);
+    if (x == nullptr) {
+        x=SymbolFactory::GetInstance().CreateType(name);
+        SymbolTable::GetInstance().Add(x);
+    }
+    return x;
+  }
 };
 
 #endif //!__SYMBOL_HELPER_H__

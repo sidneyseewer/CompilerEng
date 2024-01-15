@@ -1,7 +1,9 @@
 #include "SymbolHelper.h"
 #include <iostream>
+#include "DacHelper.h"
 
 COMPILER MIEC
+
 	void Err(wchar_t* msg) {
 		errors->Error(la->line, la->col, msg);
 	}
@@ -46,17 +48,18 @@ IGNORE CR + LF + TAB
    
 PRODUCTIONS
 
-    FACT = IDENT | NUMBER (. SH::addConstSymbol(coco_string_create_char(t->val)); .) | LPAREN EXPR RPAREN.
-    TERM = FACT {(TIMES | DIVIDE) FACT}.
-    EXPR = TERM {(PLUS | MINUS) TERM}.
-    CONDITION = EXPR RELOP EXPR.
-    PRINT_STMNT = PRINT LPAREN EXPR RPAREN SEMICOLON.
-    ASSIGNMENT_STMNT = IDENT EQUALS EXPR SEMICOLON.
-    WHILE_STMNT = WHILE_WORD CONDITION DO_WORD STMNT END_WORD. 
-    STMNT = ASSIGNMENT_STMNT
+    FACT = IDENT  | NUMBER (. SH::addConstSymbol(coco_string_create_char(t->val)); .).
+    FACT2 = FACT (. dach::fac(t); .) | LPAREN (. dach::lpr(); .) EXPR RPAREN (. dach::rpr(); .).
+    TERM = FACT2 {(TIMES | DIVIDE) (. dach::fop(t); .) FACT2 } .
+    EXPR = TERM {(PLUS | MINUS) (. dach::top(t); .) TERM}.
+    CONDITION = EXPR RELOP (. dach::rop(t); .) EXPR.
+    PRINT_STMNT = PRINT(. dach::prt();.) LPAREN EXPR RPAREN SEMICOLON (. dach::sem(t); .) .
+    ASSIGNMENT_STMNT = IDENT (. dach::ass(t); .) EQUALS EXPR SEMICOLON (. dach::sem(t); .) .
+    WHILE_STMNT = WHILE_WORD (. dach::wle();.) CONDITION DO_WORD (. dach::doo();.) STMNT END_WORD (. dach::wend();.). 
+    STMNT = ASSIGNMENT_STMNT 
     | PRINT_STMNT
-    | WHILE_STMNT
-    | IF_WORD CONDITION THEN_WORD STMNT [ELSE_WORD STMNT] END_WORD.
+    | WHILE_STMNT 
+    | IF_WORD (. dach::iff(); .) CONDITION THEN_WORD (. dach::thn(); .) STMNT [ELSE_WORD (. dach::els(); .) STMNT] END_WORD (. dach::ifend(); .).
     VARDECL = BEGIN_VAR {IDENT (. SH::addVarSymbol(coco_string_create_char(t->val)); std::wcout<<la->val;.) COLON TYPES (. SH::addTypeSymbol(coco_string_create_char(t->val)); .) SEMICOLON} END_VAR.
     MIEC = PROGRAM IDENT [VARDECL] BEGIN_WORD {STMNT} END_WORD.
 

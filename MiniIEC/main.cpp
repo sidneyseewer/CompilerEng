@@ -55,20 +55,6 @@ int main(int argc, char *argv[]) {
 
   //Dumbpsybol Table
   SymbolTable& st=SymbolTable::GetInstance();
-<<<<<<< HEAD
-for(auto itr=st.cbegin();itr!=st.cend();itr++)
-{
-  auto x=itr->second.get();
-  VarSymbol* v=dynamic_cast<VarSymbol*>(x);
-  TypeSymbol* t=dynamic_cast<TypeSymbol*>(x);
-  ConstSymbol* c=dynamic_cast<ConstSymbol*>(x);
-  //if(v!=nullptr)
-  //{
-  //  std::cout<<v->getOffset()<<" ";
-  //}
-  //std::cout<<x->GetName()<<std::endl;
-}
-=======
 // for(auto itr=st.cbegin();itr!=st.cend();itr++)
 // {
 //   auto x=itr->second.get();
@@ -89,7 +75,6 @@ for(auto itr=st.cbegin();itr!=st.cend();itr++)
 //   }
 //   std::cout<<x->GetName()<<std::endl;
 // }
->>>>>>> 3363102dd7867b7ba833575b538641a5029ac571
   return 0;
 }
 

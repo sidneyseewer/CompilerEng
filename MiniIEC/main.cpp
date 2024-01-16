@@ -36,18 +36,23 @@ int main(int argc, char *argv[]) {
     MIEC::Parser *parser = new MIEC::Parser(scanner);
     //		parser->tab = new MIEC::SymbolTable(parser);
     //		parser->gen = new MIEC::CodeGenerator();
+    try{
     parser->Parse();
     if (parser->errors->count == 0) {
       printf("No errors detected!");
     } else {
       printf("%d errors detected", parser->errors->count);
     }
-
+    }catch(char const * e)
+    {
+std::cerr<<e;
+    }
     coco_string_delete(inputFile);
     //		delete parser->gen;
     //		delete parser->tab;
     delete parser;
     delete scanner;
+    
 
   } else {
     printf("File could not be read \n");

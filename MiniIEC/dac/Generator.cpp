@@ -25,7 +25,7 @@ void Generator::add(OpKind kind, size_t index) {
   if (index < code.size()) {
     add(Entry::create(kind, DacOperand::createJump(code[index])));
   } else {
-    throw "";
+    throw "AKEsoe";
     // TODO
   }
 }
@@ -51,7 +51,7 @@ void Generator::add(Operand::ptr op) {
 }
 void Generator::pushPr() {
   auto tmp = dac::Entry::create(OpKind::Exit);
-  statementContext.emplace_back(tmp, tmp, tmp);
+  statementContext.emplace_back(tmp, tmp, tmp,tmp);
 }
 void Generator::popPr() {
   auto tmp = statementContext.back();

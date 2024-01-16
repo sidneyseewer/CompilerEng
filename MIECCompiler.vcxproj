@@ -53,6 +53,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -80,6 +81,7 @@
     <ClCompile Include="MiniIEC\main.cpp" />
     <ClCompile Include="MiniIEC\Parser.cpp" />
     <ClCompile Include="MiniIEC\Scanner.cpp" />
+    <ClCompile Include="MiniIEC\SymbolFactory.cpp" />
     <ClCompile Include="MiniIEC\SymbolTable.cpp" />
     <ClCompile Include="MiniIEC\TestSymbolTable.cpp" />
   </ItemGroup>
@@ -93,6 +95,7 @@
   <ItemGroup>
     <ClInclude Include="MiniIEC\Parser.h" />
     <ClInclude Include="MiniIEC\Scanner.h" />
+    <ClInclude Include="MiniIEC\SymbolHelper.h" />
     <ClInclude Include="MiniIEC\Symbols\ConstSymbol.h" />
     <ClInclude Include="MiniIEC\Symbols\Symbol.h" />
     <ClInclude Include="MiniIEC\Symbols\TypeSymbol.h" />
@@ -107,9 +110,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="CopyCompiler.bat" />
     <None Include="TestInput\fail_unkownItem.miec" />
     <None Include="TestInput\input1.miec" />
     <None Include="runTestfiles.bat" />
+    <None Include="TestInput\multiplication.miec" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="README.txt" />

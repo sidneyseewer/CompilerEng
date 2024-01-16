@@ -30,6 +30,9 @@
     <ClCompile Include="MiniIEC\TestSymbolTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MiniIEC\SymbolFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MiniIEC\Parser.h">
@@ -71,6 +74,9 @@
     <ClInclude Include="MiniIEC\Types\TypeKind.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MiniIEC\SymbolHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MiniIEC\MIEC.atg">
@@ -82,6 +88,10 @@
     <None Include=".gitignore" />
     <None Include="TestInput\fail_unkownItem.miec" />
     <None Include="runTestfiles.bat" />
+    <None Include="TestInput\multiplication.miec" />
+    <None Include="CopyCompiler.bat">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="README.txt" />

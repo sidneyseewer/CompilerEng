@@ -59,11 +59,11 @@ for(auto itr=st.cbegin();itr!=st.cend();itr++)
   VarSymbol* v=dynamic_cast<VarSymbol*>(x);
   TypeSymbol* t=dynamic_cast<TypeSymbol*>(x);
   ConstSymbol* c=dynamic_cast<ConstSymbol*>(x);
-  if(v!=nullptr)
-  {
-    std::cout<<v->getOffset()<<" ";
-  }
-  std::cout<<x->GetName()<<std::endl;
+  //if(v!=nullptr)
+  //{
+  //  std::cout<<v->getOffset()<<" ";
+  //}
+  //std::cout<<x->GetName()<<std::endl;
 }
   return 0;
 }

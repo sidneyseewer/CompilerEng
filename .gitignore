@@ -6,3 +6,8 @@
 Debug/
 *.old
 MIECCompiler/
+Compiler/Compiler/*.exe
+Release/
+*.zip
+Testbench
+*.vcxproj*

@@ -1,0 +1,13 @@
+PROGRAM Hello
+	BEGIN_VAR
+		a: Integer;
+		b: Integer;
+	END_VAR
+BEGIN
+	b := 3 * 5 + 4 + 4 - 5 * 3 + 100 / 10 * 6+1 * 100;
+END
+(*
+	3 * 5 + 4 + 4 - 5 * 3 + 100 / 10 * 6 + 1 * 100;
+      15  + 4 + 4 -   15  + 60    + 100
+      168
+*)

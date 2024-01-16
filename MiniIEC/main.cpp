@@ -52,7 +52,10 @@ int main(int argc, char *argv[]) {
   } else {
     printf("File could not be read \n");
   }
+
+  //Dumbpsybol Table
   SymbolTable& st=SymbolTable::GetInstance();
+<<<<<<< HEAD
 for(auto itr=st.cbegin();itr!=st.cend();itr++)
 {
   auto x=itr->second.get();
@@ -65,6 +68,28 @@ for(auto itr=st.cbegin();itr!=st.cend();itr++)
   //}
   //std::cout<<x->GetName()<<std::endl;
 }
+=======
+// for(auto itr=st.cbegin();itr!=st.cend();itr++)
+// {
+//   auto x=itr->second.get();
+//   VarSymbol* v=dynamic_cast<VarSymbol*>(x);
+//   TypeSymbol* t=dynamic_cast<TypeSymbol*>(x);
+//   ConstSymbol* c=dynamic_cast<ConstSymbol*>(x);
+//   if(v!=nullptr)
+//   {
+//     std::cout<<"v "<<v->getOffset()<<" ";
+//   }
+//   if(t!=nullptr)
+//   {
+//     std::cout<<"t ";
+//   }
+//   if(c!=nullptr)
+//   {
+//     std::cout<<"c ";
+//   }
+//   std::cout<<x->GetName()<<std::endl;
+// }
+>>>>>>> 3363102dd7867b7ba833575b538641a5029ac571
   return 0;
 }
 

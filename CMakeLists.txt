@@ -7,7 +7,7 @@ SET(Languagefile ${srcDir}/MIEC.atg)
 file(GLOB SOURCES CONFIGURE_DEPENDS "MiniIEC/*.cpp")
 file(GLOB SOURCES2 CONFIGURE_DEPENDS "MiniIEC/*/*.cpp")
 # file(GLOB SOURCES2 CONFIGURE_DEPENDS "MiniIEC/*/*.h")
-SET(SOURCES ${SOURCES} ${SOURCES})
+SET(SOURCES ${SOURCES} ${SOURCES2})
 message(STATUS,${SOURCES2})
 SET( cocoNamespace MIEC)
 
@@ -16,7 +16,7 @@ ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${srcDir}/Parser.h ${CMAK
                     #COMMAND set( Sources ${Sources} Parser.cpp Scanner.cpp PARENT_SCOPE)
                     DEPENDS  ${Languagefile} 
                     COMMENT "Generating source code from XML" )
-MESSAGE( ${CMAKE_CURRENT_SOURCE_DIR})
+MESSAGE( ${SOURCES})
 
 #ADD_CUSTOM_TARGET(RunGenerator DEPENDS generatedfile1 generatedfile2
 #	COMMENT "Check for generation")

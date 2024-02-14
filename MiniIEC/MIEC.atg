@@ -4,9 +4,6 @@
 
 COMPILER MIEC
 
-	void Err(wchar_t* msg) {
-		errors->Error(la->line, la->col, msg);
-	}
   
 CHARACTERS
     LETTER = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".
@@ -20,7 +17,7 @@ TOKENS
     RPAREN = ")".
     SEMICOLON = ";".
     COLON = ":".
-    EQUALS = ":=".
+    ASSIGN = ":=".
     PLUS = "+".
     MINUS = "-".
     TIMES = "*".
@@ -54,7 +51,7 @@ PRODUCTIONS
     EXPR = TERM {(PLUS | MINUS) (. dach::top(t); .) TERM}.
     CONDITION = EXPR RELOP (. dach::rop(t); .) EXPR.
     PRINT_STMNT = PRINT(. dach::prt();.) LPAREN EXPR RPAREN SEMICOLON (. dach::sem(t); .) .
-    ASSIGNMENT_STMNT = IDENT (. dach::ass(t); .) EQUALS EXPR SEMICOLON (. dach::sem(t); .) .
+    ASSIGNMENT_STMNT = IDENT (. dach::ass(t); .) ASSIGN EXPR SEMICOLON (. dach::sem(t); .) .
     WHILE_STMNT = WHILE_WORD (. dach::wle();.) CONDITION DO_WORD (. dach::doo();.) STMNT END_WORD (. dach::wend();.). 
     STMNT = ASSIGNMENT_STMNT 
     | PRINT_STMNT

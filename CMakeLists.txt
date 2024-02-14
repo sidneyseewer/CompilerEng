@@ -12,7 +12,7 @@ message(STATUS,${SOURCES2})
 SET( cocoNamespace MIEC)
 
 ADD_CUSTOM_COMMAND( OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${srcDir}/Parser.h ${CMAKE_CURRENT_SOURCE_DIR}/${srcDir}/Parser.cpp ${CMAKE_CURRENT_SOURCE_DIR}/${srcDir}/Scanner.h ${CMAKE_CURRENT_SOURCE_DIR}/${srcDir}/Scanner.cpp
-                    COMMAND cococpp -frames ${CMAKE_CURRENT_SOURCE_DIR}/CocoLinux ${CMAKE_CURRENT_SOURCE_DIR}/${Languagefile} -o ${CMAKE_CURRENT_SOURCE_DIR}/${srcDir} -namespace ${cocoNamespace}
+                    COMMAND cococpp -frames ${CMAKE_CURRENT_SOURCE_DIR}/Coco ${CMAKE_CURRENT_SOURCE_DIR}/${Languagefile} -o ${CMAKE_CURRENT_SOURCE_DIR}/${srcDir} -namespace ${cocoNamespace}
                     #COMMAND set( Sources ${Sources} Parser.cpp Scanner.cpp PARENT_SCOPE)
                     DEPENDS  ${Languagefile} 
                     COMMENT "Generating source code from XML" )

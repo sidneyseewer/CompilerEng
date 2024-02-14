@@ -37,11 +37,11 @@ class dach {
     //   std::cout << std::format("{}({}) ", f, tis.func.back().x);
     // }
     
-    std::wcout << s << " ";
-    if (t != nullptr)
-      std::wcout << t->val;
+    // std::wcout << s << " ";
+    // if (t != nullptr)
+    //   std::wcout << t->val;
 
-    std::cout << std::endl;
+    // std::cout << std::endl;
   }
 
   static void print(dac::Entry::ptr e)

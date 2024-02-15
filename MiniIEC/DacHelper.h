@@ -111,19 +111,20 @@ static dac::Generator&& getGen(){
     gen.addt(kind);
     prt(t, L"top"); }
   static void end() {
-    
+    gen.add(dac::OpKind::Exit);
+    gen.endStmt();
     prt(NULL, L"end");
   }static void wend() {
     gen.add(dac::OpKind::Jump,gen.ContextGetIndex());
     gen.ContextRef();
     gen.popContext();
     gen.endStmt();
-    prt(NULL, L"end");
+    prt(NULL, L"wend");
   }static void ifend() {
     gen.ContextRef();
     gen.popContext();
     gen.endStmt();
-    prt(NULL, L"end");
+    prt(NULL, L"iend");
   }
   static void wle() {
     gen.pushContext();

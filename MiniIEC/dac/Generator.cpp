@@ -13,8 +13,11 @@ using namespace dac;
 
 void Generator::add(Entry::ptr tmp) {
   auto root = statementContext.back().root;
-  tmp->setSecond(root->getFirst());
-  root->setFirst(DacOperand::createResult(tmp));
+  if(tmp->getFirst()==nullptr)
+    tmp->setFirst(root->getSecond());
+  else
+    tmp->setSecond(root->getSecond());
+  root->setSecond(DacOperand::createResult(tmp));
   statementContext.back().A = tmp;
   statementContext.back().B = tmp;
   statementContext.back().C = tmp;
@@ -69,7 +72,11 @@ void Generator::popPr() {
   statementContext.pop_back();
   statementContext.back().A->setSecond(tmp.root->getSecond());
 }
-void Generator::pushContext() { flowContext.push_back({}); }
+void Generator::pushContext() { 
+  FlowContext tmp;
+  // flowContext.emplace_back(nullptr,0);
+  flowContext.push_back(tmp);
+   }
 void Generator::popContext() { flowContext.pop_back(); }
 void Generator::ContextSetIndex() { flowContext.back().index = code.size(); }
 size_t Generator::ContextGetIndex() { return flowContext.back().index; }
@@ -85,11 +92,11 @@ void treeToVec(std::vector<Entry::ptr> &&v, Entry::ptr const &e) {
   v.push_back(e);
   if (e != nullptr) {
     ref = dynamic_cast<DacOperand *>(e->getFirst().get());
-    if (ref != nullptr) {
+    if (ref != nullptr&&ref->isResult()) {
       treeToVec(std::move(v), ref->get());
     }
     ref = dynamic_cast<DacOperand *>(e->getSecond().get());
-    if (ref != nullptr) {
+    if (ref != nullptr&&ref->isResult()) {
       treeToVec(std::move(v), ref->get());
     }
   }
@@ -97,7 +104,7 @@ void treeToVec(std::vector<Entry::ptr> &&v, Entry::ptr const &e) {
 void Generator::endStmt() {
   std::vector<Entry::ptr> stmcode;
   auto node = statementContext.back().root;
-  auto ref = dynamic_cast<DacOperand *>(node->getFirst().get());
+  auto ref = dynamic_cast<DacOperand *>(node->getSecond().get());
   if(ref!=nullptr)
     treeToVec(std::move(stmcode),ref->get());
   std::reverse_copy(stmcode.cbegin(), stmcode.cend(), std::back_inserter(code));

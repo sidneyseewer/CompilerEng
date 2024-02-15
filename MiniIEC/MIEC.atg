@@ -58,6 +58,6 @@ PRODUCTIONS
     | WHILE_STMNT 
     | IF_WORD (. dach::iff(); .) CONDITION THEN_WORD (. dach::thn(); .) STMNT [ELSE_WORD (. dach::els(); .) STMNT] END_WORD (. dach::ifend(); .).
     VARDECL = BEGIN_VAR {IDENT (. SH::addVarSymbol(coco_string_create_char(t->val)); std::wcout<<la->val;.) COLON TYPES SEMICOLON} END_VAR.
-    MIEC = PROGRAM IDENT [VARDECL] BEGIN_WORD {STMNT} END_WORD.
+    MIEC = PROGRAM IDENT [VARDECL] BEGIN_WORD {STMNT} END_WORD (. dach::end(); .).
 
 END MIEC .

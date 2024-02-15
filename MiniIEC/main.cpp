@@ -1,18 +1,26 @@
+#include "CodeGen/CodeGenRISCV.h"
 #include "SymbolTable.h"
 #include "Symbols/ConstSymbol.h"
+#include "Symbols/Symbol.h"
 #include "Symbols/TypeSymbol.h"
 #include "Symbols/VarSymbol.h"
 #include "Types/BaseType.h"
 #include "Types/Type.h"
 #include "Types/TypeKind.h"
+#include "dac/OpKind.h"
+#include "dac/Operands/DacOperand.h"
+#include "dac/Operands/Operand.h"
 #include "lib/Singelton.h"
 #include "stdio.h"
 
 #include "SymbolTable.h"
 
+#include "DacHelper.h"
 #include "Parser.h"
 #include "Scanner.h"
 #include "SymbolFactory.h"
+#include <cstddef>
+#include <iostream>
 #include <limits>
 #include <memory>
 #include <ostream>
@@ -21,10 +29,27 @@
 #include <utility>
 #include <vector>
 #include <wchar.h>
-#include <iostream>
 
 #include <format>
 
+#include "dac/Operands/DacOperand.h"
+#include "dac/Operands/SymbolOperand.h"
+std::string toString(dac::Operand::ptr p) {
+  auto sop = dynamic_cast<dac::SymbolOperand *>(p.get());
+  auto dop = dynamic_cast<dac::DacOperand *>(p.get());
+  if (sop != nullptr) {
+    return sop->getSymbol()->GetName();
+  }
+  if (dop != nullptr) {
+    std::string s = "";
+    if (dop->isJump())
+      s += "j";
+    if (dop->isResult())
+      s += "r";
+    return std::format(" *{1}", s, dop->get()->getPosition());
+  }
+  return "";
+}
 
 int main(int argc, char *argv[]) {
   if (argc >= 5) {
@@ -36,50 +61,102 @@ int main(int argc, char *argv[]) {
     MIEC::Parser *parser = new MIEC::Parser(scanner);
     //		parser->tab = new MIEC::SymbolTable(parser);
     //		parser->gen = new MIEC::CodeGenerator();
-    try{
-    parser->Parse();
-    if (parser->errors->count == 0) {
-      printf("No errors detected!");
-    } else {
-      printf("%d errors detected", parser->errors->count);
-    }
-    }catch(char const * e)
-    {
-std::cerr<<e;
+    try {
+      parser->Parse();
+      if (parser->errors->count == 0) {
+        printf("No errors detected!");
+      } else {
+        printf("%d errors detected", parser->errors->count);
+      }
+    } catch (char const *e) {
+      std::cerr << e;
     }
     coco_string_delete(inputFile);
     //		delete parser->gen;
     //		delete parser->tab;
     delete parser;
     delete scanner;
-    
 
   } else {
     printf("File could not be read \n");
   }
 
-  //Dumbpsybol Table
-  SymbolTable& st=SymbolTable::GetInstance();
-// for(auto itr=st.cbegin();itr!=st.cend();itr++)
-// {
-//   auto x=itr->second.get();
-//   VarSymbol* v=dynamic_cast<VarSymbol*>(x);
-//   TypeSymbol* t=dynamic_cast<TypeSymbol*>(x);
-//   ConstSymbol* c=dynamic_cast<ConstSymbol*>(x);
-//   if(v!=nullptr)
-//   {
-//     std::cout<<"v "<<v->getOffset()<<" ";
-//   }
-//   if(t!=nullptr)
-//   {
-//     std::cout<<"t ";
-//   }
-//   if(c!=nullptr)
-//   {
-//     std::cout<<"c ";
-//   }
-//   std::cout<<x->GetName()<<std::endl;
-// }
+  std::cout << std::endl;
+  // Dumbpsybol Table
+  SymbolTable &st = SymbolTable::GetInstance();
+  auto g = dach::getGen();
+  g.updateIndex();
+
+  // calculate next usage
+  std::map<Symbol::ptr, size_t> lu;
+  for (int i = g.size() - 1; i >= 0; i--) {
+    auto e = (g.begin() + i);
+    if (e->get()->getKind() == dac::Assign) {
+
+      auto sop = dynamic_cast<dac::SymbolOperand *>(e->get()->getFirst().get());
+      if (sop != nullptr) {
+        lu[sop->getSymbol()] = 0;
+      }
+    } else {
+      auto pf = e->get()->getFirst();
+      if (pf != nullptr) {
+        auto f = dynamic_cast<dac::SymbolOperand *>(pf.get());
+        if (f != nullptr) {
+          lu[f->getSymbol()] = i;
+        }
+      }
+      auto ps = e->get()->getSecond();
+      if (ps != nullptr) {
+        auto s = dynamic_cast<dac::SymbolOperand *>(ps.get());
+        if (s != nullptr) {
+          lu[s->getSymbol()] = i;
+        }
+      }
+    }
+    for (auto s : lu) {
+      e->get()->addnextUsed(s.first, s.second);
+    }
+  }
+
+  std::cout << std::format("{:6}: ",' ' );
+  for (auto s : st) {
+    std::cout << std::format("{: >6} ",s.first );
+  }
+  std::cout << std::endl;
+  for (size_t i = 0; i < g.size(); i++) {
+    auto e = *(g.begin() + i);
+    std::cout << std::format("{:6}: ", i);
+    for (auto s : st) {
+      if (e->hasNextUse(s.second))
+        std::cout <<std::format("{:6} ", e->getNextUse(s.second));
+      else
+        std::cout << std::format("{: >6} ",'-');
+    }
+    std::cout << dac::OpKindToString(e.get()->getKind());
+    std::cout << " " << toString(e->getFirst()) << " "
+              << toString(e->getSecond()) << std::endl;
+    MIEC::CodeGenRISCV gen{true, true};
+  }
+  // for(auto itr=st.cbegin();itr!=st.cend();itr++)
+  // {
+  //   auto x=itr->second.get();
+  //   VarSymbol* v=dynamic_cast<VarSymbol*>(x);
+  //   TypeSymbol* t=dynamic_cast<TypeSymbol*>(x);
+  //   ConstSymbol* c=dynamic_cast<ConstSymbol*>(x);
+  //   if(v!=nullptr)
+  //   {
+  //     std::cout<<"v "<<v->getOffset()<<" ";
+  //   }
+  //   if(t!=nullptr)
+  //   {
+  //     std::cout<<"t ";
+  //   }
+  //   if(c!=nullptr)
+  //   {
+  //     std::cout<<"c ";
+  //   }
+  //   std::cout<<x->GetName()<<std::endl;
+  // }
   return 0;
 }
 
@@ -99,22 +176,23 @@ std::cerr<<e;
 // 				// Extract input file information
 // 				inputFileName = wargv[i + 1];
 // 				printf("Input file: %ls\n", inputFileName);
-// 				//std::wcout << L"Input file: " << inputFileName <<
-// std::endl;
+// 				//std::wcout << L"Input file: " << inputFileName
+// << std::endl;
 // 			}
 // 			if (wcscmp(wargv[i], L"-out") == 0 && i + 1 < argc) {
 // 				// Extract output file information
 // 				outputFileName = wargv[i + 1];
 // 				printf("Output file: %ls\n", outputFileName);
-// 				//std::wcout << L"Output file: " << outputFileName <<
-// std::endl;
+// 				//std::wcout << L"Output file: " <<
+// outputFileName
+// << std::endl;
 // 			}
 // 		}
 // 		printf("Input file: %ls\n", inputFileName);
 // 		printf("Output file: %ls\n", outputFileName);
 // 		MIEC::Scanner* scanner = new
-// MIEC::Scanner((wchar_t*)inputFileName); 		MIEC::Parser* parser = new
-// MIEC::Parser(scanner);
+// MIEC::Scanner((wchar_t*)inputFileName); 		MIEC::Parser* parser =
+// new MIEC::Parser(scanner);
 // 		//		parser->tab = new MIEC::SymbolTable(parser);
 // 		//		parser->gen = new MIEC::CodeGenerator();
 // 		parser->Parse();

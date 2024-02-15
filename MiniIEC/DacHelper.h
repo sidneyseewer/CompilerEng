@@ -37,11 +37,11 @@ class dach {
     //   std::cout << std::format("{}({}) ", f, tis.func.back().x);
     // }
     
-    // std::wcout << s << " ";
-    // if (t != nullptr)
-    //   std::wcout << t->val;
+    std::wcout << s << " ";
+    if (t != nullptr)
+      std::wcout << t->val;
 
-    // std::cout << std::endl;
+    std::cout << std::endl;
   }
 
   static void print(dac::Entry::ptr e)
@@ -62,6 +62,9 @@ class dach {
   static dac::Generator gen;
 
 public:
+static dac::Generator&& getGen(){
+  return std::move(gen);
+}
   static void ass(MIEC::Token *t) {
     auto tmp = SymbolTable::GetInstance().Find(coco_string_create_char(t->val));
     gen.add(dac::OpKind::Assign,dac::SymbolOperand::create(tmp));
@@ -181,7 +184,7 @@ public:
       throw "unsupported rop";
     //TODO: throw
     }
-    gen.add(dac::OpKind::IsNotEq);
+    gen.add(kind);
     prt(t, L"rop"); }
   // static
 };

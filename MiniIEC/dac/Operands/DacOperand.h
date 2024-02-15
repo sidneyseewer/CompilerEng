@@ -17,6 +17,8 @@ public:
 Entry::ptr getResult(){return mResult;}
 Entry::ptr getJump(){return mJump;}
 Entry::ptr get(){return mResult==nullptr?mJump:mResult;}
+bool isResult(){return mResult!=nullptr;}
+bool isJump(){return mJump!=nullptr;}
     enum Type{Result,Jump};
     DacOperand(Entry::ptr entr,Type tmp):mJump(nullptr),mResult(nullptr){
         switch (tmp) {

@@ -1,5 +1,6 @@
 #include "Generator.h"
 #include "dac/Entry.h"
+#include "dac/OpKind.h"
 #include "dac/Operands/DacOperand.h"
 #include "dac/Operands/Operand.h"
 #include "iostream"
@@ -12,7 +13,7 @@ using namespace dac;
 
 void Generator::add(Entry::ptr tmp) {
   auto root = statementContext.back().root;
-  tmp->setFirst(root->getFirst());
+  tmp->setSecond(root->getFirst());
   root->setFirst(DacOperand::createResult(tmp));
   statementContext.back().A = tmp;
   statementContext.back().B = tmp;
@@ -33,8 +34,13 @@ void Generator::add(OpKind kind) { add(dac::Entry::create(kind)); }
 void Generator::addt(OpKind kind) {
   auto tmp = dac::Entry::create(kind);
   auto parent = statementContext.back().C;
-  tmp->setFirst(parent->getFirst());
-  parent->setFirst(DacOperand::createResult(tmp));
+  if (parent->getKind() == OpKind::Exit) {
+    tmp->setFirst(parent->getSecond());
+    parent->setSecond(DacOperand::createResult(tmp));
+  } else {
+    tmp->setFirst(parent->getSecond());
+    parent->setSecond(DacOperand::createResult(tmp));
+  }
   statementContext.back().A = tmp;
   statementContext.back().B = tmp;
 }
@@ -42,8 +48,13 @@ void Generator::addf(OpKind kind) {
 
   auto tmp = dac::Entry::create(kind);
   auto parent = statementContext.back().B;
-  tmp->setFirst(parent->getFirst());
-  parent->setFirst(DacOperand::createResult(tmp));
+  if (parent->getKind() == OpKind::Exit) {
+    tmp->setFirst(parent->getSecond());
+    parent->setSecond(DacOperand::createResult(tmp));
+  } else {
+    tmp->setFirst(parent->getSecond());
+    parent->setSecond(DacOperand::createResult(tmp));
+  }
   statementContext.back().A = tmp;
 }
 void Generator::add(Operand::ptr op) {
@@ -51,7 +62,7 @@ void Generator::add(Operand::ptr op) {
 }
 void Generator::pushPr() {
   auto tmp = dac::Entry::create(OpKind::Exit);
-  statementContext.emplace_back(tmp, tmp, tmp,tmp);
+  statementContext.emplace_back(tmp, tmp, tmp, tmp);
 }
 void Generator::popPr() {
   auto tmp = statementContext.back();
@@ -69,45 +80,37 @@ void Generator::ContextRef() {
   jumpRefs.emplace_back(flowContext.back().ref, code.size());
 }
 
-Entry::ptr help(Entry::ptr e, bool b) {
+void treeToVec(std::vector<Entry::ptr> &&v, Entry::ptr const &e) {
   DacOperand *ref;
-
+  v.push_back(e);
   if (e != nullptr) {
-    Operand::ptr x;
-    if (b) {
-      x=e->getFirst();
-    } else {
-      x=e->getSecond();
+    ref = dynamic_cast<DacOperand *>(e->getFirst().get());
+    if (ref != nullptr) {
+      treeToVec(std::move(v), ref->get());
     }
-    Operand* y=x.get();
-    ref = dynamic_cast<DacOperand *>(y);
+    ref = dynamic_cast<DacOperand *>(e->getSecond().get());
+    if (ref != nullptr) {
+      treeToVec(std::move(v), ref->get());
+    }
   }
-  if (ref != nullptr) {
-    return ref->get();
-  }
-  return nullptr;
 }
 void Generator::endStmt() {
   std::vector<Entry::ptr> stmcode;
   auto node = statementContext.back().root;
-  std::vector<Entry::ptr> stack{};
-  do {
-    if(node!=nullptr)
-    {
-    do {
-      stack.push_back(node);
-      node = help(node, true);
-    } while (node != nullptr);
-    }
-    auto tmp = stack.back();
-    stack.pop_back();
-    // std::cout << tmp->getKind() << std::endl;
-    stmcode.push_back(tmp);
-    node = help(tmp, false);
-  } while (node == nullptr && stack.size() != 0);
-  std::reverse_copy(stmcode.cbegin(),stmcode.cend(),std::back_inserter(code));
+  auto ref = dynamic_cast<DacOperand *>(node->getFirst().get());
+  if(ref!=nullptr)
+    treeToVec(std::move(stmcode),ref->get());
+  std::reverse_copy(stmcode.cbegin(), stmcode.cend(), std::back_inserter(code));
+  statementContext.clear();
+  pushPr();
 }
 
+void Generator::updateIndex(){
+  for(size_t i=0;i<code.size();i++)
+  {
+    code[i]->setPosition(i);
+  }
+}
 // void Generator::Print(std::ostream ostream) {
 //   if (ostream.good()) {
 //     for (auto itr = mEntries.cbegin(); itr != mEntries.cend(); itr++) {

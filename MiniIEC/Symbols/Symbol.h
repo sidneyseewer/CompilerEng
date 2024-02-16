@@ -3,6 +3,7 @@
 #include "../Types/Type.h"
 #include <memory>
 #include <string>
+#include "../lib/concepts.h"
 class Symbol {
 private:
   std::string mNmae;
@@ -16,4 +17,9 @@ public:
   virtual std::string GetName() const { return mNmae; };
   virtual Type::ptr getType() const { return mType; };
 };
+template <Derived<Symbol> F>
+F* extract(std::shared_ptr<Symbol>o){
+    if(o!=nullptr) return dynamic_cast<F*>(o.get());return nullptr;
+}
+
 #endif

@@ -24,11 +24,13 @@ END
 	t5=3*5
 	t6=t4+t5
 	a=t6
-W1:	iffalse b<a goto I1/We1
+	less b a
+W1:	iffalse goto I1/We1
 	t7=b+1
 	b=t7
 	goto W1
-I1:	iffalse a<b goto e1
+	less a b
+I1:	iffalse goto e1
 	print(a)
 	goto ei
 e1:	print(b)

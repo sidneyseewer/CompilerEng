@@ -24,6 +24,8 @@ bool lookup(const std::string& identifier, Symbol::ptr entry) const;
     using container=std::unordered_map<std::string, Symbol::ptr>;
     container::const_iterator cbegin()const{return symbols.cbegin();}
     container::const_iterator cend()const{return symbols.cend();}
+    auto begin()const{return symbols.begin();}
+    auto end()const{return symbols.end();}
 private:
     friend class Singelton<SymbolTable>;
     // Private constructor to enforce singleton pattern

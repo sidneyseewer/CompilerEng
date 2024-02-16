@@ -20,7 +20,8 @@ Symbol::ptr SymbolFactory::CreateConst(string name){
 Symbol::ptr SymbolFactory::CreateType(string name){
     if(name!="Integer")
     {
-        throw "unknown type";
+        // throw "unknown type";
+        //TODO:  error message "-- line 4 col 8: "Integer" expected"
     }
     return mTypeSymbol;
 }

@@ -9,6 +9,7 @@
 #include "dac/Operands/Operand.h"
 #include "dac/Operands/SymbolOperand.h"
 #include <cstddef>
+#include <cwchar>
 #include <format>
 #include <iostream>
 #include <memory>
@@ -36,11 +37,11 @@ class dach {
     //   std::cout << std::format("{}({}) ", f, tis.func.back().x);
     // }
     
-    // std::wcout << s << " ";
-    // if (t != nullptr)
-    //   std::wcout << t->val;
+    std::wcout << s << " ";
+    if (t != nullptr)
+      std::wcout << t->val;
 
-    // std::cout << std::endl;
+    std::cout << std::endl;
   }
 
   static void print(dac::Entry::ptr e)
@@ -57,17 +58,13 @@ class dach {
   static void print (dac::Operand::ptr e){
     
   }
-//   dac::Entry::ptr root(){
-//     return rootStack.back();
-//   }
-//   dac::Entry::ptr current(){
-//     return  currents.back();
-//   }
-//   void root(dac::Entry::ptr e){rootStack.push_back(e);}
-//   void current(dac::Entry::ptr e){currents.push_back(e);}
+  
   static dac::Generator gen;
 
 public:
+static dac::Generator&& getGen(){
+  return std::move(gen);
+}
   static void ass(MIEC::Token *t) {
     auto tmp = SymbolTable::GetInstance().Find(coco_string_create_char(t->val));
     gen.add(dac::OpKind::Assign,dac::SymbolOperand::create(tmp));
@@ -88,7 +85,7 @@ public:
       kind = dac::OpKind::Div;
       break;
     default:
-      throw ""; // TODO:
+      throw "unsuported fop"; // TODO:
     }
     gen.addf(kind);
     prt(t, L"fop");
@@ -109,24 +106,25 @@ public:
       kind = dac::OpKind::Sub;
       break;
     default:
-      throw ""; // TODO:
+      throw "unsupported top"; // TODO:
     }
     gen.addt(kind);
     prt(t, L"top"); }
   static void end() {
-    
+    gen.add(dac::OpKind::Exit);
+    gen.endStmt();
     prt(NULL, L"end");
   }static void wend() {
     gen.add(dac::OpKind::Jump,gen.ContextGetIndex());
     gen.ContextRef();
     gen.popContext();
     gen.endStmt();
-    prt(NULL, L"end");
+    prt(NULL, L"wend");
   }static void ifend() {
     gen.ContextRef();
     gen.popContext();
     gen.endStmt();
-    prt(NULL, L"end");
+    prt(NULL, L"iend");
   }
   static void wle() {
     gen.pushContext();
@@ -164,30 +162,30 @@ public:
      prt(nullptr, L"do"); }
   static void rop(MIEC::Token *t) { 
     dac::OpKind kind;
-    if(t->val==L"=")
+    if(std::wcscmp(t->val,L"=")==0)
     {
       kind=dac::OpKind::IsEq;
-    } else if(t->val== L"<"){
+    } else if(std::wcscmp(t->val,L"<")==0){
       kind=dac::OpKind::IsLess;
 
-    } else if(t->val== L">"){
+    } else if(std::wcscmp(t->val,L">")==0){
       kind=dac::OpKind::IsGreater;
 
-    } else if(t->val==L"<=") {
+    } else if(std::wcscmp(t->val,L"<=")==0) {
       kind=dac::OpKind::IsLeq;
 
-    }else if (t->val==L">=") {
+    }else if (std::wcscmp(t->val,L"<=")==0) {
       kind=dac::OpKind::IsGtq;
 
-    }else if (t->val==L"!=")
+    }else if (std::wcscmp(t->val,L"!=")==0)
     {
       kind=dac::OpKind::IsNotEq;
 
     }else {
-      throw "";
+      throw "unsupported rop";
     //TODO: throw
     }
-    gen.add(dac::OpKind::IsNotEq);
+    gen.add(kind);
     prt(t, L"rop"); }
   // static
 };

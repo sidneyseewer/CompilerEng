@@ -26,10 +26,19 @@ public:
     void ContextRef();
     void endStmt();
     void Print(std::ostream);
+    /**
+    sets the position member of each entry to the index in the code array
+    */
+    void updateIndex();
     Generator(){
         auto tmp=dac::Entry::create(OpKind::Exit);
         statementContext.emplace_back(tmp,tmp,tmp);
     }
+    auto cend(){return code.cend();};
+    auto cbegin(){return code.cbegin();};
+    auto end(){return code.end();};
+    auto begin(){return code.begin();};
+    size_t size(){return code.size();}
     private:
     void add(Entry::ptr);
     struct FlowContext{
@@ -46,6 +55,7 @@ public:
         Entry::ptr entry;
         size_t destination;
     };
+
     std::vector<Entry::ptr> code{};
     std::vector<FlowContext> flowContext{};
     std::vector<StatementContext> statementContext{};

@@ -9,6 +9,7 @@ class SymbolOperand:public Operand{
     Symbol::ptr mSymbol;
     public:
     void x() override{};
+    Symbol::ptr get(){return mSymbol;}
     using ptr=std::shared_ptr<SymbolOperand>;
     SymbolOperand(Symbol::ptr s):mSymbol(s){}
     static ptr create(Symbol::ptr s){return std::make_shared<SymbolOperand>(s);}

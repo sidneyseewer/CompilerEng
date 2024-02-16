@@ -4,6 +4,7 @@
 #include "Symbols/Symbol.h"
 #include "dac/OpKind.h"
 #include "dac/Operands/Operand.h"
+#include "lib/helper.h"
 #include <map>
 #include <memory>
 #include <utility>
@@ -37,20 +38,21 @@ public:
   }
   static Entry::ptr create(OpKind k) { return std::make_shared<Entry>(k); }
     //next use line or 0 for no use
-  using nexUse_type = size_t;
-  bool hasNextUse(Symbol::ptr ptr){
+  using nextUse_valuetype = size_t;
+  using nextUse_keytype = Operand::ptr;
+  bool hasNextUse(nextUse_keytype ptr){
     return nextUses.contains(ptr);
   }
-  void addnextUsed(Symbol::ptr sym,nexUse_type t)
+  void addnextUsed(nextUse_keytype sym,nextUse_valuetype t)
   {
     nextUses[sym]=t;
   }
-  nexUse_type getNextUse(Symbol::ptr ptr) {
+  nextUse_valuetype getNextUse(nextUse_keytype ptr) {
        return nextUses.at(ptr);
     }
 
 private:
-  std::map<Symbol::ptr, nexUse_type> nextUses{};
+  std::map<nextUse_keytype, nextUse_valuetype,OperandPointer<std::less<void*>>> nextUses{};
 };
 } // namespace dac
 

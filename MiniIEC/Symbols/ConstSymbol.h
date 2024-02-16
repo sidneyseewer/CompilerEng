@@ -13,9 +13,9 @@ class ConstSymbol: public Symbol
     public:
     using ptr = std::shared_ptr<ConstSymbol>;
     static ConstSymbol::ptr create(std::string name,Type::ptr type){return std::make_shared<ConstSymbol>(name,type);}
-    ConstSymbol(std::string name,Type::ptr t):mType(t),Symbol(name,t){}
+    ConstSymbol(std::string name,Type::ptr t):mType(t),mValue(std::stoi(name)),Symbol(name,t){}
     Type::ptr getType() const override{return mType;};
-    int getValue();
+    int getValue(){return mValue;}
 };
 
 #endif //!__CONST_SYMBOL_H_

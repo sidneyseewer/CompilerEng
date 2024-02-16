@@ -91,11 +91,11 @@ void treeToVec(std::vector<Entry::ptr> &&v, Entry::ptr const &e) {
   DacOperand *ref;
   v.push_back(e);
   if (e != nullptr) {
-    ref = dynamic_cast<DacOperand *>(e->getFirst().get());
+    ref = dac::extract<DacOperand >(e->getFirst());
     if (ref != nullptr&&ref->isResult()) {
       treeToVec(std::move(v), ref->get());
     }
-    ref = dynamic_cast<DacOperand *>(e->getSecond().get());
+    ref = dac::extract<DacOperand>(e->getSecond());
     if (ref != nullptr&&ref->isResult()) {
       treeToVec(std::move(v), ref->get());
     }
@@ -104,7 +104,7 @@ void treeToVec(std::vector<Entry::ptr> &&v, Entry::ptr const &e) {
 void Generator::endStmt() {
   std::vector<Entry::ptr> stmcode;
   auto node = statementContext.back().root;
-  auto ref = dynamic_cast<DacOperand *>(node->getSecond().get());
+  auto ref = dac::extract<DacOperand>(node->getSecond());
   if(ref!=nullptr)
     treeToVec(std::move(stmcode),ref->get());
   std::reverse_copy(stmcode.cbegin(), stmcode.cend(), std::back_inserter(code));

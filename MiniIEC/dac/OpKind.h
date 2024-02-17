@@ -22,6 +22,7 @@ static std::string OpKindToString(OpKind const& opk){
         case Print: return "Print";
         case Exit: return "Exit";
     }
+    return "-";
 }
 }
 

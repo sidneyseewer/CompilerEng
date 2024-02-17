@@ -34,13 +34,14 @@ public:
         auto tmp=dac::Entry::create(OpKind::Exit);
         statementContext.emplace_back(tmp,tmp,tmp);
     }
-    auto cend(){return code.cend();};
-    auto cbegin(){return code.cbegin();};
+    auto cend()const{return code.cend();};
+    auto cbegin()const{return code.cbegin();};
     auto end(){return code.end();};
     auto begin(){return code.begin();};
-    size_t size(){return code.size();}
+    size_t size()const{return code.size();}
+    void add(Entry::ptr a);
+    Entry::ptr operator[](size_t index){return code[index];}
     private:
-    void add(Entry::ptr);
     struct FlowContext{
         Entry::ptr ref;
         size_t index;

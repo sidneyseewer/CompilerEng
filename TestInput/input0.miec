@@ -4,6 +4,7 @@ PROGRAM Hello
 		b: Integer;
 	END_VAR
 BEGIN
+
 	b := 3 * (5 + 2) * 3/4 -2;
 	print(b);
 END

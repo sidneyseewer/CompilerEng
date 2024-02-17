@@ -83,37 +83,36 @@ int main(int argc, char *argv[]) {
 
 NextUseCalc nuc{};
 nuc.Calc(g.begin(),g.end());
-auto x=*g.begin();
+ prt(g,st);
 
-
-  std::cout << std::format("{:6}: ", ' ');
-  for (auto s : st) {
-    std::cout << std::format("{: >6} ", s.first);
-  }for (auto s : g) {
-    std::cout << std::format("&{: <6} ", s->getPosition());
-  }
-  std::cout << std::endl;
-  for (size_t i = 0; i < g.size(); i++) {
-    auto e = *(g.begin() + i);
-    std::cout << std::format("{:6}: ", i);
-    for (auto s : st) {
-      dac::Operand::ptr p = dac::SymbolOperand::create(s.second);
-      if (e->hasNextUse(p))
-        std::cout << std::format("{:6} ", e->getNextUse(p));
-      else
-        std::cout << std::format("{: >6} ", '-');
-    }
-    for (auto s : g) {
-      dac::Operand::ptr p = dac::DacOperand::createResult(s);
-      if (e->hasNextUse(p))
-        std::cout << std::format("{:6} ", e->getNextUse(p));
-      else
-        std::cout << std::format("{: >6} ", '-');
-    }
-    std::cout << dac::OpKindToString(e.get()->getKind());
-    std::cout << " " << toString(e->getFirst()) << " "
-              << toString(e->getSecond()) << std::endl;
-  }
+  // std::cout << std::format("{:6}: ", ' ');
+  // for (auto s : st) {
+  //   std::cout << std::format("{: >6} ", s.first);
+  // }for (auto s : g) {
+  //   std::cout << std::format("&{: <6} ", s->getPosition());
+  // }
+  // std::cout << std::endl;
+  // for (size_t i = 0; i < g.size(); i++) {
+  //   auto e = *(g.begin() + i);
+  //   std::cout << std::format("{:6}: ", i);
+  //   for (auto s : st) {
+  //     dac::Operand::ptr p = dac::SymbolOperand::create(s.second);
+  //     if (e->hasNextUse(p))
+  //       std::cout << std::format("{:6} ", e->getNextUse(p));
+  //     else
+  //       std::cout << std::format("{: >6} ", '-');
+  //   }
+  //   for (auto s : g) {
+  //     dac::Operand::ptr p = dac::DacOperand::createResult(s);
+  //     if (e->hasNextUse(p))
+  //       std::cout << std::format("{:6} ", e->getNextUse(p));
+  //     else
+  //       std::cout << std::format("{: >6} ", '-');
+  //   }
+  //   std::cout << dac::OpKindToString(e.get()->getKind());
+  //   std::cout << " " << toString(e->getFirst()) << " "
+  //             << toString(e->getSecond()) << std::endl;
+  // }
 
 
 

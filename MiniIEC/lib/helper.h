@@ -25,12 +25,19 @@ bool Compare_operand_pointer(dac::Operand::ptr const& a,dac::Operand::ptr const&
     auto b2=dac::extract<dac::DacOperand>(b);
     if(a1!=nullptr&&b1!=nullptr)
     {
+      auto pa=a1->get().get();
+      auto pb=b1->get().get();
         return p(a1->get().get(),b1->get().get());
     } 
     if(a2!=nullptr&&b2!=nullptr)
     {
+      auto pa=a2->get().get();
+      auto pb=b2->get().get();
         return p(a2->get().get(),b2->get().get());
     }
+
+      auto pa=a.get();
+      auto pb=b.get();
     if(p(a.get(),b.get())) return true;
     return false;
 }
@@ -62,7 +69,7 @@ constexpr Format formats[]={
     {"{:6}: ","{: >6} ","&{ <5}"}};
 
 template <class T,class F>
-void prt(T g,F st,std::ostream &cout=std::cout)
+void prt(T &g,F& st,std::ostream &cout=std::cout)
 {
      constexpr auto a = "{:3}: ";
   constexpr auto b = "{: >3} ";

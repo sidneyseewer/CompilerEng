@@ -1,0 +1,5 @@
+PROGRAM MissingBegin
+    BEGIN_VAR
+        x: Integer;
+    END_VAR
+END

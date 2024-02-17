@@ -1,0 +1,4 @@
+PROGRAM PrintStatement
+    BEGIN
+        print(42);
+END

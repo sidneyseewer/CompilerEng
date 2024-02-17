@@ -1,0 +1,14 @@
+PROGRAM BooleanOperators
+    BEGIN_VAR
+        p, q: BOOL;
+    END_VAR
+
+    BEGIN
+        p := TRUE;
+        q := FALSE;
+        IF p AND NOT q THEN
+            print(1);
+        ELSE
+            print(0);
+        END
+END

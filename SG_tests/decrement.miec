@@ -1,0 +1,10 @@
+PROGRAM Decrement
+    BEGIN_VAR
+        counter: Integer;
+    END_VAR
+
+    BEGIN
+        counter := 10;
+        counter := counter - 1;
+        print(counter);
+END

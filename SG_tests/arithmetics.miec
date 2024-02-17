@@ -1,0 +1,11 @@
+PROGRAM Arithmetics
+    BEGIN_VAR
+        a, b, c: Integer;
+    END_VAR
+
+    BEGIN
+        a := 5;
+        b := 7;
+        c := a * b + 10;
+        print(c);
+END

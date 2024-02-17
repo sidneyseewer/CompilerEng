@@ -1,0 +1,8 @@
+PROGRAM InvalidSyntax
+    BEGIN_VAR
+        x: Integer;
+    END_VAR
+
+    BEGIN
+        print(42)
+END

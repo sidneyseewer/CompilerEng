@@ -1,0 +1,13 @@
+PROGRAM NestedIf
+    BEGIN_VAR
+        x: Integer;
+    END_VAR
+
+    BEGIN
+        x := 7;
+        IF x > 5 THEN
+            IF x < 10 THEN
+                print(x);
+            END
+        END
+END

@@ -1,0 +1,13 @@
+PROGRAM IfElse
+    BEGIN_VAR
+        x: Integer;
+    END_VAR
+
+    BEGIN
+        x := 10;
+        IF x > 5 THEN
+            print(x);
+        ELSE
+            print(0);
+        END
+END

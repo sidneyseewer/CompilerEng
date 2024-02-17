@@ -1,0 +1,8 @@
+PROGRAM InvalidVariable
+    BEGIN_VAR
+        123: Integer;
+    END_VAR
+
+    BEGIN
+        print(42);
+END

@@ -1,0 +1,12 @@
+PROGRAM BasicLoop
+    BEGIN_VAR
+        i: Integer;
+    END_VAR
+
+    BEGIN
+        i := 0;
+        WHILE i < 5 DO
+            print(i);
+            i := i + 1;
+        END
+END

@@ -1,0 +1,6 @@
+PROGRAM MissingBeginVar
+    END_VAR
+
+    BEGIN
+        print(42);
+END

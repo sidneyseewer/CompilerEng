@@ -1,0 +1,18 @@
+PROGRAM MixedOperations
+    BEGIN_VAR
+        a, b, c: Integer;
+        x, y: BOOL;
+    END_VAR
+
+    BEGIN
+        a := 5;
+        b := 7;
+        c := a * b + 10;
+        x := TRUE;
+        y := FALSE;
+        IF x AND NOT y OR (c > 50) THEN
+            print(1);
+        ELSE
+            print(0);
+        END
+END

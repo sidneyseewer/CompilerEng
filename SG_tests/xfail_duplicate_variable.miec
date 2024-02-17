@@ -1,0 +1,8 @@
+PROGRAM DuplicateVariable
+    BEGIN_VAR
+        x, x: Integer;
+    END_VAR
+
+    BEGIN
+        print(42);
+END

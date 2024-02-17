@@ -1,0 +1,9 @@
+PROGRAM VariableDeclaration
+    BEGIN_VAR
+        y: Integer;
+    END_VAR
+
+    BEGIN
+        y := 42;
+        print(y);
+END

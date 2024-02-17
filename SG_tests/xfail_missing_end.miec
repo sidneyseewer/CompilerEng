@@ -1,0 +1,3 @@
+PROGRAM MissingEnd
+    BEGIN
+        print(42);

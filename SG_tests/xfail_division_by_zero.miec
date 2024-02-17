@@ -1,0 +1,9 @@
+PROGRAM DivisionByZero
+    BEGIN_VAR
+        x: Integer;
+    END_VAR
+
+    BEGIN
+        x := 10 / 0;
+        print(x);
+END

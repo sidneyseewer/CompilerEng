@@ -5,10 +5,15 @@
 #include "dac/OpKind.h"
 #include "dac/Operands/Operand.h"
 #include "lib/helper.h"
+#include <cassert>
+#include <functional>
 #include <map>
 #include <memory>
+#include <stdexcept>
 #include <utility>
 #include <variant>
+#include <stdexcept>
+#include <vector>
 namespace dac {
 class Entry {
 private:
@@ -41,18 +46,36 @@ public:
   using nextUse_valuetype = size_t;
   using nextUse_keytype = Operand::ptr;
   bool hasNextUse(nextUse_keytype ptr){
-    return nextUses.contains(ptr);
+    bool ret=false;
+    for(auto u:nextUses)
+    {
+      if(Compare_operand_pointer<std::equal_to<void*>>(u.first, ptr))
+        ret=true;
+    }
+    return ret;
   }
   void addnextUsed(nextUse_keytype sym,nextUse_valuetype t)
   {
-    nextUses[sym]=t;
+    // nextUses[sym]=t;
+    for(auto u:nextUses)
+    {
+      if(Compare_operand_pointer<std::equal_to<void*>>(u.first, sym))
+        return;
+    }
+    nextUses.emplace_back(sym,t);
   }
   nextUse_valuetype getNextUse(nextUse_keytype ptr) {
-       return nextUses.at(ptr);
+       for(auto u:nextUses)
+    {
+      if(Compare_operand_pointer<std::equal_to<void*>>(u.first, ptr))
+        return u.second;
+    }
+    throw new std::out_of_range(" index ou tof range");
     }
 
 private:
-  std::map<nextUse_keytype, nextUse_valuetype,OperandPointer<std::less<void*>>> nextUses{};
+//  std::map<nextUse_keytype, nextUse_valuetype,OperandPointer<std::less<void*>>> 
+std::vector<std::pair<nextUse_keytype,nextUse_valuetype>> nextUses{};
 };
 } // namespace dac
 

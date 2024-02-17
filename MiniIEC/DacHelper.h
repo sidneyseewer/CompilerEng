@@ -16,7 +16,7 @@
 #include <ostream>
 #include <vector>
 class dach {
-  static void prt(MIEC::Token *t, wchar_t *s) {
+  static void prt(MIEC::Token *t, wchar_t const * const s) {
 
     // if (!tis.func.empty()) {
     //   char f = ' ';

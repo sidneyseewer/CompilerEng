@@ -1,4 +1,10 @@
 #include "CodeGen/CodeGenRISCV.h"
+#include "DacHelper.h"
+#include "NextUseCalc.h"
+#include "Parser.h"
+#include "RegisterAdmin.h"
+#include "Scanner.h"
+#include "SymbolFactory.h"
 #include "SymbolTable.h"
 #include "Symbols/ConstSymbol.h"
 #include "Symbols/Symbol.h"
@@ -14,14 +20,9 @@
 #include "lib/Singelton.h"
 #include "lib/helper.h"
 #include "stdio.h"
-#include "RegisterAdmin.h"
-#include "SymbolTable.h"
-
-#include "DacHelper.h"
-#include "Parser.h"
-#include "Scanner.h"
-#include "SymbolFactory.h"
+#include <algorithm>
 #include <array>
+#include <bits/ranges_algo.h>
 #include <cstddef>
 #include <fstream>
 #include <functional>
@@ -34,28 +35,12 @@
 #include <utility>
 #include <vector>
 #include <wchar.h>
+#include "NextUseCalc.h"
 
 #include <format>
 
 #include "dac/Operands/DacOperand.h"
 #include "dac/Operands/SymbolOperand.h"
-
-std::string toString(dac::Operand::ptr p) {
-  auto sop = dac::extract<dac::SymbolOperand>(p);
-  auto dop = dac::extract<dac::DacOperand>(p);
-  if (sop != nullptr) {
-    return sop->get()->GetName();
-  }
-  if (dop != nullptr) {
-    std::string s = "";
-    if (dop->isJump())
-      s += "j";
-    if (dop->isResult())
-      s += "r";
-    return std::format(" *{1}", s, dop->get()->getPosition());
-  }
-  return "";
-}
 
 
 int main(int argc, char *argv[]) {
@@ -95,37 +80,17 @@ int main(int argc, char *argv[]) {
   auto g = dach::getGen();
   g.updateIndex();
 
-  // calculate next usage
-  std::map<dac::Operand::ptr, size_t> lu;
-  for (int i = g.size() - 1; i >= 0; i--) {
-    auto e = (g.begin() + i);
-    if (e->get()->getKind() == dac::Assign) {
 
-      auto sop = dac::extract<dac::SymbolOperand>(e->get()->getFirst());
-      if (sop != nullptr) {
-        lu[e->get()->getFirst()] = 0;
-      }
-    } else {
-      // auto f = dac::extract<dac::SymbolOperand>(e->get()->getFirst());
-      if (e->get()->getFirst() != nullptr) {
-        lu[e->get()->getFirst()] = i;
-      }
-      auto ps = e->get()->getSecond();
-      if (ps != nullptr) {
-        // auto s = dac::extract<dac::SymbolOperand>(ps);
-        // if (s != nullptr) {
-        lu[ps] = i;
-        // }
-      }
-    }
-    for (auto s : lu) {
-      e->get()->addnextUsed(s.first, s.second);
-    }
-  }
+NextUseCalc nuc{};
+nuc.Calc(g.begin(),g.end());
+auto x=*g.begin();
+
 
   std::cout << std::format("{:6}: ", ' ');
   for (auto s : st) {
     std::cout << std::format("{: >6} ", s.first);
+  }for (auto s : g) {
+    std::cout << std::format("&{: <6} ", s->getPosition());
   }
   std::cout << std::endl;
   for (size_t i = 0; i < g.size(); i++) {
@@ -138,10 +103,20 @@ int main(int argc, char *argv[]) {
       else
         std::cout << std::format("{: >6} ", '-');
     }
+    for (auto s : g) {
+      dac::Operand::ptr p = dac::DacOperand::createResult(s);
+      if (e->hasNextUse(p))
+        std::cout << std::format("{:6} ", e->getNextUse(p));
+      else
+        std::cout << std::format("{: >6} ", '-');
+    }
     std::cout << dac::OpKindToString(e.get()->getKind());
     std::cout << " " << toString(e->getFirst()) << " "
               << toString(e->getSecond()) << std::endl;
   }
+
+
+
   MIEC::CodeGenRISCV gen{true, true};
   // using RegisterAdmin = RegisterAdmin<>;
   RegisterAdmin regadm{gen.GetRegCnt()};
@@ -149,9 +124,9 @@ int main(int argc, char *argv[]) {
   regadm.AssignRegister(1, resultReg);
   for (size_t i = 0; i < g.size(); i++) {
     auto e = *(g.begin() + i);
-    RegisterAdmin::RegNr ra;
-    RegisterAdmin::RegNr rb;
-    RegisterAdmin::RegNr rc;
+    RegisterAdmin::RegNr ra=0;
+    RegisterAdmin::RegNr rb=0;
+    RegisterAdmin::RegNr rc=0;
     dac::SymbolOperand *f1s{nullptr};
     dac::SymbolOperand *f2s;
     dac::DacOperand *f1d;
@@ -177,47 +152,47 @@ int main(int argc, char *argv[]) {
 
     case dac::Assign:
       // create ra,rb
-      //create ra
-       if (f1s != nullptr) {
-      if (regadm.hasRegister(e->getFirst())) {
-        ra = regadm.GetRegister(e->getFirst());
-      } else {
-        ra = regadm.AssignRegister(regadm.GetRegister(), f1s->get());
-        auto constsym = extract<ConstSymbol>(f1s->get());
-        auto varsym = extract<VarSymbol>(f1s->get());
-        if (constsym != nullptr)
-          gen.LoadI(ra, constsym->getValue());
-        if (varsym != nullptr)
-          gen.Load(ra, 0, varsym->getOffset());
+      // create ra
+      if (f1s != nullptr) {
+        if (regadm.hasRegister(e->getFirst())) {
+          ra = regadm.GetRegister(e->getFirst());
+        } else {
+          ra = regadm.AssignRegister(regadm.GetRegister(), f1s->get());
+          auto constsym = extract<ConstSymbol>(f1s->get());
+          auto varsym = extract<VarSymbol>(f1s->get());
+          if (constsym != nullptr)
+            gen.LoadI(ra, constsym->getValue());
+          if (varsym != nullptr)
+            gen.Load(ra, 0, varsym->getOffset());
+        }
+      } else if (f1d != nullptr) {
+        if (regadm.hasRegister(e->getFirst())) {
+          ra = regadm.GetRegister(e->getFirst());
+        } else {
+          throw "required value does not exist";
+        }
       }
-    } else if (f1d != nullptr) {
-      if (regadm.hasRegister(e->getFirst())) {
-        ra = regadm.GetRegister(e->getFirst());
-      } else {
-        throw "required value does not exist";
-      }
-    }
 
-    //create rb
-    if (f2s != nullptr) {
-      if (regadm.hasRegister(e->getSecond())) {
-        rb = regadm.GetRegister(e->getSecond());
-      } else {
-        rb = regadm.AssignRegister(regadm.GetRegister(), f2s->get());
-        auto constsym = extract<ConstSymbol>(f2s->get());
-        auto varsym = extract<VarSymbol>(f2s->get());
-        if (constsym != nullptr)
-          gen.LoadI(rb, constsym->getValue());
-        if (varsym != nullptr)
-          gen.Load(rb, 0, varsym->getOffset());
+      // create rb
+      if (f2s != nullptr) {
+        if (regadm.hasRegister(e->getSecond())) {
+          rb = regadm.GetRegister(e->getSecond());
+        } else {
+          rb = regadm.AssignRegister(regadm.GetRegister(), f2s->get());
+          auto constsym = extract<ConstSymbol>(f2s->get());
+          auto varsym = extract<VarSymbol>(f2s->get());
+          if (constsym != nullptr)
+            gen.LoadI(rb, constsym->getValue());
+          if (varsym != nullptr)
+            gen.Load(rb, 0, varsym->getOffset());
+        }
+      } else if (f2d != nullptr) {
+        if (regadm.hasRegister(e->getSecond())) {
+          rb = regadm.GetRegister(e->getSecond());
+        } else {
+          throw "required value does not exist";
+        }
       }
-    } else if (f2d != nullptr) {
-      if (regadm.hasRegister(e->getSecond())) {
-        rb = regadm.GetRegister(e->getSecond());
-      } else {
-        throw "required value does not exist";
-      }
-    }
       break;
     case dac::IsEq:
     case dac::IsLeq:
@@ -231,8 +206,7 @@ int main(int argc, char *argv[]) {
     case dac::Exit:
       break;
     }
-   
-    
+
     switch (e->getKind()) {
 
     case dac::Add:
@@ -245,7 +219,7 @@ int main(int argc, char *argv[]) {
       gen.Mul(ra, rb, rc, 1);
       break;
     case dac::Div:
-    gen.Div(ra, rb, rc, 1, 2, 3);
+      gen.Div(ra, rb, rc, 1, 2, 3);
       // TODO:
       break;
     case dac::IsEq:
@@ -267,9 +241,9 @@ int main(int argc, char *argv[]) {
       // TODO:
       break;
     case dac::Assign:
-    // gen.LoadI(ra, extract<VarSymbol>(f1s->get())->getOffset());
-    gen.Store(rb, 0, extract<VarSymbol>(f1s->get())->getOffset());
-    // std::cout<<"";
+      // gen.LoadI(ra, extract<VarSymbol>(f1s->get())->getOffset());
+      gen.Store(rb, 0, extract<VarSymbol>(f1s->get())->getOffset());
+      // std::cout<<"";
       break;
     case dac::Jump:
       // gen.Jump(BYTE aRegA, BYTE aRegTmp, WORD addr)
@@ -280,6 +254,16 @@ int main(int argc, char *argv[]) {
       break;
     case dac::Exit:
       break;
+    }
+    if (!e->hasNextUse(e->getFirst())&&ra!=0) {
+      regadm.FreeRegister(ra);
+    }
+
+    if (!e->hasNextUse(e->getSecond())&&rb!=0) {
+      regadm.FreeRegister(rb);
+    }
+    if (!e->hasNextUse(dac::DacOperand::createResult(e))&&rc!=0) {
+      regadm.FreeRegister(rc);
     }
   }
   // for(auto itr=st.cbegin();itr!=st.cend();itr++)

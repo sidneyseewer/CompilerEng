@@ -42,7 +42,7 @@ target_include_directories(tests PRIVATE "MiniIEC")
 include(CTest)
 include(Catch)
 catch_discover_tests(tests)
-add_test(TESTS tests)
+# add_test(TESTS tests)
 # # These tests need their own main
 # add_executable(custom-main-tests test.cpp test-main.cpp)
 # target_link_libraries(custom-main-tests PRIVATE Catch2::Catch2)

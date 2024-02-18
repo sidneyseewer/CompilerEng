@@ -35,13 +35,11 @@
 #include <utility>
 #include <vector>
 #include <wchar.h>
-#include "NextUseCalc.h"
 
 #include <format>
 
 #include "dac/Operands/DacOperand.h"
 #include "dac/Operands/SymbolOperand.h"
-
 
 int main(int argc, char *argv[]) {
 
@@ -80,10 +78,9 @@ int main(int argc, char *argv[]) {
   auto g = dach::getGen();
   g.updateIndex();
 
-
-NextUseCalc nuc{};
-nuc.Calc(g.begin(),g.end());
- prt(g,st);
+  NextUseCalc nuc{};
+  nuc.Calc(g.begin(), g.end());
+  prt(g, st);
 
   // std::cout << std::format("{:6}: ", ' ');
   // for (auto s : st) {
@@ -114,18 +111,20 @@ nuc.Calc(g.begin(),g.end());
   //             << toString(e->getSecond()) << std::endl;
   // }
 
-
-
+  // TODO: a=a; crashed
   MIEC::CodeGenRISCV gen{true, true};
   // using RegisterAdmin = RegisterAdmin<>;
   RegisterAdmin regadm{gen.GetRegCnt()};
-  auto resultReg = dac::Entry::create(dac::OpKind::Exit);
-  regadm.AssignRegister(1, resultReg);
+  auto temRegInstruction = dac::Entry::create(dac::OpKind::Exit);
+  auto tempReg = regadm.GetRegister();
+  regadm.AssignRegister(tempReg, temRegInstruction);
+
+  std::vector<std::pair<CodeGen<int32_t>::WORD, dac::Entry::ptr>> jumps{};
   for (size_t i = 0; i < g.size(); i++) {
     auto e = *(g.begin() + i);
-    RegisterAdmin::RegNr ra=0;
-    RegisterAdmin::RegNr rb=0;
-    RegisterAdmin::RegNr rc=0;
+    RegisterAdmin::RegNr ra = 0;
+    RegisterAdmin::RegNr rb = 0;
+    RegisterAdmin::RegNr rc = 0;
     dac::SymbolOperand *f1s{nullptr};
     dac::SymbolOperand *f2s;
     dac::DacOperand *f1d;
@@ -135,13 +134,14 @@ nuc.Calc(g.begin(),g.end());
     f2s = dac::extract<dac::SymbolOperand>(e->getSecond());
     f2d = dac::extract<dac::DacOperand>(e->getSecond());
     auto x = dac::DacOperand::createResult(e);
+    e->setPosition(gen.GetCodePosition());
     switch (e->getKind()) {
 
     case dac::Add:
     case dac::Sub:
     case dac::Mult:
     case dac::Div:
-      // todo: create result
+      // create result
 
       if (regadm.hasRegister(x)) {
         rc = regadm.GetRegister(x);
@@ -150,6 +150,12 @@ nuc.Calc(g.begin(),g.end());
       }
 
     case dac::Assign:
+    case dac::IsEq:
+    case dac::IsLeq:
+    case dac::IsGtq:
+    case dac::IsNotEq:
+    case dac::IsLess:
+    case dac::IsGreater:
       // create ra,rb
       // create ra
       if (f1s != nullptr) {
@@ -172,6 +178,7 @@ nuc.Calc(g.begin(),g.end());
         }
       }
 
+    case dac::Print:
       // create rb
       if (f2s != nullptr) {
         if (regadm.hasRegister(e->getSecond())) {
@@ -193,19 +200,33 @@ nuc.Calc(g.begin(),g.end());
         }
       }
       break;
+    case dac::Jump:
+    case dac::IfFalse:
+    case dac::Exit:
+      break;
+    }
+
+    switch (e->getKind()) {
     case dac::IsEq:
     case dac::IsLeq:
     case dac::IsGtq:
     case dac::IsNotEq:
     case dac::IsLess:
     case dac::IsGreater:
+
+      break;
+
+    case dac::Add:
+    case dac::Sub:
+    case dac::Mult:
+    case dac::Div:
+    case dac::Assign:
     case dac::Jump:
     case dac::IfFalse:
     case dac::Print:
     case dac::Exit:
       break;
     }
-
     switch (e->getKind()) {
 
     case dac::Add:
@@ -218,73 +239,71 @@ nuc.Calc(g.begin(),g.end());
       gen.Mul(ra, rb, rc, 1);
       break;
     case dac::Div:
-      gen.Div(ra, rb, rc, 1, 2, 3);
+      gen.Div(ra, rb, rc, tempReg, tempReg, tempReg);
       // TODO:
       break;
-    case dac::IsEq:
-      // TODO:
+    case dac::IfFalse:
       break;
-    case dac::IsLeq:
-      // TODO:
-      break;
-    case dac::IsGtq:
-      // TODO:
-      break;
-    case dac::IsNotEq:
-      // TODO:
-      break;
-    case dac::IsLess:
-      // TODO:
-      break;
-    case dac::IsGreater:
-      // TODO:
-      break;
+
     case dac::Assign:
       // gen.LoadI(ra, extract<VarSymbol>(f1s->get())->getOffset());
       gen.Store(rb, 0, extract<VarSymbol>(f1s->get())->getOffset());
       // std::cout<<"";
       break;
     case dac::Jump:
-      // gen.Jump(BYTE aRegA, BYTE aRegTmp, WORD addr)
+      jumps.emplace_back(gen.Jump(tempReg, tempReg, 0), *(g.begin() + i));
       break;
-    case dac::IfFalse:
       break;
     case dac::Print:
+      gen.PrintInt(ra);
       break;
     case dac::Exit:
+      gen.Sleep();
+      break;
+    case dac::IsEq:
+      // jumps.emplace_back(Args &&args...)
+      jumps.emplace_back(gen.JumpEQ(ra, rb, tempReg, 0), *(g.begin() + i + 1));
+      break;
+    case dac::IsLeq:
+      jumps.emplace_back(gen.JumpLE(ra, rb, tempReg, 0), *(g.begin() + i + 1));
+      break;
+    case dac::IsGtq:
+      jumps.emplace_back(gen.JumpGE(ra, rb, tempReg, 0), *(g.begin() + i + 1));
+      break;
+    case dac::IsNotEq:
+      jumps.emplace_back(gen.JumpNEQ(ra, rb, tempReg, 0), *(g.begin() + i + 1));
+      break;
+    case dac::IsLess:
+      jumps.emplace_back(gen.JumpL(ra, rb, tempReg, 0), *(g.begin() + i + 1));
+      break;
+    case dac::IsGreater:
+      jumps.emplace_back(gen.JumpG(ra, rb, tempReg, 0), *(g.begin() + i + 1));
+      break;
       break;
     }
-    if (!e->hasNextUse(e->getFirst())&&ra!=0) {
+    if (!e->hasNextUse(e->getFirst()) && ra != 0) {
       regadm.FreeRegister(ra);
     }
 
-    if (!e->hasNextUse(e->getSecond())&&rb!=0) {
+    if (!e->hasNextUse(e->getSecond()) && rb != 0) {
       regadm.FreeRegister(rb);
     }
-    if (!e->hasNextUse(dac::DacOperand::createResult(e))&&rc!=0) {
+    if (!e->hasNextUse(dac::DacOperand::createResult(e)) && rc != 0) {
       regadm.FreeRegister(rc);
     }
   }
-  // for(auto itr=st.cbegin();itr!=st.cend();itr++)
-  // {
-  //   auto x=itr->second.get();
-  //   VarSymbol* v=dynamic_cast<VarSymbol*>(x);
-  //   TypeSymbol* t=dynamic_cast<TypeSymbol*>(x);
-  //   ConstSymbol* c=dynamic_cast<ConstSymbol*>(x);
-  //   if(v!=nullptr)
-  //   {
-  //     std::cout<<"v "<<v->getOffset()<<" ";
-  //   }
-  //   if(t!=nullptr)
-  //   {
-  //     std::cout<<"t ";
-  //   }
-  //   if(c!=nullptr)
-  //   {
-  //     std::cout<<"c ";
-  //   }
-  //   std::cout<<x->GetName()<<std::endl;
-  // }
+  for (auto j : jumps) {
+    dac::DacOperand *x;
+    if (j.second->getSecond() != nullptr)
+      {x = extract<dac::DacOperand>(j.second->getSecond());}
+    else
+      {x = extract<dac::DacOperand>(j.second->getFirst());}
+    if (x == nullptr)
+      std::cerr << "Internal error\n";
+    else
+      // TODO: iffalsejumps are stored as results
+      gen.SetAddress(j.first, x->get()->getPosition());
+  }
   std::fstream out{};
   out.open("./test");
   out << "Hallo\n";

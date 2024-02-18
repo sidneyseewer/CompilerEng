@@ -90,47 +90,32 @@ void Calc(Itr const& begin,Itr const& end){
     case dac::Exit:
       break;
     }
-    if(op!=dac::Assign)
-      addOP(e->getFirst(),i);
-    addOP(e->getSecond(),i);
+    switch (op) {
 
+    case dac::Add:
+    case dac::Sub:
+    case dac::Mult:
+    case dac::Div:
+    // instructions with result stored in register
+
+      addOP(e->getFirst(),i);
+    case dac::Assign:
+    addOP(e->getSecond(),i);
+    break;
+    case dac::IsEq:
+    case dac::IsLeq:
+    case dac::IsGtq:
+    case dac::IsNotEq:
+    case dac::IsLess:
+    case dac::IsGreater:
+    case dac::Jump:
+    case dac::IfFalse:
+    case dac::Print:
+    case dac::Exit:
+      break;
+    }
   }
 
-  // // calculate next usage
-  // using NextUsage_container = std::map<dac::Operand::ptr, std::optional<size_t>,OperandPointer<std::less<void*>>>;
-  // NextUsage_container lu;
-  // constexpr auto set=NextUsage_container::mapped_type{};
-
-  // for (int i = end-begin - 1; i >= 0; i--) {
-  //   auto itr = lu.begin();
-  //   auto e = (begin + i);
-    
-  //   if (e->get()->getFirst() != nullptr) {
-  //       lu[e->get()->getFirst()] = i;
-  //     }
-  //   auto ps = e->get()->getSecond();
-  //   if (ps != nullptr) {
-  //     // auto s = dac::extract<dac::SymbolOperand>(ps);
-  //     // if (s != nullptr) {
-  //     lu[ps] = i;
-  //     // }
-  //   }
-  //   for (auto s : lu) {
-  //     if(s.second.has_value())
-  //       e->get()->addnextUsed(s.first, s.second.value());
-  //   }
-  //   if (e->get()->getKind() == dac::Assign) {
-
-  //     if (e->get()->getFirst() != nullptr) {
-  //       lu[e->get()->getFirst()]=set;
-  //       // lu.erase(e->get()->getFirst());
-  //     }
-  //   } else {
-  //     lu[dac::DacOperand::createResult(*e)]=set;
-  //     // auto f = dac::extract<dac::SymbolOperand>(e->get()->getFirst());
-      
-  //   }
-  // }
 }
 };
 

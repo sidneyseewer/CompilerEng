@@ -50,8 +50,8 @@ PRODUCTIONS
     TERM = FACT2 {(TIMES | DIVIDE) (. dach::fop(t); .) FACT2 } .
     EXPR = TERM {(PLUS | MINUS) (. dach::top(t); .) TERM}.
     CONDITION = EXPR RELOP (. dach::rop(t); .) EXPR.
-    PRINT_STMNT = PRINT(. dach::prt();.) LPAREN EXPR RPAREN SEMICOLON (. dach::sem(t); .) .
-    ASSIGNMENT_STMNT = IDENT (. dach::ass(t); .) ASSIGN EXPR SEMICOLON (. dach::sem(t); .) .
+    PRINT_STMNT = PRINT(. dach::prt();.) LPAREN EXPR RPAREN SEMICOLON (. dach::sem(); .) .
+    ASSIGNMENT_STMNT = IDENT (. dach::ass(t); .) ASSIGN EXPR SEMICOLON (. dach::sem(); .) .
     WHILE_STMNT = WHILE_WORD (. dach::wle();.) CONDITION DO_WORD (. dach::doo();.) STMNT END_WORD (. dach::wend();.). 
     STMNT = ASSIGNMENT_STMNT 
     | PRINT_STMNT

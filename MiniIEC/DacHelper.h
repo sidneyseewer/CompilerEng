@@ -18,30 +18,13 @@
 class dach {
   static void prt(MIEC::Token *t, wchar_t const * const s) {
 
-    // if (!tis.func.empty()) {
-    //   char f = ' ';
-    //   // switch (tis.func.back().f) {
-    //   // case A:
-    //   //   f = 'A';
-    //   //   break;
-    //   // case W:
-    //   //   f = 'W';
-    //   //   break;
-    //   // case I:
-    //   //   f = 'I';
-    //   //   break;
-    //   // case P:
-    //   //   f = 'P';
-    //   //   break;
-    //   // }
-    //   std::cout << std::format("{}({}) ", f, tis.func.back().x);
-    // }
-    
+    #ifndef NDEBUG
     std::wcout << s << " ";
     if (t != nullptr)
       std::wcout << t->val;
 
     std::cout << std::endl;
+    #endif
   }
 
   static void print(dac::Entry::ptr e)
@@ -64,6 +47,10 @@ class dach {
 public:
 static dac::Generator&& getGen(){
   return std::move(gen);
+}
+static void resetGen(){
+  dac::Generator g{};
+  gen=g;
 }
   static void ass(MIEC::Token *t) {
     auto tmp = SymbolTable::GetInstance().Find(coco_string_create_char(t->val));
@@ -145,11 +132,11 @@ static dac::Generator&& getGen(){
     gen.add(dac::OpKind::IfFalse);
     gen.ContextSetRef();
     prt(NULL, L"thnx"); }
-  static void sem(MIEC::Token *t) {
+  static void sem() {
     gen.endStmt();
 
     // std::cout<<"===============\n";
-    prt(t, L"sem");
+    prt(NULL,L"sem");
   }
   static void prt() {
     gen.add(dac::OpKind::Print);

@@ -1,0 +1,26 @@
+(***************************************************************)
+(* This Program is meant to cause following errors             *)
+(***************************************************************)
+(* > parsing file progWrong.miec:                              *)
+(* -- line 4 col 8: "Integer" expected                         *)
+(* -- line 7 col 6: ":=" expected                              *)
+(* > 2 errors occured while parsing input file.                *)
+(* > executable file: progWrong.miec.iex could not be created. *)
+(***************************************************************)
+
+PROGRAM  Hello
+	BEGIN_VAR
+		a  : Integer;
+		b  : Real;                   (* Real not yet implemented    *)
+	END_VAR
+	BEGIN
+		a  =  3  *  6  +  (2  *  3); (* '=' instead of ':=' is used *)
+		WHILE  b  <  a  DO
+			b  :=  b  +  1;
+		END
+		IF  a  >  b  THEN
+			print(x);
+		ELSE
+			print(b);
+		END
+END

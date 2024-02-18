@@ -10,6 +10,9 @@
 #include <memory>
 #include <vector>
 using namespace dac;
+std::vector<Entry::ptr> Generator::getCode(){
+  return code;
+}
 
 void Generator::add(Entry::ptr tmp) {
   auto root = statementContext.back().root;
@@ -85,6 +88,12 @@ void Generator::ContextSetRef() {
 }
 void Generator::ContextRef() {
   jumpRefs.emplace_back(flowContext.back().ref, code.size());
+}
+
+void Generator::updateJumpRefs(){
+  for(auto j:jumpRefs){
+    j.entry->setSecond(dac::DacOperand::createJump(code[j.destination]));
+  }
 }
 
 void treeToVec(std::vector<Entry::ptr> &&v, Entry::ptr const &e) {

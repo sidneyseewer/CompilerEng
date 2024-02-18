@@ -54,6 +54,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)/MiniIEC</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -78,6 +79,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="MiniIEC\CodeGen\CodeGenRISCV.cpp" />
+    <ClCompile Include="MiniIEC\DacHelper.cpp" />
+    <ClCompile Include="MiniIEC\dac\Generator.cpp" />
+    <ClCompile Include="MiniIEC\lib\helper.cpp" />
     <ClCompile Include="MiniIEC\main.cpp" />
     <ClCompile Include="MiniIEC\Parser.cpp" />
     <ClCompile Include="MiniIEC\Scanner.cpp" />

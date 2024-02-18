@@ -22,7 +22,6 @@
 #include "stdio.h"
 #include <algorithm>
 #include <array>
-#include <bits/ranges_algo.h>
 #include <cstddef>
 #include <fstream>
 #include <functional>

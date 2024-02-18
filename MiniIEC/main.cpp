@@ -231,7 +231,7 @@ int main(int argc, char *argv[]) {
         gen.Add(ra, rb, rc);
         break;
       case dac::Sub:
-        gen.Sub(ra, ra, rc);
+        gen.Sub(ra, rb, rc);
         break;
       case dac::Mult:
         gen.Mul(ra, rb, rc, 1);
@@ -253,7 +253,7 @@ int main(int argc, char *argv[]) {
         break;
         break;
       case dac::Print:
-        gen.PrintInt(ra);
+        gen.PrintInt(rb);
         break;
       case dac::Exit:
         gen.Sleep();

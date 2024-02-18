@@ -26,6 +26,7 @@ public:
     void ContextRef();
     void endStmt();
     void Print(std::ostream);
+    std::vector<Entry::ptr> getCode();
     /**
     sets the position member of each entry to the index in the code array
     */
@@ -41,6 +42,7 @@ public:
     size_t size()const{return code.size();}
     void add(Entry::ptr a);
     Entry::ptr operator[](size_t index){return code[index];}
+    void updateJumpRefs();
     private:
     struct FlowContext{
         Entry::ptr ref;

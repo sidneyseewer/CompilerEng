@@ -76,7 +76,9 @@ int main(int argc, char *argv[]) {
   // Dumbpsybol Table
   SymbolTable &st = SymbolTable::GetInstance();
   auto g = dach::getGen();
+  g.updateJumpRefs();
   g.updateIndex();
+
 
   NextUseCalc nuc{};
   nuc.Calc(g.begin(), g.end());
@@ -213,7 +215,8 @@ int main(int argc, char *argv[]) {
     case dac::IsNotEq:
     case dac::IsLess:
     case dac::IsGreater:
-
+      i++;
+      (g.begin() + i)->get()->setPosition(e->getPosition());
       break;
 
     case dac::Add:
@@ -251,7 +254,7 @@ int main(int argc, char *argv[]) {
       // std::cout<<"";
       break;
     case dac::Jump:
-      jumps.emplace_back(gen.Jump(tempReg, tempReg, 0), *(g.begin() + i));
+      jumps.emplace_back(gen.Jump(tempReg, tempReg, 0), e);
       break;
       break;
     case dac::Print:
@@ -262,13 +265,13 @@ int main(int argc, char *argv[]) {
       break;
     case dac::IsEq:
       // jumps.emplace_back(Args &&args...)
-      jumps.emplace_back(gen.JumpEQ(ra, rb, tempReg, 0), *(g.begin() + i + 1));
+      jumps.emplace_back(gen.JumpEQ(ra, rb, tempReg, 0), *(g.begin() + i));
       break;
     case dac::IsLeq:
-      jumps.emplace_back(gen.JumpLE(ra, rb, tempReg, 0), *(g.begin() + i + 1));
+      jumps.emplace_back(gen.JumpLE(ra, rb, tempReg, 0), *(g.begin() + i));
       break;
     case dac::IsGtq:
-      jumps.emplace_back(gen.JumpGE(ra, rb, tempReg, 0), *(g.begin() + i + 1));
+      jumps.emplace_back(gen.JumpGE(ra, rb, tempReg, 0), *(g.begin() + i));
       break;
     case dac::IsNotEq:
       jumps.emplace_back(gen.JumpNEQ(ra, rb, tempReg, 0), *(g.begin() + i + 1));
@@ -302,7 +305,7 @@ int main(int argc, char *argv[]) {
       std::cerr << "Internal error\n";
     else
       // TODO: iffalsejumps are stored as results
-      gen.SetAddress(j.first, x->get()->getPosition());
+      gen.SetAddress(j.first, j.first+4);//x->getJump()->getPosition());
   }
   std::fstream out{};
   out.open("./test");
@@ -313,5 +316,55 @@ int main(int argc, char *argv[]) {
   out << "Hallo\n";
   gen.WriteExecutable(out);
   out.close();
-  return 0;
+
+  /////////////////////////////
+   //start a if-then-else 
+   /////////////////////////////
+   /*
+   x := 1;
+   IF (x < 10) THEN
+      x := x + 1;
+       print (x)
+   ELSE
+      print (10);
+   */
+
+   /*DAC:
+      x = 9
+      IFFALSE x < 10 GOTO L1
+         x = x + 1
+         print (x)
+         GOTO L2
+   L1:print (10)
+   L2: ...
+   */
+  size_t r2=2;
+  size_t rComp=3;
+  size_t rTmp=4;
+   gen.LoadI(r2, 1);                    //x = 1;
+   gen.LoadI(rComp, 10);                //compare value = 10     
+   auto codePosOfJumpAdrL1 = gen.JumpGE(r2, rComp, rTmp, 0);   //jump to L1, if x < 10
+   gen.Inc(r2);                         //x = x + 1
+   gen.PrintInt(r2);
+   auto codePosOfJumpAdrL2 = gen.Jump(rTmp, rTmp, 0);  //jump to L2
+   auto L1 = gen.GetCodePosition();     //gets codeposition of L1
+   gen.PrintInt(rComp);                 //L1: print x
+   auto L2 = gen.GetCodePosition();     //L2: next instructions
+   gen.Sleep();                         //finish execution
+
+   //resolving the jump addresses
+   gen.SetAddress(codePosOfJumpAdrL1,L1);
+   gen.SetAddress(codePosOfJumpAdrL2,L2);
+  std::cout<<"\n\n";
+  gen.WriteDisassembled(std::cout);
+  std::ofstream file{ "test.iex" };
+   if (file)
+   {
+      gen.WriteExecutable(file);
+   }
+   else
+   {
+      std::cerr << "error write text.iex" << std::endl;
+      return 1;
+   }
 }

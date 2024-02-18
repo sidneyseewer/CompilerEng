@@ -65,6 +65,10 @@ public:
 static dac::Generator&& getGen(){
   return std::move(gen);
 }
+static void resetGen(){
+  dac::Generator g{};
+  gen=g;
+}
   static void ass(MIEC::Token *t) {
     auto tmp = SymbolTable::GetInstance().Find(coco_string_create_char(t->val));
     gen.add(dac::OpKind::Assign,dac::SymbolOperand::create(tmp));
@@ -145,11 +149,11 @@ static dac::Generator&& getGen(){
     gen.add(dac::OpKind::IfFalse);
     gen.ContextSetRef();
     prt(NULL, L"thnx"); }
-  static void sem(MIEC::Token *t) {
+  static void sem() {
     gen.endStmt();
 
     // std::cout<<"===============\n";
-    prt(t, L"sem");
+    prt(NULL,L"sem");
   }
   static void prt() {
     gen.add(dac::OpKind::Print);

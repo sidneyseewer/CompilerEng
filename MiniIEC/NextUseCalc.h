@@ -16,43 +16,27 @@
 #include <sys/types.h>
 #include <vector>
 
-class NCC {
-public:
-  using key_type = dac::Operand::ptr;
-  using value_type = std::optional<size_t>;
+// class NCC {
+// public:
+//   using key_type = dac::Operand::ptr;
+//   using value_type = std::optional<size_t>;
 
-private:
-  std::vector<std::pair<key_type, value_type>> container;
+// private:
+// using Container=std::vector<std::pair<key_type, value_type>>;
+//    Container container;
 
-public:
-  void set(key_type k, value_type v) {
-    OperandPointer<std::less<void *>> op{};
-    for (auto a : container) {
-      if (op(a.first, k)) {
-        a.second = v;
-        return;
-      }
-    }
-    container.emplace_back(k, v);
-  }
-  // bool hasKey(key_type k);
-  // value_type get(key_type k){}
-  auto begin() { return container.begin(); }
-  auto end() { return container.end(); }
-};
+// public:
+//   void set(key_type k, value_type v);
+//   Container::iterator begin() ;
+//   Container::iterator end() ;
 
+// };
 class NextUseCalc {
   using NextUsage_container = std::map<dac::Operand::ptr, std::optional<size_t>,
                                        OperandPointer<std::less<void *>>>;
   NextUsage_container lu{};
   std::map<size_t, bool> usedJumpes;
-  void addOP(auto ps, size_t i) {
-
-    auto a = extract<dac::SymbolOperand>(ps);
-    dac::DacOperand *b = extract<dac::DacOperand>(ps);
-    if (a != nullptr || (b != nullptr && b->isResult()))
-      lu[ps] = i;
-  }
+  void addOP(dac::Operand::ptr const &ps, size_t const &i);
 
 public:
   template <class Itr> void Calc(Itr const &begin, Itr const &end) {
@@ -115,7 +99,6 @@ public:
       case dac::Exit:
         break;
       }
-      
     }
   }
 };

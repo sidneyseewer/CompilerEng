@@ -1,7 +1,7 @@
 #include "helper.h"
 #include "dac/Entry.h"
 
-std::string toString(dac::Operand::ptr p){
+std::string toString(dac::Operand::ptr  const&p){
   auto sop = dac::extract<dac::SymbolOperand>(p);
   auto dop = dac::extract<dac::DacOperand>(p);
   if (sop != nullptr) {

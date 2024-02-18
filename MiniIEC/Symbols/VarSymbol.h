@@ -9,14 +9,20 @@
 #include <cstddef>
 #include <memory>
 #include <string>
-class VarSymbol: public Symbol
-{
-    size_t mOffset;
-    public:
+class VarSymbol : public Symbol {
+public:
   using ptr = std::shared_ptr<VarSymbol>;
-    static VarSymbol::ptr create(std::string name,Type::ptr type,size_t offset){return std::make_shared<VarSymbol>(name,type,offset);}
-    VarSymbol(std::string name,Type::ptr t,size_t offset):Symbol(name,t),mOffset(offset){}
-    size_t getOffset(){return mOffset;};
+
+private:
+  size_t mOffset;
+
+public:
+  VarSymbol(std::string const &name, Type::ptr const &t, size_t const &offset);
+  static VarSymbol::ptr create(std::string const &name, Type::ptr const &type,
+                               size_t const &offset) {
+    return std::make_shared<VarSymbol>(name, type, offset);
+  }
+  size_t getOffset()const;
 };
 
 #endif //!__VAR_SYMBOL_H_

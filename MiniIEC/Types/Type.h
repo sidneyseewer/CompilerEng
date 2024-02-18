@@ -7,9 +7,9 @@
 class Symbol;
 class Type {
 public:
-  using ptr=std::shared_ptr<Type>;
+  using ptr = std::shared_ptr<Type>;
   virtual std::size_t getSize() const = 0;
-  virtual std::shared_ptr<Symbol> getName() const =0;
+  virtual std::shared_ptr<Symbol> getName() const = 0;
 };
 
 #endif

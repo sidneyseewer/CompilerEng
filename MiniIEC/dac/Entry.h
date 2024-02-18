@@ -12,7 +12,6 @@
 #include <stdexcept>
 #include <utility>
 #include <variant>
-#include <stdexcept>
 #include <vector>
 namespace dac {
 class Entry {
@@ -21,62 +20,41 @@ private:
   Operand::ptr mFirst;
   Operand::ptr mSec;
   size_t pos;
+
 public:
-  bool isJumpDestination=false;
-  void setPosition(size_t p){pos=p;}
-  size_t getPosition(){return pos;}
-  Entry(OpKind k, Operand::ptr first, Operand::ptr second)
-      : mOpKind(k), mFirst(first), mSec(second) {}
-  Entry(OpKind k, Operand::ptr first)
-      : mOpKind(k), mFirst(first), mSec(nullptr) {}
-  Entry(OpKind k) : mOpKind(k), mFirst(nullptr), mSec(nullptr) {}
+  bool isJumpDestination = false;
+  void setPosition(size_t const &p);
+  size_t getPosition() const;
+  Entry(OpKind const &k, Operand::ptr const &first, Operand::ptr const &second);
+  Entry(OpKind const &k, Operand::ptr const &first);
+  Entry(OpKind const &k);
   using ptr = std::shared_ptr<Entry>;
-  void setSecond(Operand::ptr op) { mSec = op; };
-  void setFirst(Operand::ptr op) { mFirst = op; };
-  Operand::ptr &getFirst() { return mFirst; }
-  Operand::ptr &getSecond() { return mSec; }
-  OpKind getKind() { return mOpKind; }
-  static Entry::ptr create(OpKind k, Operand::ptr first, Operand::ptr second) {
+  void setSecond(Operand::ptr const &op);
+  void setFirst(Operand::ptr const &op);
+  Operand::ptr &getFirst();
+  Operand::ptr &getSecond();
+  OpKind getKind() const;
+  static Entry::ptr create(OpKind const &k, Operand::ptr const &first,
+                           Operand::ptr const &second) {
     return std::make_shared<Entry>(k, first, second);
   }
-  static Entry::ptr create(OpKind k, Operand::ptr first) {
+  static Entry::ptr create(OpKind const &k, Operand::ptr const &first) {
     return std::make_shared<Entry>(k, first);
   }
-  static Entry::ptr create(OpKind k) { return std::make_shared<Entry>(k); }
-    //next use line or 0 for no use
+  static Entry::ptr create(OpKind const &k) {
+    return std::make_shared<Entry>(k);
+  }
+  // next use line or 0 for no use
   using nextUse_valuetype = size_t;
   using nextUse_keytype = Operand::ptr;
-  bool hasNextUse(nextUse_keytype ptr){
-    bool ret=false;
-    for(auto u:nextUses)
-    {
-      if(Compare_operand_pointer<std::equal_to<void*>>(u.first, ptr))
-        ret=true;
-    }
-    return ret;
-  }
-  void addnextUsed(nextUse_keytype sym,nextUse_valuetype t)
-  {
-    // nextUses[sym]=t;
-    for(auto u:nextUses)
-    {
-      if(Compare_operand_pointer<std::equal_to<void*>>(u.first, sym))
-        return;
-    }
-    nextUses.emplace_back(sym,t);
-  }
-  nextUse_valuetype getNextUse(nextUse_keytype ptr) {
-       for(auto u:nextUses)
-    {
-      if(Compare_operand_pointer<std::equal_to<void*>>(u.first, ptr))
-        return u.second;
-    }
-    throw new std::out_of_range(" index ou tof range");
-    }
+  bool hasNextUse(nextUse_keytype ptr) const;
+  void addnextUsed(nextUse_keytype const &sym, nextUse_valuetype const &t);
+  nextUse_valuetype getNextUse(nextUse_keytype const &ptr) const;
 
 private:
-//  std::map<nextUse_keytype, nextUse_valuetype,OperandPointer<std::less<void*>>> 
-std::vector<std::pair<nextUse_keytype,nextUse_valuetype>> nextUses{};
+  //  std::map<nextUse_keytype,
+  //  nextUse_valuetype,OperandPointer<std::less<void*>>>
+  std::vector<std::pair<nextUse_keytype, nextUse_valuetype>> nextUses{};
 };
 } // namespace dac
 

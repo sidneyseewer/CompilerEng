@@ -17,13 +17,10 @@ class SymbolFactory : public Singelton<SymbolFactory> {
   size_t mOffset = 0;
 
 public:
-  SymbolFactory() {
-    auto x= TypeSymbol::create("integer", BaseType::create(INT, 4));
-    mTypeSymbol=x;
-  }
-  Symbol::ptr CreateVar(std::string name);
-  Symbol::ptr CreateConst(std::string name);
-  Symbol::ptr CreateType(std::string name);
+  SymbolFactory();
+  Symbol::ptr CreateVar(std::string const &name);
+  Symbol::ptr CreateConst(std::string const &name);
+  Symbol::ptr CreateType(std::string const &name);
 };
 
 #endif //!__SYMBOL_FACTORY_H__

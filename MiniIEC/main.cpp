@@ -67,12 +67,11 @@ int main(int argc, char *argv[]) {
     std::cout << std::endl;
     // Dumbpsybol Table
     SymbolTable &st = SymbolTable::GetInstance();
-    auto g = gen;
-    g.updateJumpRefs();
-    g.updateIndex();
+    gen.updateJumpRefs();
+    gen.updateIndex();
 
     NextUseCalc nuc{};
-    nuc.Calc(g.begin(), g.end());
+    nuc.Calc(gen.cbegin(), gen.cend());
 #ifndef NDEBUG
     std::cout<<"NextUsage Table dac line count\n";
     prt(g, st);
@@ -84,11 +83,11 @@ int main(int argc, char *argv[]) {
     do {
       lasSize = currentSize;
       iterations++;
-      MIEC::CodeGenRISCV gen{false, false};
+      MIEC::CodeGenRISCV gen2{false, false};
 
-      CodeGenAdapter adp{&gen, true};
-      adp.Run(g.getCode());
-      currentSize = gen.GetCodePosition();
+      CodeGenAdapter adp{&gen2, true};
+      adp.Run(gen.getCode());
+      currentSize = gen2.GetCodePosition();
 #ifndef NDEBUG
       std::cout << std::format("{} {}\n", iterations, currentSize);
 #endif
@@ -101,7 +100,7 @@ int main(int argc, char *argv[]) {
     MIEC::CodeGenRISCV cgen{true, false};
     CodeGenAdapter adp{&cgen, false};
 
-    adp.Run(g.getCode());
+    adp.Run(gen.getCode());
  
 #ifndef NDEBUG
     std::cout<<"\n\ndissasembly:\n";

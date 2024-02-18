@@ -8,19 +8,22 @@
 #include <cstddef>
 #include <memory>
 class BaseType : public Type {
+public:
+  using ptr = std::shared_ptr<BaseType>;
+
+private:
   const TypeKind mKind;
   const size_t msize;
   Symbol::ptr mSymbol;
 
 public:
-  using ptr = std::shared_ptr<BaseType>;
-  static BaseType::ptr create(TypeKind kind, size_t size) {
+  BaseType(TypeKind const &kind, size_t const &size);
+  static BaseType::ptr create(TypeKind const &kind, size_t const &size) {
     return std::make_shared<BaseType>(kind, size);
   }
-  BaseType(TypeKind kind, size_t size) : mKind(kind), msize(size) {}
-  void setSymbol(Symbol::ptr s) { mSymbol = s; }
-  std::size_t getSize() const override { return msize; }
-  Symbol::ptr getName() const override { return mSymbol; }
+  void setSymbol(Symbol::ptr const &s);
+  std::size_t getSize() const override;
+  Symbol::ptr getName() const override;
 };
 
 #endif //!__BASE_TYPE_H__

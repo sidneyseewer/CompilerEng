@@ -12,23 +12,25 @@
 
 using namespace std;
 
+SymbolFactory::SymbolFactory() {
+  auto x = TypeSymbol::create("integer", BaseType::create(INT, 4));
+  mTypeSymbol = x;
+}
+Symbol::ptr SymbolFactory::CreateConst(string const &name) {
 
-Symbol::ptr SymbolFactory::CreateConst(string name){
-    
-    return ConstSymbol::create(name, mTypeSymbol->getType());
+  return ConstSymbol::create(name, mTypeSymbol->getType());
 }
-Symbol::ptr SymbolFactory::CreateType(string name){
-    if(name!="Integer")
-    {
-        // throw "unknown type";
-        //TODO:  error message "-- line 4 col 8: "Integer" expected"
-    }
-    return mTypeSymbol;
+Symbol::ptr SymbolFactory::CreateType(string const &name) {
+  if (name != "Integer") {
+    // throw "unknown type";
+    // TODO:  error message "-- line 4 col 8: "Integer" expected"
+  }
+  return mTypeSymbol;
 }
-Symbol::ptr SymbolFactory::CreateVar(string name){
-    std::size_t offset=mOffset;
-    auto a=mTypeSymbol->getType();
-    auto b=a->getSize();
-    mOffset+=b;
-    return VarSymbol::create(name,mTypeSymbol->getType(),offset);
+Symbol::ptr SymbolFactory::CreateVar(string const &name) {
+  std::size_t offset = mOffset;
+  auto a = mTypeSymbol->getType();
+  auto b = a->getSize();
+  mOffset += b;
+  return VarSymbol::create(name, mTypeSymbol->getType(), offset);
 }

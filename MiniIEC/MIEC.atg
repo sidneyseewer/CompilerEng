@@ -52,11 +52,11 @@ PRODUCTIONS
     CONDITION = EXPR RELOP (. dach::rop(t); .) EXPR.
     PRINT_STMNT = PRINT(. dach::prt();.) LPAREN EXPR RPAREN SEMICOLON (. dach::sem(); .) .
     ASSIGNMENT_STMNT = IDENT (. dach::ass(t); .) ASSIGN EXPR SEMICOLON (. dach::sem(); .) .
-    WHILE_STMNT = WHILE_WORD (. dach::wle();.) CONDITION DO_WORD (. dach::doo();.) STMNT END_WORD (. dach::wend();.). 
+    WHILE_STMNT = WHILE_WORD (. dach::wle();.) CONDITION DO_WORD (. dach::doo();.) {STMNT} END_WORD (. dach::wend();.). 
     STMNT = ASSIGNMENT_STMNT 
     | PRINT_STMNT
     | WHILE_STMNT 
-    | IF_WORD (. dach::iff(); .) CONDITION THEN_WORD (. dach::thn(); .) STMNT [ELSE_WORD (. dach::els(); .) STMNT] END_WORD (. dach::ifend(); .).
+    | IF_WORD (. dach::iff(); .) CONDITION THEN_WORD (. dach::thn(); .) {STMNT} [ELSE_WORD (. dach::els(); .) {STMNT}] END_WORD (. dach::ifend(); .) .
     VARDECL = BEGIN_VAR {IDENT (. SH::addVarSymbol(coco_string_create_char(t->val)); std::wcout<<la->val;.) COLON TYPES SEMICOLON} END_VAR.
     MIEC = PROGRAM IDENT [VARDECL] BEGIN_WORD {STMNT} END_WORD (. dach::end(); .).
 

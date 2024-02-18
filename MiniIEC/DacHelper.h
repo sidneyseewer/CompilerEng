@@ -55,7 +55,8 @@ public:
   void prt();
   void doo();
   void rop(MIEC::Token *t);
-
+  
+  void verifyVarSymbol(MIEC::Token*t);
   Symbol::ptr addConstSymbol(std::string const &name);
   Symbol::ptr addVarSymbol(std::string const &name);
   Symbol::ptr addTypeSymbol(std::string const &name);

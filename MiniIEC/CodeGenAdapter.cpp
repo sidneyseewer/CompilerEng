@@ -1,5 +1,5 @@
 #include "CodeGenAdapter.h"
-
+#include "dac/Operands/SymbolOperand.h"
 CodeGenAdapter::CodeGenAdapter(CodeGen<int32_t> *pgen, bool const& dryRun)
     : dryRun(dryRun), gen(pgen) {}
 void CodeGenAdapter::Run(std::vector<dac::Entry::ptr> const &g) {

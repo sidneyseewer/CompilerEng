@@ -1,4 +1,5 @@
 #include "DacHelper.h"
+#include "Scanner.h"
 #include <cstddef>
 
 void DacHelper::prt(MIEC::Token *t, wchar_t const *const s) {
@@ -158,7 +159,16 @@ void DacHelper::rop(MIEC::Token *t) {
   }
   prt(t, L"rop");
 }
+void DacHelper::verifyVarSymbol(MIEC::Token*t)
+{
+  if(t!=nullptr&&symbolTable.Find(coco_string_create_char(t->val))!=nullptr)
+  {
 
+  }
+  else {
+    e(L"unknown variable");
+  }
+}
 Symbol::ptr DacHelper::addConstSymbol(std::string const &name) {
   auto x = symbolTable.Find(name);
   if (x == nullptr) {

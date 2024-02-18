@@ -44,7 +44,7 @@ IGNORE CR + LF + TAB
    
 PRODUCTIONS
 
-    FACT = IDENT  | NUMBER (. dach.addConstSymbol(coco_string_create_char(t->val)); .).
+    FACT = IDENT (. dach.verifyVarSymbol(t); .) | NUMBER (. dach.addConstSymbol(coco_string_create_char(t->val)); .).
     FACT2 = FACT (. dach.fac(t); .) | LPAREN (. dach.lpr(); .) EXPR RPAREN (. dach.rpr(); .).
     TERM = FACT2 {(TIMES | DIVIDE) (. dach.fop(t); .) FACT2 } .
     EXPR = TERM {(PLUS | MINUS) (. dach.top(t); .) TERM}.

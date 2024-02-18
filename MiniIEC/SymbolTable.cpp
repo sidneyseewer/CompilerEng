@@ -35,7 +35,7 @@ bool SymbolTable::lookup(const std::string &identifier,
                          Symbol::ptr const &entry) const {
   auto it = symbols.find(identifier);
   if (it != symbols.end()) {
-    entry = it->second;
+    // entry = it->second;
     return true;
   }
   return false;

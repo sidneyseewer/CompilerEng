@@ -7,7 +7,7 @@
 namespace dac {
 class SymbolOperand : public Operand {
   Symbol::ptr mSymbol;
-  void x() override;
+  void x() override{};
 
 public:
   using ptr = std::shared_ptr<SymbolOperand>;

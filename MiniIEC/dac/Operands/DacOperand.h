@@ -11,10 +11,10 @@ using Entry_ptr = std::shared_ptr<Entry>;
 class DacOperand : public Operand {
   Entry_ptr mResult = nullptr;
   Entry_ptr mJump = nullptr;
+  void x() override {}
 
 public:
   using ptr = std::shared_ptr<DacOperand>;
-  void x() override {}
   Entry_ptr getResult();
   Entry_ptr getJump();
   Entry_ptr get();

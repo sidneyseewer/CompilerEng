@@ -273,10 +273,10 @@ int main(int argc, char *argv[]) {
                            *(g.begin() + i + 1));
         break;
       case dac::IsLess:
-        jumps.emplace_back(gen.JumpL(ra, rb, tempReg, 0), *(g.begin() + i + 1));
+        jumps.emplace_back(gen.JumpL(ra, rb, tempReg, 0), *(g.begin() + i ));
         break;
       case dac::IsGreater:
-        jumps.emplace_back(gen.JumpG(ra, rb, tempReg, 0), *(g.begin() + i + 1));
+        jumps.emplace_back(gen.JumpG(ra, rb, tempReg, 0), *(g.begin() + i ));
         break;
         break;
       }

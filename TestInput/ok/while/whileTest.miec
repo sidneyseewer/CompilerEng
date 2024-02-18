@@ -1,0 +1,56 @@
+PROGRAM whileTest
+	BEGIN_VAR
+		a: Integer;
+	END_VAR
+BEGIN
+	a := 0;
+	
+	WHILE a < 11 DO
+		a := a;
+		a := a + 1;
+	END
+	
+	print(a);
+		
+	WHILE a > 0 DO
+		print(a);
+		a := a - 1;
+	END
+	
+	print(a);
+	
+	WHILE a <= 5 DO
+		IF a = 5 THEN
+			print(a);
+		END
+		a := a + 1;
+	END
+	
+	WHILE a = 6 DO
+		a := a + 1;
+	END
+	
+	WHILE a = 5 DO
+		a := 0;
+	END
+	
+	print(a);
+	
+	WHILE a < 11 DO
+		a := a + 2;
+		print(a);
+	END
+	
+	print(a);
+	
+	a := 10;
+	
+	WHILE a != 6 DO
+		a := a - 1;
+		print(a);
+	END
+	
+	
+	(* expected:  0x0A, 0x0A ... 0x00, 0x05, 0x07, 0x09, 0x0B, 0x0B, 0x09, 0x08, 0x07, 0x06 *)
+	
+END

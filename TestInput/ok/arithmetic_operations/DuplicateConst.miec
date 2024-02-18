@@ -1,0 +1,9 @@
+PROGRAM DuplicateConst
+	BEGIN_VAR
+		a: Integer;
+		b: Integer;
+	END_VAR
+BEGIN
+	a := 3 + 3 + b;
+	b := b + 3;
+END

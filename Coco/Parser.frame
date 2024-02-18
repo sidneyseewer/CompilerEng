@@ -69,7 +69,7 @@ private:
 	bool StartOf(int s);
 	void ExpectWeak(int n, int follow);
 	bool WeakSeparator(int n, int syFol, int repFol);
-
+	DacHelper & dach;
 public:
 	Scanner *scanner;
 	Errors  *errors;
@@ -79,7 +79,7 @@ public:
 
 -->declarations
 
-	Parser(Scanner *scanner);
+	Parser(Scanner *scanner,DacHelper&helper);
 	~Parser();
 	void SemErr(const wchar_t* msg);
 
@@ -260,15 +260,15 @@ void Parser::Parse() {
 -->parseRoot
 }
 
-Parser::Parser(Scanner *scanner) {
+Parser::Parser(Scanner *scanner,DacHelper&dach ):dach(dach),scanner(scanner) {
 -->constants
 	ParserInitCaller<Parser>::CallInit(this);
 	dummyToken = NULL;
 	t = la = NULL;
 	minErrDist = 2;
 	errDist = minErrDist;
-	this->scanner = scanner;
 	errors = new Errors();
+	dach.setErrorHandler([&](wchar_t const*const m){this->SemErr(m);});
 }
 
 bool Parser::StartOf(int s) {

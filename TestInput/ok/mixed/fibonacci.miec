@@ -1,0 +1,26 @@
+PROGRAM Fibonacci
+	BEGIN_VAR
+		currentVal: Integer;
+		lastVal: Integer;
+		input: Integer;
+		result: Integer;
+		
+	END_VAR
+	
+	BEGIN
+	
+		currentVal := 1;
+		lastVal := 0;
+		input := 586;
+		result := 0;
+		
+		
+		WHILE result <= input DO
+			result := lastVal + currentVal;
+			lastVal := currentVal;
+			currentVal := result;
+			print(result);
+			
+		END
+		
+END

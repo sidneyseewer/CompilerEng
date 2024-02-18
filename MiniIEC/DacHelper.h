@@ -1,6 +1,7 @@
 #ifndef __DAC_HELPER_H__
 #define __DAC_HELPER_H__
 #include "Scanner.h"
+#include "SymbolFactory.h"
 #include "SymbolTable.h"
 #include "dac/Entry.h"
 #include "dac/Generator.h"
@@ -11,12 +12,18 @@
 #include <cstddef>
 #include <cwchar>
 #include <format>
+#include <functional>
 #include <iostream>
 #include <memory>
 #include <ostream>
 #include <vector>
-class dach {
-  static void prt(MIEC::Token *t, wchar_t const * const s) {
+
+class DacHelper {
+  
+public:
+using errorHandler=std::function<void(wchar_t const*const)>;
+private:
+  void prt(MIEC::Token *t, wchar_t const * const s) {
 
     #ifndef NDEBUG
     std::wcout << s << " ";
@@ -27,7 +34,7 @@ class dach {
     #endif
   }
 
-  static void print(dac::Entry::ptr e)
+  void print(dac::Entry::ptr e)
   {
     if(e->getFirst()!=nullptr)
     {
@@ -38,31 +45,35 @@ class dach {
         print(e->getSecond());
     }
   }
-  static void print (dac::Operand::ptr e){
+  void print (dac::Operand::ptr e){
     
   }
   
-  static dac::Generator gen;
-
+  dac::Generator &gen;
+  SymbolFactory&factory;
+  SymbolTable&symbolTable;
+  errorHandler e;
 public:
-static dac::Generator&& getGen(){
+void setErrorHandler(errorHandler e){this->e=e;};
+  DacHelper(dac::Generator &gen,SymbolFactory &fac=SymbolFactory::GetInstance(),SymbolTable&st=SymbolTable::GetInstance()):gen(gen),factory(fac),symbolTable(st){}
+dac::Generator&& getGen(){
   return std::move(gen);
 }
-static void resetGen(){
+void resetGen(){
   dac::Generator g{};
   gen=g;
 }
-  static void ass(MIEC::Token *t) {
-    auto tmp = SymbolTable::GetInstance().Find(coco_string_create_char(t->val));
+  void ass(MIEC::Token *t) {
+    auto tmp = symbolTable.Find(coco_string_create_char(t->val));
     gen.add(dac::OpKind::Assign,dac::SymbolOperand::create(tmp));
     prt(t, L"ass");
   }
-  static void fac(MIEC::Token *t) {
-    auto tmp = SymbolTable::GetInstance().Find(coco_string_create_char(t->val));
+  void fac(MIEC::Token *t) {
+    auto tmp = symbolTable.Find(coco_string_create_char(t->val));
     gen.add(dac::SymbolOperand::create(tmp));
     prt(t, L"fac");
   }
-  static void fop(MIEC::Token *t) {
+  void fop(MIEC::Token *t) {
     dac::OpKind kind;
     switch (*t->val) {
     case L'*':
@@ -72,18 +83,18 @@ static void resetGen(){
       kind = dac::OpKind::Div;
       break;
     default:
-      throw "unsuported fop"; // TODO:
+      e(L"unsupported operation");
     }
     gen.addf(kind);
     prt(t, L"fop");
   }
-  static void lpr() {
+  void lpr() {
     gen.pushPr();
     prt(nullptr, L"lpr"); }
-  static void rpr() { 
+  void rpr() { 
     gen.popPr();
     prt(nullptr, L"rpr"); }
-  static void top(MIEC::Token *t) { 
+  void top(MIEC::Token *t) { 
     dac::OpKind kind;
     switch (*t->val) {
     case L'+':
@@ -93,61 +104,61 @@ static void resetGen(){
       kind = dac::OpKind::Sub;
       break;
     default:
-      throw "unsupported top"; // TODO:
+    e(L"unsopported operation");
     }
     gen.addt(kind);
     prt(t, L"top"); }
-  static void end() {
+  void end() {
     gen.add(dac::OpKind::Exit);
     gen.endStmt();
     prt(NULL, L"end");
-  }static void wend() {
+  }void wend() {
     gen.add(dac::OpKind::Jump,gen.ContextGetIndex());
     gen.ContextRef(1);
     gen.popContext();
     gen.endStmt();
     prt(NULL, L"wend");
-  }static void ifend() {
+  }void ifend() {
     gen.ContextRef();
     gen.popContext();
     gen.endStmt();
     prt(NULL, L"iend");
   }
-  static void wle() {
+  void wle() {
     gen.pushContext();
     gen.ContextSetIndex();
     prt(NULL, L"wle");
   }
-  static void els() { 
+  void els() { 
     gen.add(dac::OpKind::Jump);
     gen.ContextRef(1);
     gen.ContextSetRef();
     prt(NULL, L"els"); }
-  static void iff() {
+  void iff() {
     gen.pushContext();
     gen.ContextSetIndex();
     prt(NULL, L"iff");
   }
-  static void thn() {
+  void thn() {
     gen.add(dac::OpKind::IfFalse);
     gen.ContextSetRef();
     prt(NULL, L"thnx"); }
-  static void sem() {
+  void sem() {
     gen.endStmt();
 
     // std::cout<<"===============\n";
     prt(NULL,L"sem");
   }
-  static void prt() {
+  void prt() {
     gen.add(dac::OpKind::Print);
     prt(NULL, L"prt");
   }
-  static void doo() {
+  void doo() {
     gen.add(dac::OpKind::IfFalse);
     gen.ContextSetRef();
     gen.endStmt();
      prt(nullptr, L"do"); }
-  static void rop(MIEC::Token *t) { 
+  void rop(MIEC::Token *t) { 
     dac::OpKind kind;
     if(std::wcscmp(t->val,L"=")==0)
     {
@@ -161,7 +172,7 @@ static void resetGen(){
     } else if(std::wcscmp(t->val,L"<=")==0) {
       kind=dac::OpKind::IsLeq;
 
-    }else if (std::wcscmp(t->val,L"<=")==0) {
+    }else if (std::wcscmp(t->val,L">=")==0) {
       kind=dac::OpKind::IsGtq;
 
     }else if (std::wcscmp(t->val,L"!=")==0)
@@ -169,11 +180,37 @@ static void resetGen(){
       kind=dac::OpKind::IsNotEq;
 
     }else {
-      throw "unsupported rop";
-    //TODO: throw
+      e(L"unsupported operation");
     }
     gen.add(kind);
     prt(t, L"rop"); }
-  // static
+  
+  Symbol::ptr addConstSymbol(std::string name) {
+    auto x = symbolTable.Find(name);
+    if (x == nullptr) {
+        x=factory.CreateConst(name);
+        symbolTable.Add(x);
+    }
+    return x;
+  }
+  Symbol::ptr addVarSymbol(std::string name) {
+    auto x = symbolTable.Find(name);
+    if (x == nullptr) {
+        x=factory.CreateVar(name);
+        symbolTable.Add(x);
+    }
+    else {
+      e(L"double declaratuion variable ");
+    }
+    return x;
+  }
+  Symbol::ptr addTypeSymbol(std::string name) {
+    auto x = symbolTable.Find(name);
+    if (x == nullptr) {
+        x=factory.CreateType(name);
+        symbolTable.Add(x);
+    }
+    return x;
+  }
 };
 #endif //!__DAC_HELPER_H__

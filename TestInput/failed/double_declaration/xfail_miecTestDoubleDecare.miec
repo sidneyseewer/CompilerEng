@@ -1,0 +1,14 @@
+PROGRAM Hello
+	BEGIN_VAR
+		a: Integer;
+		b: Integer;
+		a: Integer;
+	END_VAR
+BEGIN
+	a := 3;
+	b := 1;
+	WHILE a >= 0 DO
+	   a := a - 1;
+	   print(a);
+	END
+END

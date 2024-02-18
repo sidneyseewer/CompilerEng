@@ -1,0 +1,18 @@
+PROGRAM Test
+BEGIN_VAR
+	n : Integer;
+	fac : Integer;
+	val : Integer;
+END_VAR
+
+BEGIN
+
+	n := 5;
+	fac := 1;
+	val := 1; 
+
+	WHILE fac <= n DO
+		val = val * fac;
+		fac := fac + 1;
+	END
+END

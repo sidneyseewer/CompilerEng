@@ -1,0 +1,48 @@
+PROGRAM BigTest
+	BEGIN_VAR
+		idx: Integer;
+		nrOfLoops: Integer;
+	END_VAR
+	
+	BEGIN
+	
+		idx := 0;
+		nrOfLoops := 11;
+		
+		(*program should print numbers from 0 to 10*)
+		(*9* shows the depth of the if statements*)
+		WHILE idx < nrOfLoops DO 
+			
+			print(idx);
+			
+			IF idx = 0 THEN
+				print(idx);
+			ELSE
+				print(22);
+				IF idx <= 1 THEN
+					print(idx);
+				ELSE
+					print(222);
+					IF idx = 9 THEN
+						print(idx);
+					ELSE
+						print(2222);
+						IF idx >= 8 THEN
+							print(idx);
+						ELSE
+							print(22222);
+							IF idx != 10 THEN
+								print(idx);
+							END
+						END
+					END
+				END			
+			END
+			idx := idx + 1;
+			
+			
+			
+		END
+		print(idx);
+END
+		

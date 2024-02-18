@@ -1,0 +1,10 @@
+PROGRAM Hello
+  BEGIN_VAR
+    a, x : Integer;
+  END_VAR
+BEGIN
+  a := 1;
+  
+  x := a / 0;
+  
+END

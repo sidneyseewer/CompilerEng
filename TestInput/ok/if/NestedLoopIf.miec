@@ -1,0 +1,28 @@
+PROGRAM Hello
+	BEGIN_VAR
+		a: Integer;
+		b: Integer;
+		c: Integer;
+	END_VAR
+BEGIN
+	a := (3+2)+(3+2);
+	b := 4;
+	c := 16;
+	
+	IF a=10 THEN print(1); END
+	IF b=4 THEN print(2); END
+	IF c=16 THEN print(3); END
+	
+	WHILE b <= a DO
+		IF a=b THEN
+			WHILE c>a DO
+				b := b+1;
+				print(a);
+				a := a+1;
+			END
+		ELSE
+			print(b);
+		END
+		b := b + 1;
+	END
+END

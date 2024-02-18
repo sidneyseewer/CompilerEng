@@ -1,0 +1,5 @@
+PROGRAM Mult
+BEGIN
+	a := 5 * 3;
+	print(a);
+END

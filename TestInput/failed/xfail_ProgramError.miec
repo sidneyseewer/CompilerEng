@@ -1,0 +1,20 @@
+(* @author Entinger, Schütz
+   @brief Sample MIEC program with errors in the program
+   @file ProgramError.miec
+ *)
+PROGRAM ProgramError
+	BEGIN_VAR
+		a: Integer;
+		b: Integer;
+	END_VAR
+BEGIN
+	a := 3 * 6 + (2 * 3);
+	WHILE b < DO
+		b := b + 1;
+	END
+	IF a > b
+		print(a);
+	ELSE
+		print(b)
+	END
+END

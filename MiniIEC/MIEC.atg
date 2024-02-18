@@ -1,4 +1,3 @@
-#include "SymbolHelper.h"
 #include <iostream>
 #include "DacHelper.h"
 
@@ -45,19 +44,19 @@ IGNORE CR + LF + TAB
    
 PRODUCTIONS
 
-    FACT = IDENT  | NUMBER (. SH::addConstSymbol(coco_string_create_char(t->val)); .).
-    FACT2 = FACT (. dach::fac(t); .) | LPAREN (. dach::lpr(); .) EXPR RPAREN (. dach::rpr(); .).
-    TERM = FACT2 {(TIMES | DIVIDE) (. dach::fop(t); .) FACT2 } .
-    EXPR = TERM {(PLUS | MINUS) (. dach::top(t); .) TERM}.
-    CONDITION = EXPR RELOP (. dach::rop(t); .) EXPR.
-    PRINT_STMNT = PRINT(. dach::prt();.) LPAREN EXPR RPAREN SEMICOLON (. dach::sem(); .) .
-    ASSIGNMENT_STMNT = IDENT (. dach::ass(t); .) ASSIGN EXPR SEMICOLON (. dach::sem(); .) .
-    WHILE_STMNT = WHILE_WORD (. dach::wle();.) CONDITION DO_WORD (. dach::doo();.) {STMNT} END_WORD (. dach::wend();.). 
+    FACT = IDENT  | NUMBER (. dach.addConstSymbol(coco_string_create_char(t->val)); .).
+    FACT2 = FACT (. dach.fac(t); .) | LPAREN (. dach.lpr(); .) EXPR RPAREN (. dach.rpr(); .).
+    TERM = FACT2 {(TIMES | DIVIDE) (. dach.fop(t); .) FACT2 } .
+    EXPR = TERM {(PLUS | MINUS) (. dach.top(t); .) TERM}.
+    CONDITION = EXPR RELOP (. dach.rop(t); .) EXPR.
+    PRINT_STMNT = PRINT(. dach.prt();.) LPAREN EXPR RPAREN SEMICOLON (. dach.sem(); .) .
+    ASSIGNMENT_STMNT = IDENT (. dach.ass(t); .) ASSIGN EXPR SEMICOLON (. dach.sem(); .) .
+    WHILE_STMNT = WHILE_WORD (. dach.wle();.) CONDITION DO_WORD (. dach.doo();.) {STMNT} END_WORD (. dach.wend();.). 
     STMNT = ASSIGNMENT_STMNT 
     | PRINT_STMNT
     | WHILE_STMNT 
-    | IF_WORD (. dach::iff(); .) CONDITION THEN_WORD (. dach::thn(); .) {STMNT} [ELSE_WORD (. dach::els(); .) {STMNT}] END_WORD (. dach::ifend(); .) .
-    VARDECL = BEGIN_VAR {IDENT (. SH::addVarSymbol(coco_string_create_char(t->val)); std::wcout<<la->val;.) COLON TYPES SEMICOLON} END_VAR.
-    MIEC = PROGRAM IDENT [VARDECL] BEGIN_WORD {STMNT} END_WORD (. dach::end(); .).
+    | IF_WORD (. dach.iff(); .) CONDITION THEN_WORD (. dach.thn(); .) {STMNT} [ELSE_WORD (. dach.els(); .) {STMNT}] END_WORD (. dach.ifend(); .) .
+    VARDECL = BEGIN_VAR {IDENT (. dach.addVarSymbol(coco_string_create_char(t->val)); std::wcout<<la->val;.) COLON TYPES SEMICOLON} END_VAR.
+    MIEC = PROGRAM IDENT [VARDECL] BEGIN_WORD {STMNT} END_WORD (. dach.end(); .).
 
 END MIEC .

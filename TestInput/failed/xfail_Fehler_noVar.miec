@@ -1,0 +1,9 @@
+PROGRAM print
+BEGIN
+a := 3 * 6 + (2 * 3);
+	WHILE b < a DO
+		b := b + 1;
+	END
+END
+
+(*Print: should not compile*)

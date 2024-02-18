@@ -1,4 +1,5 @@
 #include "Scanner.h"
+#include "dac/Generator.h"
 #include "dac/OpKind.h"
 #include "dac/Operands/DacOperand.h"
 #include "dac/Operands/Operand.h"
@@ -35,23 +36,24 @@ class TokenGen{
 };
 TEST_CASE("DacHelper If")
 {
-    dach::resetGen();
+    dac::Generator dacg{};
+    DacHelper dach{dacg};
     TokenGen g{};
-    dach::iff();
-    dach::fac(g.create(L"a"));
-    dach::rop(g.create(L"<"));
-    dach::fac(g.create(L"b"));
-    dach::thn();
-    dach::prt();
-    dach::fac(g.create(L"a"));
-    dach::sem();
-    dach::els();
-    dach::prt();
-    dach::fac(g.create(L"b"));
-    dach::sem();
-    dach::ifend();
-    dach::end();
-    auto code=dach::getGen().getCode();
+    dach.iff();
+    dach.fac(g.create(L"a"));
+    dach.rop(g.create(L"<"));
+    dach.fac(g.create(L"b"));
+    dach.thn();
+    dach.prt();
+    dach.fac(g.create(L"a"));
+    dach.sem();
+    dach.els();
+    dach.prt();
+    dach.fac(g.create(L"b"));
+    dach.sem();
+    dach.ifend();
+    dach.end();
+    auto code=dach.getGen().getCode();
 
     REQUIRE(code[0]->getKind()==dac::OpKind::IsLess);
     REQUIRE(dac::extract<dac::SymbolOperand>(code[0]->getFirst())->get()->GetName()=="a");

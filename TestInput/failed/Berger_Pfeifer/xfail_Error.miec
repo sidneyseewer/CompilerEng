@@ -1,0 +1,15 @@
+PROGRAM Error
+   BEGIN_VAR
+      b: char;
+   END_VAR
+BEGIN
+   a := 3 % 6 + (2 * 3);
+   WHILE b < a DO
+      b := b + 1;
+   END
+   IF a > b THEN
+      print(a);
+   ELSE
+      print(b);
+   END
+END

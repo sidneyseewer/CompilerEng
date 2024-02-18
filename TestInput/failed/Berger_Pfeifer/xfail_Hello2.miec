@@ -1,0 +1,19 @@
+PROGRAM Hello
+   BEGIN_VAR
+      a: Integer;
+      b: Integer;
+   END_VAR
+BEGIN
+   a := 3 * 6 + (2 * 3);
+   WHILE b < a DO
+      b := b + 1;
+   END
+   
+   c := 123;
+   
+   IF a > b THEN
+      print(a);
+   ELSE
+      print(c);
+   END
+END

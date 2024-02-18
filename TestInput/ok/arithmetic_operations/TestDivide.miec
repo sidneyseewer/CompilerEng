@@ -1,0 +1,15 @@
+(*
+	Test division
+	output: 4 2
+*)
+
+PROGRAM TestMultiply
+	BEGIN_VAR
+		a: Integer;
+		b: Integer;
+	END_VAR
+BEGIN
+	a := 24 / 3 / 2;
+	print(a);
+	print(a / 2);
+END

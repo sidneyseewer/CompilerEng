@@ -125,6 +125,13 @@ void Generator::updateIndex(){
   for(size_t i=0;i<code.size();i++)
   {
     code[i]->setPosition(i);
+    auto x = extract<dac::DacOperand>(code[i]->getFirst());
+      if ((x != nullptr && !x->isJump()) || x == nullptr) {
+        x = extract<dac::DacOperand>(code[i]->getSecond());
+      }
+      if (x != nullptr && x->isJump()) {
+        x->get()->isJumpDestination=true;
+      }
   }
 }
 // void Generator::Print(std::ostream ostream) {

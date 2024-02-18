@@ -100,7 +100,7 @@ void prt(T &g,F& st,std::ostream &cout=std::cout)
       else
         std::cout << std::format(b, '-');
     }
-    std::cout << dac::OpKindToString(e.get()->getKind());
+    std::cout << (e.get()->isJumpDestination?'x':' ')<<dac::OpKindToString(e.get()->getKind());
     std::cout << " " << toString(e->getFirst()) << " "
               << toString(e->getSecond()) << std::endl;
   }

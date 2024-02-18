@@ -22,6 +22,7 @@ private:
   Operand::ptr mSec;
   size_t pos;
 public:
+  bool isJumpDestination=false;
   void setPosition(size_t p){pos=p;}
   size_t getPosition(){return pos;}
   Entry(OpKind k, Operand::ptr first, Operand::ptr second)

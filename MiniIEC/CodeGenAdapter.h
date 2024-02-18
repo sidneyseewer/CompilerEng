@@ -26,11 +26,11 @@ public:
     regadm.AssignRegister(tempReg, temRegInstruction);
 
     // std::vector<std::pair<CodeGen<int32_t>::WORD, dac::Entry::ptr>> jumps{};
-    for (size_t i = 0; i < g.size(); i++) {
-      dac::Entry::ptr e = *(g.begin() + i);
       RegisterAdmin::RegNr ra = 0;
       RegisterAdmin::RegNr rb = 0;
       RegisterAdmin::RegNr rc = 0;
+    for (size_t i = 0; i < g.size(); i++) {
+      dac::Entry::ptr e = *(g.begin() + i);
       size_t jumpDestination;
       dac::SymbolOperand *f1s{nullptr};
       dac::SymbolOperand *f2s;
@@ -41,6 +41,12 @@ public:
       f2s = dac::extract<dac::SymbolOperand>(e->getSecond());
       f2d = dac::extract<dac::DacOperand>(e->getSecond());
       auto x = dac::DacOperand::createResult(e);
+      if(e->isJumpDestination)
+      {
+        regadm.FreeRegister(ra);
+        regadm.FreeRegister(rb);
+        // regadm.FreeRegister(rc);
+      }
       if (dryRun) {
         e->setPosition(gen->GetCodePosition());
       } else {
@@ -193,26 +199,26 @@ public:
         break;
       case dac::IsEq:
         // jumps.emplace_back(Args &&args...)
-        gen->JumpEQ(ra, rb, tempReg, jumpDestination);
+        gen->JumpNEQ(ra, rb, tempReg, jumpDestination);
         break;
       case dac::IsLeq:
-        gen->JumpLE(ra, rb, tempReg,  jumpDestination);
+        gen->JumpG(ra, rb, tempReg,  jumpDestination);
         break;
       case dac::IsGtq:
-        gen->JumpGE(ra, rb, tempReg,  jumpDestination);
+        gen->JumpLE(ra, rb, tempReg,  jumpDestination);
         break;
       case dac::IsNotEq:
-        gen->JumpNEQ(ra, rb, tempReg,  jumpDestination);
+        gen->JumpEQ(ra, rb, tempReg,  jumpDestination);
         break;
       case dac::IsLess:
-        gen->JumpL(ra, rb, tempReg,  jumpDestination);
+        gen->JumpGE(ra, rb, tempReg,  jumpDestination);
         break;
       case dac::IsGreater:
-        gen->JumpG(ra, rb, tempReg,  jumpDestination);
+        gen->JumpLE(ra, rb, tempReg,  jumpDestination);
         break;
         break;
       }
-      if (!e->hasNextUse(e->getFirst()) && ra != 0) {
+      if (!e->hasNextUse(e->getFirst()) && ra != 0 ) {
         regadm.FreeRegister(ra);
       }
 

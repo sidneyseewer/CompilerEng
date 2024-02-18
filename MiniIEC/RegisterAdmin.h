@@ -39,9 +39,7 @@ public:
     auto index = nr - 1;
     if (index < registers.size()) {
       registers[index] = nullptr;
-    } else {
-      throw "Register out of range";
-    }
+    } 
   }
   RegNr AssignRegister(RegNr const nr, dac::Entry::ptr entry) {
     auto index = nr - 1;

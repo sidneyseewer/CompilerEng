@@ -88,7 +88,6 @@
     <ClCompile Include="MiniIEC\Scanner.cpp" />
     <ClCompile Include="MiniIEC\SymbolFactory.cpp" />
     <ClCompile Include="MiniIEC\SymbolTable.cpp" />
-    <ClCompile Include="MiniIEC\TestSymbolTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="MiniIEC\MIEC.atg">

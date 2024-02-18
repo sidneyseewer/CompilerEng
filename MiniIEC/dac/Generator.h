@@ -23,7 +23,7 @@ public:
     void ContextSetIndex();
     size_t ContextGetIndex();
     void ContextSetRef();
-    void ContextRef();
+    void ContextRef(int offset=0);
     void endStmt();
     void Print(std::ostream);
     std::vector<Entry::ptr> getCode();

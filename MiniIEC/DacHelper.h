@@ -103,7 +103,7 @@ static void resetGen(){
     prt(NULL, L"end");
   }static void wend() {
     gen.add(dac::OpKind::Jump,gen.ContextGetIndex());
-    gen.ContextRef();
+    gen.ContextRef(1);
     gen.popContext();
     gen.endStmt();
     prt(NULL, L"wend");
@@ -120,7 +120,7 @@ static void resetGen(){
   }
   static void els() { 
     gen.add(dac::OpKind::Jump);
-    gen.ContextRef();
+    gen.ContextRef(1);
     gen.ContextSetRef();
     prt(NULL, L"els"); }
   static void iff() {

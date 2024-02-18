@@ -86,8 +86,8 @@ size_t Generator::ContextGetIndex() { return flowContext.back().index; }
 void Generator::ContextSetRef() {
   flowContext.back().ref = statementContext.back().A;
 }
-void Generator::ContextRef() {
-  jumpRefs.emplace_back(flowContext.back().ref, code.size());
+void Generator::ContextRef(int i) {
+  jumpRefs.emplace_back(flowContext.back().ref, code.size()+i);
 }
 
 void Generator::updateJumpRefs(){

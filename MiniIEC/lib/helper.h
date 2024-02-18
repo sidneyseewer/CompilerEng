@@ -85,7 +85,7 @@ void prt(T &g,F& st,std::ostream &cout=std::cout)
   std::cout << std::endl;
   for (size_t i = 0; i < g.size(); i++) {
     auto e = *(g.begin() + i);
-    std::cout << std::format(a, i);
+    std::cout << std::format(a, e->getPosition());
     for (auto s : st) {
       dac::Operand::ptr p = dac::SymbolOperand::create(s.second);
       if (e->hasNextUse(p))

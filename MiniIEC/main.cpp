@@ -87,6 +87,10 @@ do{
   lasSize=currentSize;
   iterations++;
   MIEC::CodeGenRISCV gen{false,false};
+  // for(auto f=1;f<12;f++)
+  // {
+  //   gen.LoadI(f, f*10);
+  // }
   CodeGenAdapter adp{&gen,true};
   adp.Run(g.getCode());
   currentSize=gen.GetCodePosition();
@@ -95,46 +99,26 @@ do{
   #endif
 }while(lasSize!=currentSize);
 std::cout<<"iterations: "<<iterations;
+  #ifndef NDEBUG
+    prt(g, st);
+#endif
   MIEC::CodeGenRISCV gen{true,false};
   CodeGenAdapter adp{&gen,false};
+  // for(auto f=1;f<12;f++)
+  // {
+  //   gen.LoadI(f, f*10);
+  // }
   adp.Run(g.getCode());
-    // for (auto j : jumps) {
-    //   dac::DacOperand *x;
-    //   if (j.second->getSecond() != nullptr) {
-    //     x = extract<dac::DacOperand>(j.second->getSecond());
-    //   } else {
-    //     x = extract<dac::DacOperand>(j.second->getFirst());
-    //   }
-    //   if (x == nullptr)
-    //     std::cerr << "Internal error\n";
-    //   else
-    //     // TODO: iffalsejumps are stored as results
-    //     gen.SetAddress(j.first, j.first + 4); // x->getJump()->getPosition());
-    // }
+  // gen.Sleep();
+  // gen.PrintInt(0);
+  // gen.PrintInt(1);
+  // gen.PrintInt(2);
+  // gen.PrintInt(3);
+  // gen.PrintInt(4);
+  // gen.PrintInt(5);
+  // gen.PrintInt(6);
+  // gen.Sleep();
 
-
-    /////////////////////////////
-    // start a if-then-else
-    /////////////////////////////
-    /*
-    x := 1;
-    IF (x < 10) THEN
-       x := x + 1;
-        print (x)
-    ELSE
-       print (10);
-    */
-
-    /*DAC:
-       x = 9
-       IFFALSE x < 10 GOTO L1
-          x = x + 1
-          print (x)
-          GOTO L2
-    L1:print (10)
-    L2: ...
-    */
-    
 #ifndef NDEBUG
     std::cout << "\n\n";
     gen.WriteDisassembled(std::cout);

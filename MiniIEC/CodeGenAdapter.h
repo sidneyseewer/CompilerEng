@@ -6,6 +6,7 @@
 #include "Symbols/ConstSymbol.h"
 #include "Symbols/VarSymbol.h"
 #include "dac/Entry.h"
+#include "dac/OpKind.h"
 #include <cassert>
 #include <cstdint>
 class CodeGenAdapter {
@@ -30,7 +31,7 @@ public:
       RegisterAdmin::RegNr ra = 0;
       RegisterAdmin::RegNr rb = 0;
       RegisterAdmin::RegNr rc = 0;
-      std::optional<size_t> jumpDestination;
+      size_t jumpDestination;
       dac::SymbolOperand *f1s{nullptr};
       dac::SymbolOperand *f2s;
       dac::DacOperand *f1d;
@@ -59,7 +60,6 @@ public:
           rc = regadm.AssignRegister(regadm.GetRegister(), e);
         }
 
-      case dac::Assign:
       case dac::IsEq:
       case dac::IsLeq:
       case dac::IsGtq:
@@ -89,6 +89,7 @@ public:
         }
 
       case dac::Print:
+      case dac::Assign:
         // create rb
         if (f2s != nullptr) {
           if (regadm.hasRegister(e->getSecond())) {
@@ -138,6 +139,9 @@ public:
           x = extract<dac::DacOperand>(j->getFirst());
         }
         jumpDestination=x->getJump()->getPosition();
+        #ifndef NDEBUG
+        std::cout<<dac::OpKindToString(e->getKind())<<":"<<jumpDestination<<std::endl;
+        #endif
       }
         
         
@@ -163,7 +167,7 @@ public:
         gen->Sub(ra, rb, rc);
         break;
       case dac::Mult:
-        gen->Mul(ra, rb, rc, 1);
+        gen->Mul(ra, rb, rc, tempReg);
         break;
       case dac::Div:
         gen->Div(ra, rb, rc, tempReg, tempReg, tempReg);
@@ -178,7 +182,7 @@ public:
         // std::cout<<"";
         break;
       case dac::Jump:
-        gen->Jump(tempReg, tempReg,  jumpDestination.value());
+        gen->JumpEQ(0, 0,tempReg,  jumpDestination);
         break;
         break;
       case dac::Print:
@@ -189,22 +193,22 @@ public:
         break;
       case dac::IsEq:
         // jumps.emplace_back(Args &&args...)
-        gen->JumpEQ(ra, rb, tempReg, jumpDestination.value());
+        gen->JumpEQ(ra, rb, tempReg, jumpDestination);
         break;
       case dac::IsLeq:
-        gen->JumpLE(ra, rb, tempReg,  jumpDestination.value());
+        gen->JumpLE(ra, rb, tempReg,  jumpDestination);
         break;
       case dac::IsGtq:
-        gen->JumpGE(ra, rb, tempReg,  jumpDestination.value());
+        gen->JumpGE(ra, rb, tempReg,  jumpDestination);
         break;
       case dac::IsNotEq:
-        gen->JumpNEQ(ra, rb, tempReg,  jumpDestination.value());
+        gen->JumpNEQ(ra, rb, tempReg,  jumpDestination);
         break;
       case dac::IsLess:
-        gen->JumpL(ra, rb, tempReg,  jumpDestination.value());
+        gen->JumpL(ra, rb, tempReg,  jumpDestination);
         break;
       case dac::IsGreater:
-        gen->JumpG(ra, rb, tempReg,  jumpDestination.value());
+        gen->JumpG(ra, rb, tempReg,  jumpDestination);
         break;
         break;
       }

@@ -18,30 +18,13 @@
 class dach {
   static void prt(MIEC::Token *t, wchar_t const * const s) {
 
-    // if (!tis.func.empty()) {
-    //   char f = ' ';
-    //   // switch (tis.func.back().f) {
-    //   // case A:
-    //   //   f = 'A';
-    //   //   break;
-    //   // case W:
-    //   //   f = 'W';
-    //   //   break;
-    //   // case I:
-    //   //   f = 'I';
-    //   //   break;
-    //   // case P:
-    //   //   f = 'P';
-    //   //   break;
-    //   // }
-    //   std::cout << std::format("{}({}) ", f, tis.func.back().x);
-    // }
-    
+    #ifndef NDEBUG
     std::wcout << s << " ";
     if (t != nullptr)
       std::wcout << t->val;
 
     std::cout << std::endl;
+    #endif
   }
 
   static void print(dac::Entry::ptr e)

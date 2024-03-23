@@ -59,7 +59,7 @@ constexpr Format formats[] = {{"{:2}: ", "{: >2} ", "&{ <1}"},
                               {"{:6}: ", "{: >6} ", "&{ <5}"}};
 
 template <class T, class F>
-void prt(T const &g, F const &st, std::ostream &cout = std::cout) {
+void prt(T &g, F &st, std::ostream &cout = std::cout) {
   constexpr auto a = "{:3}: ";
   constexpr auto b = "{: >3} ";
   constexpr auto c = "&{: <2} ";

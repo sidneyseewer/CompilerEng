@@ -81,9 +81,9 @@ public:
       case dac::Sub:
       case dac::Mult:
       case dac::Div:
-        // instructions with result stored in register
 
         addOP(e->getFirst(), i);
+      case dac::Print:
       case dac::Assign:
         addOP(e->getSecond(), i);
         break;
@@ -95,7 +95,6 @@ public:
       case dac::IsGreater:
       case dac::Jump:
       case dac::IfFalse:
-      case dac::Print:
       case dac::Exit:
         break;
       }

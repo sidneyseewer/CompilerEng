@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
     nuc.Calc(gen.cbegin(), gen.cend());
 #ifndef NDEBUG
     std::cout<<"NextUsage Table dac line count\n";
-    prt(g, st);
+    prt(gen, st);
 #endif
 
     size_t iterations = 0;
@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
 #ifndef NDEBUG
     std::cout << "iterations: " << iterations;
     std::cout<<"\n\nNextUsage Table asmebler line count\n";
-    prt(g, st);
+    prt(gen, st);
 #endif
     MIEC::CodeGenRISCV cgen{true, false};
     CodeGenAdapter adp{&cgen, false};
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
  
 #ifndef NDEBUG
     std::cout<<"\n\ndissasembly:\n";
-    gen.WriteDisassembled(std::cout);
+    cgen.WriteDisassembled(std::cout);
 #endif
     std::ofstream file{argv[4]};
     if (file) {

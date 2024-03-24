@@ -41,6 +41,8 @@
 #include "dac/Operands/DacOperand.h"
 #include "dac/Operands/SymbolOperand.h"
 
+#define NDEBUG
+
 int main(int argc, char *argv[]) {
 
   if (argc >= 5) {
@@ -73,8 +75,8 @@ int main(int argc, char *argv[]) {
     NextUseCalc nuc{};
     nuc.Calc(gen.cbegin(), gen.cend());
 #ifndef NDEBUG
-    std::cout<<"NextUsage Table dac line count\n";
-    prt(gen, st);
+    std::cout<<"NextUsage Table dac line count\n"<<std::flush;
+    prt(gen, st,std::cout);
 #endif
 
     size_t iterations = 0;
@@ -104,7 +106,7 @@ int main(int argc, char *argv[]) {
  
 #ifndef NDEBUG
     std::cout<<"\n\ndissasembly:\n";
-    cgen.WriteDisassembled(std::cout);
+    cgen.WriteDisassembled(std::cerr);
 #endif
     std::ofstream file{argv[4]};
     if (file) {

@@ -1,8 +1,22 @@
+/**
+ * @file OpKind.h
+ * @author Florian Gapp, Sidney Seewer  ()
+ * @brief Suppored Operation and convertion to string
+ * @version 0.1
+ * @date 2024-03-24
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #ifndef __DAC_OP_KIND_H__
 #define __DAC_OP_KIND_H__
 
 #include <string>
 namespace dac {
+  /**
+   * @brief Contains al Operations known by the 3AC
+   * 
+   */
 enum OpKind {
   Add,
   Sub,
@@ -20,6 +34,12 @@ enum OpKind {
   Print,
   Exit
 };
+/**
+ * @brief Turn OpKind to String for printing
+ * 
+ * @param opk 
+ * @return std::string 
+ */
 static std::string OpKindToString(OpKind const &opk) {
   switch (opk) {
   case Add:

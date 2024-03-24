@@ -1,3 +1,13 @@
+/**
+ * @file helper.cpp
+ * @author Florian Gapp, Sidney Seewer  ()
+ * @brief 
+ * @version 0.1
+ * @date 2024-03-24
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include "helper.h"
 #include "dac/Entry.h"
 

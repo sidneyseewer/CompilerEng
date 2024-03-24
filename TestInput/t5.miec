@@ -1,0 +1,26 @@
+PROGRAM if
+BEGIN_VAR
+a: Integer;
+b: Integer;
+END_VAR
+BEGIN
+ 
+a := 3 * 6 + (2 * 3); (24 == 0x18)
+b := 5;
+ 
+IF a-3 > b+5 THEN
+print(a);
+END
+ 
+IF a-3 -b > b+5 * a - 5 THEN
+print(b);
+ELSE
+print(a);
+END
+ 
+IF a-3 -b < b+5 * a - 5 THEN
+print(a);
+ELSE
+print(b);
+END
+END

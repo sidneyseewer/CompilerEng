@@ -1,3 +1,13 @@
+/**
+ * @file CodeGen.h
+ * @author Florian Gapp, Sidney Seewer  ()
+ * @brief 
+ * @version 0.1
+ * @date 2024-03-24
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #pragma once
 
 #include "Object.h"
@@ -8,7 +18,11 @@
 typedef int8_t BYTE;
 
 // interface for all code generators, i.e. CodeGenProl16 or CodeGenRiscV
-
+/**
+ * @brief Interface for Code generators
+ * 
+ * @tparam W data type
+ */
 template<typename W>
 class CodeGen : public Object 
 {

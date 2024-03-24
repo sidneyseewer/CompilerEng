@@ -1,3 +1,13 @@
+/**
+ * @file SymbolTable.cpp
+ * @author Florian Gapp, Sidney Seewer  ()
+ * @brief Symboltable implementation
+ * @version 0.1
+ * @date 2024-03-24
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include "SymbolTable.h"
 #include "Types/Type.h"
 #include <exception>

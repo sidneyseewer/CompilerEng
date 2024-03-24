@@ -1,3 +1,13 @@
+/**
+ * @file helper.h
+ * @author Florian Gapp, Sidney Seewer  ()
+ * @brief helper functions
+ * @version 0.1
+ * @date 2024-03-24
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #ifndef __HELPER_H__
 #define __HELPER_H__
 
@@ -14,7 +24,15 @@
 #include <sstream>
 
 std::string toString(dac::Operand::ptr const& p);
-
+/**
+ * @brief compare 2 Operand Pointers
+ * 
+ * @tparam UnaryPredicate 
+ * @param a 
+ * @param b 
+ * @return true 
+ * @return false 
+ */
 template <class UnaryPredicate>
 bool Compare_operand_pointer(dac::Operand::ptr const &a,
                              dac::Operand::ptr const &b) {

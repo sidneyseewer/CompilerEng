@@ -4,7 +4,7 @@ PROGRAM Hello
 		b: Integer
 	END_VAR
 BEGIN
-	b := 3 * 5 + 4 + 4 - 5 * 3 + 100 / 10 * 6+1 * 100;
+	b := 3 * 5 + 4 + 4 - c * 3 + 100 / 10 * 6+1 * 100;
 END
 hakko9
 (*

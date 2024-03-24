@@ -1,4 +1,13 @@
-
+/**
+ * @file NextUseCalc.h
+ * @author Florian Gapp, Sidney Seewer  ()
+ * @brief calculation of next use
+ * @version 0.1
+ * @date 2024-03-24
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #ifndef __NEXT_USE_CALC_H__
 #define __NEXT_USE_CALC_H__
 
@@ -16,21 +25,10 @@
 #include <sys/types.h>
 #include <vector>
 
-// class NCC {
-// public:
-//   using key_type = dac::Operand::ptr;
-//   using value_type = std::optional<size_t>;
-
-// private:
-// using Container=std::vector<std::pair<key_type, value_type>>;
-//    Container container;
-
-// public:
-//   void set(key_type k, value_type v);
-//   Container::iterator begin() ;
-//   Container::iterator end() ;
-
-// };
+/**
+ * @brief calculation of next use
+ * 
+ */
 class NextUseCalc {
   using NextUsage_container = std::map<dac::Operand::ptr, std::optional<size_t>,
                                        OperandPointer<std::less<void *>>>;
@@ -39,16 +37,25 @@ class NextUseCalc {
   void addOP(dac::Operand::ptr const &ps, size_t const &i);
 
 public:
+/**
+ * @brief start calculation
+ * 
+ * @tparam Itr 
+ * @param begin 
+ * @param end 
+ */
   template <class Itr> void Calc(Itr const &begin, Itr const &end) {
 
     constexpr auto set = NextUsage_container::mapped_type{};
     for (int i = end - begin - 1; i >= 0; i--) {
       dac::Entry::ptr e = *(begin + i);
       dac::OpKind op = e->getKind();
+      // add next usages to current entry
       for (auto s : lu) {
         if (s.second.has_value())
           e->addnextUsed(s.first, s.second.value());
       }
+      // assignemnts
       switch (op) {
 
       case dac::Add:
@@ -75,6 +82,7 @@ public:
       case dac::Exit:
         break;
       }
+      // usages (operands)
       switch (op) {
 
       case dac::Add:

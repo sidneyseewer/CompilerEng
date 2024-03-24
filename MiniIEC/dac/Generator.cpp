@@ -1,3 +1,13 @@
+/**
+ * @file Generator.cpp
+ * @author Florian Gapp, Sidney Seewer  ()
+ * @brief Code Generation Algorithmus
+ * @version 0.1
+ * @date 2024-03-24
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include "Generator.h"
 #include "dac/Entry.h"
 #include "dac/OpKind.h"

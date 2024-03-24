@@ -1,3 +1,13 @@
+/**
+ * @file Generator.h
+ * @author Florian Gapp, Sidney Seewer  ()
+ * @brief Code Generation Algorithmus
+ * @version 0.1
+ * @date 2024-03-24
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #ifndef __DAC_GENERATOR_H__
 #define __DAC_GENERATOR_H__
 
@@ -7,38 +17,125 @@
 #include <cstddef>
 #include <vector>
 namespace dac {
-
+/**
+ * @brief Code Generation Algorithmus
+ * 
+ */
 class Generator {
 public:
   using codeContainer_type = std::vector<Entry::ptr>;
-  void add(OpKind const &index, Operand::ptr const &first);
+  /**
+   * @brief add entry with first operand
+   * 
+   * @param kind 
+   * @param first 
+   */
+  void add(OpKind const &kind, Operand::ptr const &first);
+  /**
+   * @brief add Jump entry
+   * 
+   * @param kind 
+   * @param index 
+   */
   void add(OpKind const &kind, size_t const &index);
+  /**
+   * @brief add entry at level C
+   * 
+   * @param kind 
+   */
   void add(OpKind const &kind);
+  /**
+   * @brief add entry at level B
+   * 
+   * @param kind 
+   */
   void addt(OpKind const &kind);
+  /**
+   * @brief add entry at level A
+   * 
+   * @param kind 
+   */
   void addf(OpKind const &kind);
+  /**
+   * @brief add second operand of last entry
+   * 
+   * @param op 
+   */
   void add(Operand::ptr const &op);
+  /**
+   * @brief push Parentethies
+   * 
+   */
   void pushPr();
+  /**
+   * @brief pop parentethies
+   * 
+   */
   void popPr();
+  /**
+   * @brief create new flow Context
+   * inside if,while
+   */
   void pushContext();
+  /**
+   * @brief finish current flow context
+   * after if,while
+   */
   void popContext();
+  /**
+   * @brief set jump index of context
+   * 
+   */
   void ContextSetIndex();
+  /**
+   * @brief get jump index of context
+   * 
+   * @return size_t 
+   */
   size_t ContextGetIndex() const;
+  /**
+   * @brief set jump refference of context
+   * 
+   */
   void ContextSetRef();
+
   void ContextRef(int const &offset = 0);
+  /**
+   * @brief finish a statement and write it to code
+   * 
+   */
   void endStmt();
+  /**
+   * @brief Get the generated code
+   * 
+   * @return codeContainer_type 
+   */
   codeContainer_type getCode();
   /**
-  sets the position member of each entry to the index in the code array
+  @brief sets the position member of each entry to the index in the code array
   */
   void updateIndex();
+  /**
+   * @brief Construct a new Generator object
+   * 
+   */
   Generator();
   codeContainer_type::const_iterator cend() const;
   codeContainer_type::const_iterator cbegin() const;
   codeContainer_type::iterator begin();
   codeContainer_type::iterator end();
   size_t size() const;
-  void add(Entry::ptr const &a);
   Entry::ptr operator[](size_t const &index);
+  /**
+   * @brief add entry to code
+   * 
+   * @param a 
+   */
+  void add(Entry::ptr const &a);
+  /**
+   * @brief turn jump refferences to relative line numbers
+   * 
+   */
   void updateJumpRefs();
 
 private:

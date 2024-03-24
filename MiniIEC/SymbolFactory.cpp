@@ -1,3 +1,13 @@
+/**
+ * @file SymbolFactory.cpp
+ * @author Florian Gapp, Sidney Seewer  ()
+ * @brief Symbol factory Implementation
+ * @version 0.1
+ * @date 2024-03-24
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include "SymbolFactory.h"
 #include "Symbols/ConstSymbol.h"
 #include "Symbols/TypeSymbol.h"

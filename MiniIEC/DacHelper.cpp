@@ -1,3 +1,13 @@
+/**
+ * @file DacHelper.cpp
+ * @author Florian Gapp, Sidney Seewer  ()
+ * @brief helper functions called from Coco
+ * @version 0.1
+ * @date 2024-03-24
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include "DacHelper.h"
 #include "Scanner.h"
 #include <cstddef>

@@ -114,6 +114,7 @@ void DacHelper::iff() {
 void DacHelper::thn() {
   gen.add(dac::OpKind::IfFalse);
   gen.ContextSetRef();
+  gen.endStmt();
   prt(NULL, L"thnx");
 }
 void DacHelper::sem() {

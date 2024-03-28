@@ -90,18 +90,19 @@ public:
       case dac::Sub:
       case dac::Mult:
       case dac::Div:
-
-        addOP(e->getFirst(), i);
-      case dac::Print:
-      case dac::Assign:
-        addOP(e->getSecond(), i);
-        break;
       case dac::IsEq:
       case dac::IsLeq:
       case dac::IsGtq:
       case dac::IsNotEq:
       case dac::IsLess:
       case dac::IsGreater:
+
+        addOP(e->getFirst(), i);
+      case dac::Print:
+      case dac::Assign:
+        addOP(e->getSecond(), i);
+        break;
+
       case dac::Jump:
       case dac::IfFalse:
       case dac::Exit:

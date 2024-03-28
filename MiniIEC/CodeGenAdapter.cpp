@@ -138,8 +138,8 @@ void CodeGenAdapter::Run(std::vector<dac::Entry::ptr> const &g) {
       }
       jumpDestination = x->getJump()->getPosition();
 #ifndef NDEBUG
-      std::cout << dac::OpKindToString(e->getKind()) << ":" << jumpDestination
-                << std::endl;
+      // std::cout << dac::OpKindToString(e->getKind()) << ":" << jumpDestination
+      //           << std::endl;
 #endif
     }
 

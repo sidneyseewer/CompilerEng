@@ -11,11 +11,13 @@
 #include "helper.h"
 #include "dac/Entry.h"
 
-std::string toString(dac::Operand::ptr  const&p){
+std::wstring toString(dac::Operand::ptr  const&p){
+
+std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
   auto sop = dac::extract<dac::SymbolOperand>(p);
   auto dop = dac::extract<dac::DacOperand>(p);
   if (sop != nullptr) {
-    return sop->get()->GetName();
+    return converter.from_bytes((sop->get()->GetName()));
   }
   if (dop != nullptr) {
     std::string s = "";
@@ -24,7 +26,7 @@ std::string toString(dac::Operand::ptr  const&p){
     if (dop->isResult())
       s += "r";
     dac::Entry::ptr x=dop->get();
-    return std::format(" *{1}", s,x->getPosition());
+    return converter.from_bytes(std::format(" *{1}", s,x->getPosition()));
   }
-  return "";
+  return L"";
 }

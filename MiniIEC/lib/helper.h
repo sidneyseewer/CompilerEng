@@ -21,9 +21,14 @@
 #include <iostream>
 #include <memory>
 #include <ostream>
+#include <iomanip>
 #include <sstream>
+#include <locale>
+#include <codecvt>
+#include <string>
+#include "SymbolTable.h"
 
-std::string toString(dac::Operand::ptr const& p);
+std::wstring toString(dac::Operand::ptr const& p);
 /**
  * @brief compare 2 Operand Pointers
  * 
@@ -75,41 +80,50 @@ constexpr Format formats[] = {{"{:2}: ", "{: >2} ", "&{ <1}"},
                               {"{:4}: ", "{: >4} ", "&{ <3}"},
                               {"{:5}: ", "{: >5} ", "&{ <4}"},
                               {"{:6}: ", "{: >6} ", "&{ <5}"}};
+constexpr size_t space=4;
+void ptra(std::wostream &ost,auto s){ost<<std::setw(space)<<s<<L":";}
+void ptrb(std::wostream &ost,auto s){ost<<std::setw(space)<<s;}
+void ptrc(std::wostream &ost,auto s){ost<<'&'<<std::setw(space-1)<<std::left<<s;}
 
-template <class T, class F>
-void prt(T &g, F &st, std::ostream &cout = std::cout) {
-  constexpr auto a = "{:3}: ";
-  constexpr auto b = "{: >3} ";
-  constexpr auto c = "&{: <2} ";
+template <class T>
+void prt(T &g, SymbolTable &st, std::wostream &ost = std::wcout) {
 
-  std::cout << std::format(a, ' ');
+std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+  // ost << std::format(a, ' ');
+  ptra(ost,L' ');
   for (auto s : st) {
-    std::cout << std::format(b, s.first);
+    ptrb(ost,converter.from_bytes(s.first));
   }
   for (auto s : g) {
-    std::cout << std::format(c, s->getPosition());
+    // ost << std::format(c, s->getPosition());
+    ptrc(ost,s->getPosition());
   }
-  std::cout << std::endl;
+  ost << std::endl;
   for (size_t i = 0; i < g.size(); i++) {
     auto e = *(g.begin() + i);
-    std::cout << std::format(a, e->getPosition());
+    // ost << std::format(a, e->getPosition());
+    ptra(ost,e->getPosition());
     for (auto s : st) {
       dac::Operand::ptr p = dac::SymbolOperand::create(s.second);
       if (e->hasNextUse(p))
-        std::cout << std::format(b, e->getNextUse(p));
+        // ost << std::format(b, e->getNextUse(p));
+        ptrb(ost,e->getNextUse(p));
       else
-        std::cout << std::format(b, '-');
+        // ost << std::format(b, L'-');
+        ptrb(ost,L'-');
     }
     for (auto s : g) {
       dac::Operand::ptr p = dac::DacOperand::createResult(s);
       if (e->hasNextUse(p))
-        std::cout << std::format(b, e->getNextUse(p));
+        // ost << std::format(b, e->getNextUse(p));
+        ptrb(ost,e->getNextUse(p));
       else
-        std::cout << std::format(b, '-');
+        // ost << std::format(b, '-');
+        ptrb(ost,L'-');
     }
-    std::cout << (e.get()->isJumpDestination ? 'x' : ' ')
+    ost << (e.get()->isJumpDestination ? L'x' : L' ')
               << dac::OpKindToString(e.get()->getKind());
-    std::cout << " " << toString(e->getFirst()) << " "
+    ost << " " << toString(e->getFirst()) << " "
               << toString(e->getSecond()) << std::endl;
   }
 }

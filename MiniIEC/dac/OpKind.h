@@ -40,40 +40,40 @@ enum OpKind {
  * @param opk 
  * @return std::string 
  */
-static std::string OpKindToString(OpKind const &opk) {
+static std::wstring OpKindToString(OpKind const &opk) {
   switch (opk) {
   case Add:
-    return "Add";
+    return L"Add";
   case Sub:
-    return "Sub";
+    return L"Sub";
   case Mult:
-    return "Mult";
+    return L"Mult";
   case Div:
-    return "Div";
+    return L"Div";
   case IsEq:
-    return "IsEq";
+    return L"IsEq";
   case IsLeq:
-    return "IsLeq";
+    return L"IsLeq";
   case IsGtq:
-    return "IsGtq";
+    return L"IsGtq";
   case IsNotEq:
-    return "IsNotEq";
+    return L"IsNotEq";
   case IsLess:
-    return "IsLess";
+    return L"IsLess";
   case IsGreater:
-    return "IsGreater";
+    return L"IsGreater";
   case Assign:
-    return "Assign";
+    return L"Assign";
   case Jump:
-    return "Jump";
+    return L"Jump";
   case IfFalse:
-    return "IfFalse";
+    return L"IfFalse";
   case Print:
-    return "Print";
+    return L"Print";
   case Exit:
-    return "Exit";
+    return L"Exit";
   }
-  return "-";
+  return L"-";
 }
 } // namespace dac
 

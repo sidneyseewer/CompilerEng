@@ -12,3 +12,4 @@ Release/
 Testbench
 *.vcxproj*
 latex/
+out/

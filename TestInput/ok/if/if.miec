@@ -17,6 +17,7 @@ BEGIN
 	ELSE
 		print(a);
 	END
+
 	
 	IF a-3 -b < b+5 * a - 5 THEN
 		print(a);

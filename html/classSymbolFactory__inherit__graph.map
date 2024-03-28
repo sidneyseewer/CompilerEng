@@ -1,0 +1,5 @@
+<map id="SymbolFactory" name="SymbolFactory">
+<area shape="rect" id="node1" title="Symbol Factory." alt="" coords="115,145,246,281"/>
+<area shape="rect" id="node2" href="$classSingelton.html" title=" " alt="" coords="5,13,193,90"/>
+<area shape="rect" id="node3" href="$classObject.html" title="base class for all other classes" alt="" coords="218,5,306,97"/>
+</map>

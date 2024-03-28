@@ -118,6 +118,9 @@ int main(int argc, char *argv[]) {
     std::cout<<"\n\ndissasembly:\n";
     cgen.WriteDisassembled(std::cerr);
 #endif
+if(parser.errors->count == 0)
+{
+  
     std::ofstream file{argv[4]};
     if (file) {
       cgen.WriteExecutable(file);
@@ -128,5 +131,6 @@ int main(int argc, char *argv[]) {
 
   } else {
     std::cerr<<"File could not be read \n";
+  }
   }
 }

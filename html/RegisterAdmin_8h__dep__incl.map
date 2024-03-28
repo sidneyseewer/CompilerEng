@@ -1,0 +1,7 @@
+<map id="MiniIEC/RegisterAdmin.h" name="MiniIEC/RegisterAdmin.h">
+<area shape="rect" id="node1" title="register admin" alt="" coords="217,5,387,32"/>
+<area shape="rect" id="node2" href="$CodeGenAdapter_8h.html" title="code gen Adapter" alt="" coords="106,80,290,107"/>
+<area shape="rect" id="node5" href="$RegisterAdmin_8cpp.html" title="register admin implementation" alt="" coords="314,80,498,107"/>
+<area shape="rect" id="node3" href="$CodeGenAdapter_8cpp.html" title=" " alt="" coords="5,155,204,181"/>
+<area shape="rect" id="node4" href="$main_8cpp.html" title=" " alt="" coords="228,155,355,181"/>
+</map>

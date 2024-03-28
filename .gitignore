@@ -11,5 +11,4 @@ Release/
 *.zip
 Testbench
 *.vcxproj*
-html/
 latex/

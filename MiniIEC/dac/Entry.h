@@ -23,12 +23,13 @@
 #include <utility>
 #include <variant>
 #include <vector>
+#include "Object.h"
 namespace dac {
 /**
  * @brief 3-Address Code Entry
  *
  */
-class Entry {
+class Entry :Object{
 private:
   OpKind mOpKind;
   Operand::ptr mFirst;

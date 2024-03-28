@@ -24,12 +24,13 @@
 #include <optional>
 #include <sys/types.h>
 #include <vector>
+#include "Object.h"
 
 /**
  * @brief calculation of next use
  * 
  */
-class NextUseCalc {
+class NextUseCalc :Object{
   using NextUsage_container = std::map<dac::Operand::ptr, std::optional<size_t>,
                                        OperandPointer<std::less<void *>>>;
   NextUsage_container lu{};

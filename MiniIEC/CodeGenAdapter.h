@@ -20,11 +20,12 @@
 #include "dac/OpKind.h"
 #include <cassert>
 #include <cstdint>
+#include "Object.h"
 /**
  * @brief generate bytecode from Entry list
  * 
  */
-class CodeGenAdapter {
+class CodeGenAdapter :Object{
   bool dryRun;
   CodeGen<int32_t> *gen;
 

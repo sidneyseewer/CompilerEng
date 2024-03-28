@@ -13,6 +13,7 @@
 
 #include "Symbols/Symbol.h"
 #include "lib/Singelton.h"
+#include "Object.h"
 #include <string>
 #include <unordered_map>
 
@@ -20,7 +21,7 @@ class Parser;
 class Errors;
 
 // Singleton class SymbolTable
-class SymbolTable : public Singelton<SymbolTable> {
+class SymbolTable : public Singelton<SymbolTable>,Object {
 public:
   // Method to add a symbol to the table
   void Add(Symbol::ptr symbol);

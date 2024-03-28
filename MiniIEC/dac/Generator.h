@@ -16,12 +16,13 @@
 #include "dac/Operands/Operand.h"
 #include <cstddef>
 #include <vector>
+#include "Object.h"
 namespace dac {
 /**
  * @brief Code Generation Algorithmus
  * 
  */
-class Generator {
+class Generator:Object {
 public:
   using codeContainer_type = std::vector<Entry::ptr>;
   /**

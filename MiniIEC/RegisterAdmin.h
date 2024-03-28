@@ -11,12 +11,13 @@
 #include "dac/Entry.h"
 #include "dac/Operands/Operand.h"
 #include "lib/helper.h"
+#include "Object.h"
 #include <vector>
 /**
  * @brief manages which registers contain what variable
  * 
  */
-class RegisterAdmin {
+class RegisterAdmin :Object{
 private:
   const size_t regCount;
   std::vector<dac::Operand::ptr> registers{};

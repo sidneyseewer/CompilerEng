@@ -14,11 +14,12 @@
 #include "../lib/concepts.h"
 #include <memory>
 #include <string>
+#include "Object.h"
 /**
  * @brief Base Implementation of Symbol
  * 
  */
-class Symbol {
+class Symbol :Object{
 private:
   std::string mNmae;
   Type::ptr mType;

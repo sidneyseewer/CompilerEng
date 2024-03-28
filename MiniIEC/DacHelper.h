@@ -27,11 +27,12 @@
 #include <memory>
 #include <ostream>
 #include <vector>
+#include "Object.h"
 /**
  * @brief helper functions called from Coco
  * 
  */
-class DacHelper {
+class DacHelper :Object{
 
 public:
   using errorHandler = std::function<void(wchar_t const *const)>;

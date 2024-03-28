@@ -13,13 +13,14 @@
 
 #include <cstddef>
 #include <memory>
+#include "Object.h"
 
 class Symbol;
 /**
  * @brief type baseclass
  * 
  */
-class Type {
+class Type :Object{
 public:
   using ptr = std::shared_ptr<Type>;
   /**

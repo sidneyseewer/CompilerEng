@@ -16,6 +16,7 @@
 #include "Types/BaseType.h"
 #include "Types/TypeKind.h"
 #include "lib/Singelton.h"
+#include "Object.h"
 #include <cstddef>
 #include <map>
 #include <string>
@@ -24,7 +25,7 @@
  * @brief Symbol Factory
  * 
  */
-class SymbolFactory : public Singelton<SymbolFactory> {
+class SymbolFactory : public Singelton<SymbolFactory>,Object {
   friend class Singelton<SymbolFactory>;
   TypeSymbol::ptr mTypeSymbol;
   size_t mOffset = 0;

@@ -1,9 +1,9 @@
 <map id="Object" name="Object">
-<area shape="rect" id="node1" title="base class for all other classes" alt="" coords="418,5,506,97"/>
-<area shape="rect" id="node2" href="$classCodeGenAdapter.html" title="generate bytecode from Entry list" alt="" coords="5,336,148,443"/>
-<area shape="rect" id="node3" href="$classDacHelper.html" title="helper functions called from Coco" alt="" coords="172,145,315,633"/>
-<area shape="rect" id="node4" href="$classNextUseCalc.html" title="calculation of next use" alt="" coords="339,336,443,443"/>
-<area shape="rect" id="node5" href="$classRegisterAdmin.html" title="manages which registers contain what variable" alt="" coords="467,299,598,479"/>
-<area shape="rect" id="node6" href="$classSymbolFactory.html" title="Symbol Factory." alt="" coords="622,321,753,457"/>
-<area shape="rect" id="node7" href="$classSymbolTable.html" title=" " alt="" coords="777,292,883,487"/>
+<area shape="rect" id="node1" title="base class for all other classes" alt="" coords="450,5,550,97"/>
+<area shape="rect" id="node2" href="$classCodeGenAdapter.html" title="generate bytecode from Entry list" alt="" coords="5,343,163,450"/>
+<area shape="rect" id="node3" href="$classDacHelper.html" title="helper functions called from Coco" alt="" coords="187,145,344,648"/>
+<area shape="rect" id="node4" href="$classNextUseCalc.html" title="calculation of next use" alt="" coords="369,343,479,450"/>
+<area shape="rect" id="node5" href="$classRegisterAdmin.html" title="manages which registers contain what variable" alt="" coords="504,307,648,487"/>
+<area shape="rect" id="node6" href="$classSymbolFactory.html" title="Symbol Factory." alt="" coords="673,329,815,465"/>
+<area shape="rect" id="node7" href="$classSymbolTable.html" title=" " alt="" coords="839,299,955,494"/>
 </map>

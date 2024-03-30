@@ -1,14 +1,15 @@
 <map id="DacHelper" name="DacHelper">
-<area shape="rect" id="node1" title="helper functions called from Coco" alt="" coords="198,403,341,847"/>
-<area shape="rect" id="node2" href="$classObject.html" title="base class for all other classes" alt="" coords="5,5,93,97"/>
-<area shape="rect" id="node4" href="$classSymbolFactory.html" title="Symbol Factory." alt="" coords="204,189,335,311"/>
-<area shape="rect" id="node8" href="$classSymbolTable.html" title=" " alt="" coords="435,160,533,340"/>
-<area shape="rect" id="node3" title=" " alt="" coords="87,211,179,289"/>
-<area shape="rect" id="node5" href="$classSingelton.html" title=" " alt="" coords="118,13,306,90"/>
-<area shape="rect" id="node6" title=" " alt="" coords="330,13,369,90"/>
-<area shape="rect" id="node7" title=" " alt="" coords="393,13,450,90"/>
-<area shape="rect" id="node9" href="$classSingelton.html" title=" " alt="" coords="474,13,649,90"/>
-<area shape="rect" id="node10" title=" " alt="" coords="673,13,711,90"/>
-<area shape="rect" id="node11" title=" " alt="" coords="736,5,885,97"/>
-<area shape="rect" id="node12" title=" " alt="" coords="557,204,699,296"/>
+<area shape="rect" id="node1" title="helper functions called from Coco" alt="" coords="287,403,445,847"/>
+<area shape="rect" id="node2" href="$classObject.html" title="base class for all other classes" alt="" coords="5,5,105,97"/>
+<area shape="rect" id="node4" href="$classSymbolFactory.html" title="Symbol Factory." alt="" coords="221,189,364,311"/>
+<area shape="rect" id="node8" href="$classSymbolTable.html" title=" " alt="" coords="388,160,493,340"/>
+<area shape="rect" id="node3" title=" " alt="" coords="95,211,197,289"/>
+<area shape="rect" id="node5" href="$classSingelton.html" title=" " alt="" coords="129,13,339,90"/>
+<area shape="rect" id="node6" title=" " alt="" coords="363,13,403,90"/>
+<area shape="rect" id="node7" title=" " alt="" coords="428,13,488,90"/>
+<area shape="rect" id="node9" href="$classSingelton.html" title=" " alt="" coords="512,13,708,90"/>
+<area shape="rect" id="node10" title=" " alt="" coords="732,13,771,90"/>
+<area shape="rect" id="node11" title=" " alt="" coords="795,5,961,97"/>
+<area shape="rect" id="node12" title=" " alt="" coords="518,204,681,296"/>
+<area shape="rect" id="node13" title=" " alt="" coords="705,211,755,289"/>
 </map>

@@ -20,7 +20,7 @@
  * 
  */
 class ConstSymbol : public Symbol {
-  Type::ptr mType;
+  // Type::ptr mType;
   int mValue;
 
 public:
@@ -43,12 +43,7 @@ public:
    * @param t 
    */
   ConstSymbol(std::string const &name, Type::ptr const &t);
-  /**
-   * @brief Get the Type of symbol
-   * 
-   * @return Type::ptr 
-   */
-  Type::ptr getType() const override;
+
   /**
    * @brief Get the Value of symbol
    * 
